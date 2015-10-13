@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="1"
+            android:id="@+id/id_textView"
+            android:layout_weight="90"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/question_textView"
+            android:layout_weight="10"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="20dp"
+            android:id="@+id/yes_imageButton"
+            android:layout_weight="33"
+            android:src="@drawable/yes"
+            android:background="@color/gray"
+            android:padding="0dip"
+
+
+            />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/no_imageButton"
+            android:layout_weight="33"
+            android:src="@drawable/no"
+            android:background="@color/gray"
+            android:padding="0dip"
+
+
+            />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/na_imageButton"
+            android:layout_weight="33"
+            android:src="@drawable/na"
+            android:background="@color/gray"
+            android:padding="0dip"
+
+
+            />
+    </LinearLayout>
+</LinearLayout>

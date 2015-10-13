@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+    android:layout_margin="5dip"
+    android:padding="25dip"
+    >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Small Text"
+        android:id="@+id/confirmation_question_textView"
+        android:layout_weight="80"
+        android:padding="3dip"
+        android:layout_marginBottom="4dip"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="20">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ok"
+            android:id="@+id/ok_button"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="50"
+            android:background="@color/green_custom"
+            android:layout_margin="3dip"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cancel"
+            android:id="@+id/cancel_button"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_weight="50"
+            android:background="@color/orange_custom"
+            android:layout_margin="3dip"
+
+            />
+    </LinearLayout>
+
+</LinearLayout>

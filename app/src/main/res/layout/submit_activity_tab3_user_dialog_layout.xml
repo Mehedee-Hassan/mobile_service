@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:padding="2dip"
+    android:layout_margin="15dip"
+    >
+
+
+
+
+    <!--<TextView-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+            <!--android:text="Choose User"-->
+            <!--android:id="@+id/textView"-->
+            <!--android:layout_marginLeft="5dip"-->
+            <!--android:layout_weight="30"-->
+
+        <!--/>-->
+    <!--<FrameLayout-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:layout_marginTop="9dp"-->
+        <!--android:padding="0dp"-->
+
+        <!--android:layout_weight="44"-->
+        <!-->-->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/search_editText"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:inputType="text"
+            android:focusable="true"
+
+            android:hint="search by name"
+            android:descendantFocusability="beforeDescendants"
+        android:layout_weight="44"
+            />
+            <!--<Button-->
+                <!--android:id="@+id/search_Button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="0dp"-->
+                <!--android:layout_marginBottom="0dp"-->
+                <!--android:layout_gravity="right|center_vertical"-->
+                <!--android:background="@drawable/icon" />-->
+    <!--</FrameLayout>-->
+
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="12"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            >
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        </LinearLayout>
+    </TabHost>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:text="SELECT"
+        android:id="@+id/button"
+        android:layout_gravity="right"
+        android:background="@color/green_custom"
+        android:textColor="@color/white"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:layout_marginTop="5dip"
+        android:layout_weight="44"
+        />
+
+
+</LinearLayout>
