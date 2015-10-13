@@ -20,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
@@ -28,6 +27,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTWType;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
@@ -47,10 +47,10 @@ public class SubmitActivity extends FragmentActivity
     PTWTypeTemplateDBHelper ptwTypeTemplateDBHelper;
     private FragmentTabHost mTabHost;
     Button submitButton;
-
+    GlobalVars globalVars;
     private ViewPager pager;
     private CustomPagerAdapter pagerAdapter;
-
+    PTWType permitTemplate;
     EditText projectNameEt, subContractorNameTe3,
             locationEt4, descriptionWorkEt5, dateEt6, startEt7, endEt8;
     private TextView ptwTypeNameTextView;
@@ -66,18 +66,26 @@ public class SubmitActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_submit);
-        setTitle(" Submit");
 
+
+        setContentView(R.layout.activity_submit);
+
+
+        globalVars = ((GlobalVars) getApplication());
 
         Bundle extras = getIntent().getExtras();
         currentProject = new Project((Project) extras.getParcelable("CURRENT_PROJECT_OBJECT"));
         int permitTemplateItemAt = extras.getInt("list_position");
 
 
-        GlobalVars currentVars = ((GlobalVars) this.getApplication());
-        currentVars.setProject(currentProject);
 
+
+        globalVars.setProject(currentProject);
+
+        String permitNumber = extras.getString("permit_number");
+
+
+        setTitle(permitNumber);
 
         ptwTypeTemplateDBHelper = new PTWTypeTemplateDBHelper(this);
         backgroundTaskHelper = new BackgroundTaskHelper(this);
@@ -85,7 +93,11 @@ public class SubmitActivity extends FragmentActivity
         initComponent();
 
 
-//        ptwTypeNameTextView.setText(ptwTypeTemplateDBHelper.getPTWTypeAt(permitTemplateItemAt).name);
+         permitTemplate =  ((GlobalVars) getApplication()).getPermitTemplate();
+
+
+        Log.d(" == ","submitactivity on create1");
+        ptwTypeNameTextView.setText(permitTemplate.name);
         //change activity back color
         ptwTypeNameTextView.getRootView().setBackgroundColor(Color.WHITE);
 
@@ -281,12 +293,16 @@ public class SubmitActivity extends FragmentActivity
 
         Permit permit = new Permit();
 
+        permit.auto_gen_permit_no = globalVars.getPermitNumber();
+        permit.project_id = globalVars.getProject().id;
         permit.project_name = projectNameEt.getText().toString();
         permit.contractor = subContractorNameTe3.getText().toString();
         permit.location = locationEt4.getText().toString();
         permit.permit_date = dateEt6.getText().toString();
         permit.start_time = startEt7.getText().toString();
         permit.end_time = endEt8.getText().toString();
+        permit.permit_template_id = permitTemplate.id;
+        
 
 
         return permit;

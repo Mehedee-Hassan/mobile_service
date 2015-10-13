@@ -16,18 +16,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.PermitToWorkActListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTWType;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.PTWForView;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 //import android.support.v7.app.AppCompatActivity;
@@ -45,6 +49,8 @@ implements View.OnClickListener, OnItemClickListener {
     ListView ptwListview;
     Project CurretnProject;
     PermitToWorkActListAdapter customAdapter;
+    GlobalVars globalVars;
+
 
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -78,6 +84,8 @@ implements View.OnClickListener, OnItemClickListener {
 
         listOfPtwTypes = new ArrayList<>();
 
+
+        globalVars = (GlobalVars) getApplication();
 
     }
 
@@ -147,8 +155,15 @@ implements View.OnClickListener, OnItemClickListener {
 
                         //todo change CurrentVar to GlobalVars
 
-                        CurrentVars.PTWTYPE_TEMPLATE = ptwTypeTemplateDBHelper.getPTWTypeAt(item);
+//                        CurrentVars.PTWTYPE_TEMPLATE
+
+                                PTWType ptwType= ptwTypeTemplateDBHelper.getPTWTypeAt(item);
                         ((GlobalVars) getApplication()).currentPermitTemplateDetailsId = CurrentVars.PTWTYPE_TEMPLATE.id;
+
+                        ((GlobalVars) getApplication()).setPermitTemplate(ptwType);
+
+
+
 
 
                         CurrentVars.PROJECT = CurretnProject;
@@ -157,6 +172,15 @@ implements View.OnClickListener, OnItemClickListener {
                         intent.putExtra("list_position",item);
 
 
+                        String permitNumber = generatePermitNumber();
+                        intent.putExtra("permit_number",permitNumber);
+
+
+
+
+                        Toast.makeText(PermitToWorkActivity.this,permitNumber+"" , Toast.LENGTH_LONG).show();
+
+                        Log.d("==" ,permitNumber);
 
                         startActivity(intent);
 
@@ -173,6 +197,31 @@ implements View.OnClickListener, OnItemClickListener {
 
     }
 
+
+    public String generatePermitNumber(){
+
+        String permitNUmber = "";
+
+
+        Calendar c = Calendar.getInstance();
+        int yyyy = c.get(Calendar.YEAR);
+        int mm = c.get(Calendar.MONTH);
+        int dd = c.get(Calendar.DAY_OF_MONTH);
+
+        String username = Constants.username.substring(0, 2);
+        int tt = c.get(Calendar.SECOND);
+
+
+        permitNUmber += yyyy+""+( mm <10 ? "0"+mm : mm)
+                +""+(dd<10 ? "0"+dd : dd )
+                +""+username
+                +((int)(tt + (3600 * Calendar.HOUR_OF_DAY)+(60*Calendar.MINUTE)));
+
+
+        globalVars.setPermitNumber(permitNUmber);
+        return permitNUmber;
+
+    }
 
 
     @Override
