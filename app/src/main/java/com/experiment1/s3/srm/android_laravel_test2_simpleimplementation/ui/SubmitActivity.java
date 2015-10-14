@@ -1,6 +1,7 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,12 +36,17 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.subm
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab3Team;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Ordinal;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
 
 public class SubmitActivity extends FragmentActivity
         implements OnClickListener {
+
+
+    public String TAG = this.getClass().getSimpleName();
+
 
 
     PTWTypeTemplateDBHelper ptwTypeTemplateDBHelper;
@@ -55,7 +60,7 @@ public class SubmitActivity extends FragmentActivity
             locationEt4, descriptionWorkEt5, dateEt6, startEt7, endEt8;
     private TextView ptwTypeNameTextView;
 
-
+    List<Fragment> fragments;
     public Project currentProject;
     private TextView projectNameTv;
 
@@ -96,7 +101,7 @@ public class SubmitActivity extends FragmentActivity
          permitTemplate =  ((GlobalVars) getApplication()).getPermitTemplate();
 
 
-        Log.d(" == ","submitactivity on create1");
+        Log.d(TAG+" == ","submitactivity on create1");
         ptwTypeNameTextView.setText(permitTemplate.name);
         //change activity back color
         ptwTypeNameTextView.getRootView().setBackgroundColor(Color.WHITE);
@@ -106,6 +111,14 @@ public class SubmitActivity extends FragmentActivity
     private void initComponent() {
 
         ptwTypeNameTextView = (TextView) findViewById(R.id.ptw_type_name_textView);
+
+//        projectNameEt = (EditText) findViewById();
+//        subContractorNameTe3 = (EditText) findViewById();
+//        locationEt4 = (EditText) findViewById();
+//        descriptionWorkEt5 = (EditText) findViewById();
+//        dateEt6 = (EditText) findViewById();
+//        startEt7 = (EditText) findViewById();
+//        endEt8 = (EditText) findViewById();
 
 
         tabHostInit();
@@ -120,7 +133,7 @@ public class SubmitActivity extends FragmentActivity
 
 
         populateCheckList();
-        Log.d("submit ativity ==end3 ", "");// + currentProject.name);
+        Log.d(TAG + "submit ativity ==end3 ", "");// + currentProject.name);
 
     }
 
@@ -128,7 +141,7 @@ public class SubmitActivity extends FragmentActivity
 
 
         pager = (ViewPager) findViewById(R.id.viewpager);
-        List<Fragment> fragments = new Vector<Fragment>();
+        fragments = new Vector<Fragment>();
 
 
         fragments.add(Fragment.instantiate(this, Tab1general.class.getName()));
@@ -195,7 +208,7 @@ public class SubmitActivity extends FragmentActivity
             case R.id.submit_button:
 
 
-                Log.d("submit ativity == ", "button clicked");
+                Log.d(TAG+" == ", "button clicked");
 
                 //confirmation dialog
 
@@ -211,7 +224,7 @@ public class SubmitActivity extends FragmentActivity
                         "that the following safety requirements " +
                         "have been complied and fully " +
                         "understand the nature of work " +
-                        "and safety compliances");
+                        "and safety compliance");
 
 
 
@@ -254,15 +267,17 @@ public class SubmitActivity extends FragmentActivity
                         globalVars.getSubmitActTab1GenInterface();
 
 
-                Log.d(" == ", "Submit activity ,onclicklistnersetup ,interface ");
-                tab1GeneralFragmentEventConnector.onSubmitButtonClick();
+                Log.d(TAG + " == ", "Submit activity ,onclicklistnersetup ,interface ");
+                Permit returnedPermitObject = tab1GeneralFragmentEventConnector.onSubmitButtonClick();
 
 
                 //go to login page
                 Intent intent = new Intent(SubmitActivity.this, LoginDialogActivity.class);
                 startActivityForResult(intent, 2);
 
-                saveToPermitTable();
+
+                Log.d(TAG + " == ", "returned permit object = " + returnedPermitObject.project_name);
+                saveToPermitTable(returnedPermitObject);
 
 
             }
@@ -276,39 +291,54 @@ public class SubmitActivity extends FragmentActivity
         });
     }
 
-    private void saveToPermitTable() {
+    private void saveToPermitTable(Permit returnedPermitObject) {
 
 
-        Permit permit = makePermitObject();
 
-        Log.d(" == ", " submit act ,save to permit");
-        ptwTypeTemplateDBHelper.saveToPermitTabel(permit);
 
-        backgroundTaskHelper.saveToPermitTable(permit);
+
+
+        Log.d(TAG+" == ", " submit act ,save to permit");
+
+
+        Calendar calendar = Calendar.getInstance();
+
+
+        returnedPermitObject.auto_gen_permit_no = globalVars.getPermitNumber();
+        returnedPermitObject.permit_template_id = globalVars.getPermitTemplate().id;
+        returnedPermitObject.permit_name = returnedPermitObject.auto_gen_permit_no; //todo confusion
+//        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().id; //todo change temporary
+
+
+        //sqlite format yyyy-mm-dd
+
+//        returnedPermitObject.created_at = ""+calendar.get(Calendar.YEAR)
+//                +"-"+calendar.get(Calendar.MONTH)
+//                +"-"+calendar.get(Calendar.DAY_OF_MONTH)
+//                +" "+calendar.get(Calendar.HOUR_OF_DAY)
+//                +":"+calendar.get(Calendar.MINUTE)
+//                +":"+calendar.get(Calendar.SECOND);
+//
+//
+//        returnedPermitObject.updated_at = ""+calendar.get(Calendar.YEAR)
+//                +"-"+calendar.get(Calendar.MONTH)
+//                +"-"+calendar.get(Calendar.DAY_OF_MONTH)
+//                +" "+calendar.get(Calendar.HOUR_OF_DAY)
+//                +":"+calendar.get(Calendar.MINUTE)
+//                +":"+calendar.get(Calendar.SECOND);
+
+
+
+
+
+//        ptwTypeTemplateDBHelper.saveToPermitTabel(returnedPermitObject);
+
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject,this);
 
 
     }
 
-    private Permit makePermitObject() {
 
-        Permit permit = new Permit();
-
-        permit.auto_gen_permit_no = globalVars.getPermitNumber();
-        permit.project_id = globalVars.getProject().id;
-        permit.project_name = projectNameEt.getText().toString();
-        permit.contractor = subContractorNameTe3.getText().toString();
-        permit.location = locationEt4.getText().toString();
-        permit.permit_date = dateEt6.getText().toString();
-        permit.start_time = startEt7.getText().toString();
-        permit.end_time = endEt8.getText().toString();
-        permit.permit_template_id = permitTemplate.id;
-        
-
-
-        return permit;
-
-
-    }
 
 
     class CustomPagerAdapter extends FragmentPagerAdapter {

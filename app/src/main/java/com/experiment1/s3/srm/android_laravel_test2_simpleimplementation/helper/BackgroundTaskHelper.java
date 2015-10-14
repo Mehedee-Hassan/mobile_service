@@ -20,6 +20,8 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.L
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Token;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.PermitStoreToServer;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.ServerMessage;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.LoginActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.ProjectActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.SplashActivity;
@@ -36,6 +38,9 @@ import retrofit.client.Response;
  * Created by Mhr on 9/22/2015.
  */
 public class BackgroundTaskHelper  {
+
+
+    private String TAG = this.getClass().getSimpleName();
 
     RestAdapter restAdapter;
     CustomAPI loginApi;
@@ -140,7 +145,7 @@ public class BackgroundTaskHelper  {
 
                     loginHelper3(token.access_token
                             , token.token_type, activity,
-                            false);
+                            isReqFromLoginDialog);
 
 
 
@@ -328,7 +333,7 @@ public class BackgroundTaskHelper  {
                             } else if (ifRequestFromLoginDialogSubmitActivity) {
 
 
-                                globalVars.setIfLoggedIn(true);
+//                                globalVars.setIfLoggedIn(true);
 
 //                                Intent returnInt = new Intent();
 //                                returnInt.putExtra("login_status",false);
@@ -695,12 +700,46 @@ public class BackgroundTaskHelper  {
 
 
 
-    public void saveToPermitTable(Permit permit) {
+    public void saveToPermitTable(Permit permit, final Activity submitActivity) {
 
-        loginApi.storeGeneralTabToPermitTabel(permit.auto_gen_permit_no,permit.project_id
-                ,permit.project_name,permit.permit_template_id,permit.permit_name
-                ,permit.contractor,permit.location,permit.work_activity
-                ,permit.permit_date,permit.start_time,permit.end_time,permit.created_by);
+        //todo delete temporary
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+        loginApi = restAdapter.create(CustomAPI.class);
+        //
+
+        loginApi.storeGeneralTabToPermitTabel(
+                permit.permit_name
+                , permit.permit_template_id
+                , permit.project_id
+                , permit.project_name
+                , permit.auto_gen_permit_no
+                , permit.location
+                , permit.contractor
+                , permit.work_activity
+                , permit.permit_date
+                , permit.start_time
+                , permit.end_time
+                , new Callback<ServerMessage>() {
+                    @Override
+                    public void success(ServerMessage serverReturnMessage, Response response) {
+
+
+                        Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
+                        Log.d(TAG+" == " ," success "+serverReturnMessage.message);
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                        Log.d(TAG+" == " ," fail "+error.getMessage());
+
+                    }
+                }
+        );
 
     }
 }

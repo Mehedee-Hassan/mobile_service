@@ -22,17 +22,18 @@
         android:orientation="vertical"
         >
 
-         <!--<TextView-->
-             <!--android:layout_width="fill_parent"-->
-             <!--android:layout_height="wrap_content"-->
-             <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-             <!--android:text="Project"-->
-             <!--android:id="@+id/ptextView2" />-->
+         <TextView
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:textAppearance="?android:attr/textAppearanceSmall"
+             android:text="Project"
+             android:layout_marginTop="5dip"
+             android:id="@+id/ptextView2" />
 
          <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText" />
+            android:id="@+id/project_name_editText" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -44,7 +45,7 @@
          <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText3" />
+            android:id="@+id/contractor_editText3" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -56,7 +57,7 @@
          <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText4" />
+            android:id="@+id/location_editText4" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -68,7 +69,7 @@
          <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText5" />
+            android:id="@+id/description_work_editText5" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -82,7 +83,8 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/editText6" />
+            android:hint="dd-mm-yyyy"
+            android:id="@+id/date_editText6" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -96,7 +98,7 @@
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
-            android:id="@+id/editText7" />
+            android:id="@+id/start_time_editText7" />
 
          <TextView
             android:layout_width="fill_parent"
@@ -110,7 +112,7 @@
             android:layout_height="wrap_content"
             android:inputType="time"
             android:ems="10"
-            android:id="@+id/editText8" />
+            android:id="@+id/end_time_editText8" />
 
         </LinearLayout>
 

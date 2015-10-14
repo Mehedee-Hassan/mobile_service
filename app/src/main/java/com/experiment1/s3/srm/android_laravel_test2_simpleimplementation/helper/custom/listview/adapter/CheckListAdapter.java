@@ -1,13 +1,12 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -17,132 +16,174 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.v
 import java.util.List;
 
 /**
- * Created by Mhr on 10/3/2015.
+ * Created by Mhr on 10/6/2015.
  */
-public class CheckListAdapter extends BaseAdapter {
+public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
-    private Activity context;
-    private List<CheckList> list;
-    private LayoutInflater layoutInflater = null;
-    CheckListViewHolder viewHolder ;
+    private final List<CheckList> checkListValues;
+    private final Activity context;
 
-    public CheckListAdapter(Activity context, List<CheckList> list){
+    public CheckListAdapter(Activity context, List<CheckList> values) {
+        super(context, R.layout.check_list_row_layout ,values);
 
+
+        this.checkListValues = values;
         this.context = context;
-        this.list = list;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
-
-
-    @Override
-    public int getCount() {
-        return list.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-
-
-        View tempView = convertView;
-
-
+        final CheckListViewHolder checkListViewHolder = new CheckListViewHolder();;
+        View rowView;
 
         if(convertView == null){
-            LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            tempView = li.inflate(R.layout.check_list_row_layout,null);
 
-            viewHolder = new CheckListViewHolder(tempView);
-            tempView.setTag(viewHolder);
+            LayoutInflater inflater = context.getLayoutInflater();
+            rowView = inflater.inflate(R.layout.check_list_row_layout ,null);
+
+
+            checkListViewHolder.questionIdTv = (TextView) rowView.findViewById(R.id.id_textView);
+            checkListViewHolder.questionTv = (TextView) rowView.findViewById(R.id.question_textView);
+
+            checkListViewHolder.yes = (ImageButton) rowView.findViewById(R.id.yes_imageButton);
+            checkListViewHolder.no = (ImageButton) rowView.findViewById(R.id.no_imageButton);
+            checkListViewHolder.na = (ImageButton) rowView.findViewById(R.id.na_imageButton);
+
+
+
+
+            checkListViewHolder.yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
+                    checkList.setYesOptions(1); //1 = yes
+
+                    if(!checkListViewHolder.yes.isSelected()) {
+                        checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+
+
+                        checkListViewHolder.yes.setSelected(true);
+                        checkListViewHolder.no.setSelected(false);
+                        checkListViewHolder.na.setSelected(false);
+
+
+                    }
+                    else {
+                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+                        checkListViewHolder.yes.setSelected(false);
+
+                        checkListViewHolder.no.setSelected(false);
+                        checkListViewHolder.na.setSelected(false);
+
+
+
+                    }
+                }
+            });
+
+            checkListViewHolder.no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                    CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
+                    checkList.setYesOptions(2); //2 = no
+
+                    if(!checkListViewHolder.no.isSelected()) {
+                        checkListViewHolder.no.setBackgroundColor(Color.RED);
+                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+
+                        checkListViewHolder.no.setSelected(true);
+                        checkListViewHolder.na.setSelected(false);
+                        checkListViewHolder.yes.setSelected(false);
+
+                    }
+                    else {
+                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+
+                        checkListViewHolder.no.setSelected(false);
+
+                        checkListViewHolder.na.setSelected(false);
+                        checkListViewHolder.yes.setSelected(false);
+
+                    }
+                }
+            });
+
+            checkListViewHolder.na.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
+                    checkList.setYesOptions(3); //3 = na
+                    if(!checkListViewHolder.na.isSelected()) {
+                        checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
+                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+
+                        checkListViewHolder.na.setSelected(true);
+                        checkListViewHolder.no.setSelected(false);
+                        checkListViewHolder.yes.setSelected(false);
+
+                    }
+                    else {
+                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+
+                        checkListViewHolder.na.setSelected(false);
+                        checkListViewHolder.no.setSelected(false);
+                        checkListViewHolder.yes.setSelected(false);
+
+                    }
+                }
+            });
+
+
+
+            rowView.setTag(checkListViewHolder);
+            checkListViewHolder.yes.setTag(checkListValues.get(position));
+            checkListViewHolder.no.setTag(checkListValues.get(position));
+            checkListViewHolder.na.setTag(checkListValues.get(position));
 
 
         }
-        else{
-            viewHolder = (CheckListViewHolder) tempView.getTag();
+        else {
+
+            rowView = convertView;
+
+            ((CheckListViewHolder)rowView.getTag()).yes.setTag(checkListValues.get(position));
+            ((CheckListViewHolder)rowView.getTag()).no.setTag(checkListValues.get(position));
+            ((CheckListViewHolder)rowView.getTag()).na.setTag(checkListValues.get(position));
+
+
         }
 
-
-        final CheckList tempObj = list.get(position);
-
-        viewHolder.questionIdTv.setText(tempObj.id+"");
-        viewHolder.questionTv.setText(tempObj.question);
+        CheckListViewHolder checkListViewHolder1 = (CheckListViewHolder) rowView.getTag();
 
 
+        checkListViewHolder1.questionTv.setText((String) checkListValues.get(position).question);
+        checkListViewHolder1.questionIdTv.setText(""+checkListValues.get(position).id);
 
-        viewHolder.na.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        Log.d("YesOption", " == " + checkListValues.get(position).YesOptions);
 
 
 
-                if(viewHolder.na.isSelected() == false) {
-                    viewHolder.na.setBackgroundColor(Color.GREEN);
-                    viewHolder.na.setSelected(true);
-                    viewHolder.yes.setSelected(false);
-                    viewHolder.no.setSelected(false);
-                    Log.d("==", "click na");
 
-                    tempObj.YesOptions = 3;
-                }
-                else{
-                    viewHolder.na.setBackgroundColor(Color.GRAY);
-                    viewHolder.na.setSelected(false);
-                    viewHolder.yes.setSelected(false);
-                    viewHolder.no.setSelected(false);
-                    Log.d("==", "click na");
+        return rowView;
 
-                    tempObj.YesOptions = 1;
-                }
-            }
-        });
-
-
-        viewHolder.no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                viewHolder.no.setBackgroundColor(Color.GREEN);
-                viewHolder.na.setColorFilter(Color.argb(255, 255, 255, 255));
-
-                viewHolder.na.setSelected(false);
-                viewHolder.yes.setSelected(false);
-                viewHolder.no.setSelected(true);
-
-
-                Log.d("==", "click no");
-                tempObj.YesOptions = 2;
-            }
-        });
-
-
-        viewHolder.yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewHolder.yes.setBackgroundColor(Color.GREEN);
-                viewHolder.na.setSelected(false);
-                viewHolder.yes.setSelected(true);
-                viewHolder.no.setSelected(false);
-                Log.d("==","click yes");
-
-                tempObj.YesOptions = 1;
-            }
-        });
-
-
-        return tempView;
     }
-
 
     class CheckListViewHolder{
         TextView questionIdTv ;
@@ -152,6 +193,9 @@ public class CheckListAdapter extends BaseAdapter {
         ImageButton na;
 
 
+
+
+        public CheckListViewHolder(){}
 
 
         public CheckListViewHolder(View base){
@@ -165,12 +209,6 @@ public class CheckListAdapter extends BaseAdapter {
 
 
 
-        //bit crazy
-
-
-
-
     }
-
 
 }

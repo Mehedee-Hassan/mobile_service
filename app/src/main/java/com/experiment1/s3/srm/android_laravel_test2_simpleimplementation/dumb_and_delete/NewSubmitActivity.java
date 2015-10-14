@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.dumb;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.dumb_and_delete;
 
 import android.annotation.TargetApi;
 import android.content.Context;

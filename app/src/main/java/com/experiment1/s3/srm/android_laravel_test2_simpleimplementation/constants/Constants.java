@@ -15,6 +15,10 @@ public class Constants {
 
 
 
+    public static boolean APPLICATION_TEST_MODE = true;
+
+
+
     //temp credential
     public static String username = "user1@gamil.com";
     public static String password = "pass@word1";

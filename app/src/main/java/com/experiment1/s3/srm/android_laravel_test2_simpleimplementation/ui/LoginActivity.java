@@ -32,6 +32,7 @@ import retrofit.client.Response;
 
 public class LoginActivity extends Activity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener{
 
+    public String TAG = this.getClass().getSimpleName();
 
 
     Button loginButton,stayLocalButton;

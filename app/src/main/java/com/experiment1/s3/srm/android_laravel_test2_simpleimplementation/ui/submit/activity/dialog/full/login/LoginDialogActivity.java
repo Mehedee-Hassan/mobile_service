@@ -38,6 +38,7 @@ import retrofit.client.Response;
 public class LoginDialogActivity extends Activity implements View.OnClickListener
         , CompoundButton.OnCheckedChangeListener{
 
+    public String TAG = this.getClass().getSimpleName();
 
 
     Button loginButton, cancelButton;
@@ -70,8 +71,12 @@ public class LoginDialogActivity extends Activity implements View.OnClickListene
         backgroundTaskHelper = new BackgroundTaskHelper(saveDataHelper ,this);
 
 
+
+        //if logged in
         checkIfLoggedIn(saveDataHelper);
 
+
+        //else not logged in
 
 
         Log.d("==", "logindialogactivity oncreate1");
@@ -200,6 +205,8 @@ public class LoginDialogActivity extends Activity implements View.OnClickListene
 
                 //loading animation
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+
+
                 Toast.makeText(
                         this.getApplicationContext()
                         , "Logging in .. ", Toast.LENGTH_LONG).show();
@@ -216,10 +223,6 @@ public class LoginDialogActivity extends Activity implements View.OnClickListene
                         usernameEditText.getText().toString(),
                         passwordEditText.getText().toString(),
                         this,saveDataHelper,this , true);
-
-
-
-
 
 
 

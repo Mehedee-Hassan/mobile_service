@@ -19,6 +19,8 @@ public class Permit {
     public String start_time;
     public String end_time;
     public int created_by;
+    public String created_at;
+    public String updated_at;
 
 
 }

@@ -25,6 +25,9 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Tab1general extends Fragment implements Tab1GeneralFragmentEventConnector {
 
+
+    public String TAG = this.getClass().getSimpleName();
+
     View view;
     private EditText projectNameEt;
     private EditText subContractorNameTe3;
@@ -66,13 +69,13 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
     private void initLayoutComponents(View root) {
 
-        projectNameEt = (EditText) root.findViewById(R.id.editText);
-        subContractorNameTe3 = (EditText)  root.findViewById(R.id.editText3);
-        locationEt4 = (EditText)  root.findViewById(R.id.editText4);
-        descriptionWorkEt5 = (EditText)  root.findViewById(R.id.editText5);
-        dateEt6 = (EditText)  root.findViewById(R.id.editText6);
-        startEt7 = (EditText)  root.findViewById(R.id.editText7);
-        endEt8 = (EditText)  root.findViewById(R.id.editText8);
+        projectNameEt = (EditText) root.findViewById(R.id.project_name_editText);
+        subContractorNameTe3 = (EditText)  root.findViewById(R.id.contractor_editText3);
+        locationEt4 = (EditText)  root.findViewById(R.id.location_editText4);
+        descriptionWorkEt5 = (EditText)  root.findViewById(R.id.description_work_editText5);
+        dateEt6 = (EditText)  root.findViewById(R.id.date_editText6);
+        startEt7 = (EditText)  root.findViewById(R.id.start_time_editText7);
+        endEt8 = (EditText)  root.findViewById(R.id.end_time_editText8);
 
 
 
@@ -99,6 +102,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         permit.project_name = globalVars.getProject().name;
         permit.contractor = subContractorNameTe3.getText().toString();
         permit.location = locationEt4.getText().toString();
+        permit.work_activity = descriptionWorkEt5.getText().toString();
         permit.permit_date = dateEt6.getText().toString();
         permit.start_time = startEt7.getText().toString();
         permit.end_time = endEt8.getText().toString();
@@ -107,7 +111,9 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         permit.work_activity =descriptionWorkEt5.getText().toString();
 
 
-        Log.d("==" ,"permit name =" + permit.permit_name);
+        Log.d(TAG+ " ==* " ,"permit name =" + permit.work_activity);
+        Log.d(TAG+ " ==* " ,"permit name =" + permit.project_name);
+        Log.d(TAG+ " ==* " ,"permit name =" + permit.location);
 
         return permit;
 
@@ -117,7 +123,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
     @Override
     public Permit onSubmitButtonClick() {
 
-
+        Log.d(TAG+" == " ,"onSubmitButtonClick, Tab1General.class");
 
         return createPermitObjectFromFields();
 

@@ -49,7 +49,7 @@
             android:id="@+id/yes_imageButton"
             android:layout_weight="33"
             android:src="@drawable/yes"
-            android:background="@color/gray"
+            android:background="@color/white"
             android:padding="0dip"
 
 
@@ -61,7 +61,7 @@
             android:id="@+id/no_imageButton"
             android:layout_weight="33"
             android:src="@drawable/no"
-            android:background="@color/gray"
+            android:background="@color/white"
             android:padding="0dip"
 
 
@@ -73,7 +73,7 @@
             android:id="@+id/na_imageButton"
             android:layout_weight="33"
             android:src="@drawable/na"
-            android:background="@color/gray"
+            android:background="@color/white"
             android:padding="0dip"
 
 

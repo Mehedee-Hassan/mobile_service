@@ -39,6 +39,8 @@ import java.util.List;
 public class PermitToWorkActivity extends Activity
 implements View.OnClickListener, OnItemClickListener {
 
+    public String TAG = this.getClass().getSimpleName();
+
 
     Dialog dialog ;
     Button newPermitButton;
@@ -157,8 +159,14 @@ implements View.OnClickListener, OnItemClickListener {
 
 //                        CurrentVars.PTWTYPE_TEMPLATE
 
-                                PTWType ptwType= ptwTypeTemplateDBHelper.getPTWTypeAt(item);
-                        ((GlobalVars) getApplication()).currentPermitTemplateDetailsId = CurrentVars.PTWTYPE_TEMPLATE.id;
+                        PTWType ptwType= ptwTypeTemplateDBHelper.getPTWTypeAt(item);
+
+
+                        //
+                        //set permit_template id for question
+                        //find permit details
+
+                        ((GlobalVars) getApplication()).currentPermitTemplateId = ptwType.id;
 
                         ((GlobalVars) getApplication()).setPermitTemplate(ptwType);
 
@@ -178,9 +186,9 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-                        Toast.makeText(PermitToWorkActivity.this,permitNumber+"" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(PermitToWorkActivity.this, "permit number generated:\n"+permitNumber+"" , Toast.LENGTH_LONG).show();
 
-                        Log.d("==" ,permitNumber);
+                        Log.d("==", permitNumber);
 
                         startActivity(intent);
 
@@ -212,10 +220,29 @@ implements View.OnClickListener, OnItemClickListener {
         int tt = c.get(Calendar.SECOND);
 
 
-        permitNUmber += yyyy+""+( mm <10 ? "0"+mm : mm)
-                +""+(dd<10 ? "0"+dd : dd )
-                +""+username
-                +((int)(tt + (3600 * Calendar.HOUR_OF_DAY)+(60*Calendar.MINUTE)));
+
+        //todo correction needed
+        // calender.MINUTE not working properly
+        //have to check in real device
+        //constant value = 12
+        //if(Constants.APPLICATION_TEST_MODE == false)
+
+
+        if(true)
+        {
+            permitNUmber += yyyy + "" + (mm < 10 ? "0" + mm : mm)
+                    + "" + (dd < 10 ? "0" + dd : dd)
+                    + "" + username
+                    + ((int) (tt + (3600 * Calendar.HOUR_OF_DAY) + (60 * Calendar.MINUTE)));
+
+        }
+        else{
+            permitNUmber += yyyy+""+( mm <10 ? "0"+mm : mm)
+                    +""+(dd<10 ? "0"+dd : dd )
+                    +""+username
+                    +((tt ))+" "+ ((( Calendar.HOUR_OF_DAY))) +" "+(((60*Calendar.MINUTE)));
+
+        }
 
 
         globalVars.setPermitNumber(permitNUmber);

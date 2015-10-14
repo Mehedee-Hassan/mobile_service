@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.TestCheckListAdapter;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDetailsDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
@@ -66,7 +66,7 @@ public class Tab2Checklist extends Fragment {
 
 //        GlobalVars globalVars = (GlobalVars) getActivity().getApplication();
 
-        int nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).currentPermitTemplateDetailsId;
+        int nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).currentPermitTemplateId;
 
         List<PermitTemplateDetails> ptdetailsList =
                 permitTemplateDetailsDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
@@ -85,8 +85,7 @@ public class Tab2Checklist extends Fragment {
         Log.d("tab2 ==", "oncreateView 3");
 
 
-        TestCheckListAdapter adapter = new TestCheckListAdapter(getActivity() , checkLists);
-//        CheckListAdapter adapter = new CheckListAdapter(getActivity() ,checkLists);
+        CheckListAdapter adapter = new CheckListAdapter(getActivity() , checkLists);
 
         Log.d("tab2 ==", "oncreateView 4");
 

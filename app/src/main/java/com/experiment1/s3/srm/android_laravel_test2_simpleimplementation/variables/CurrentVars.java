@@ -9,6 +9,8 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
  * Created by Mhr on 10/4/2015.
  */
 public class CurrentVars extends Application{
+
+
     public static Project PROJECT;
     public static PTWType PTWTYPE_TEMPLATE;
     public static CurrentVars current_vars;
