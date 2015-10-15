@@ -111,9 +111,22 @@ implements View.OnClickListener, OnItemClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch(id){
+
+            case R.id.action_settings:
+                Intent intent = new Intent(this ,SettingActivity.class);
+                startActivityForResult(intent ,102);
+                break;
+
+            case android.R.id.home:
+
+                this.finish();
+                return true;
+
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -233,7 +246,7 @@ implements View.OnClickListener, OnItemClickListener {
             permitNUmber += yyyy + "" + (mm < 10 ? "0" + mm : mm)
                     + "" + (dd < 10 ? "0" + dd : dd)
                     + "" + username
-                    + ((int) (tt + (3600 * Calendar.HOUR_OF_DAY) + (60 * Calendar.MINUTE)));
+                    + ((int) (tt + ((int)(3600 * Calendar.HOUR_OF_DAY)) + ((int)(60 * Calendar.MINUTE))));
 
         }
         else{

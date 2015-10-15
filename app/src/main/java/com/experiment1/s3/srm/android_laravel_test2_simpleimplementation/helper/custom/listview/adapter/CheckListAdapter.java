@@ -53,6 +53,16 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 
 
+            //=== setup back color by selection
+
+            if(checkListValues.get(position).YesOptions != 1)
+            checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+            //=================================
+
+
+
+
+
 
             checkListViewHolder.yes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,7 +71,10 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                     CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
                     checkList.setYesOptions(1); //1 = yes
 
-                    if(!checkListViewHolder.yes.isSelected()) {
+
+
+//                    if(!checkListViewHolder.yes.isSelected()) {
+                    if(checkList.YesOptions == 1) {
                         checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
                         checkListViewHolder.no.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.na.setBackgroundColor(Color.WHITE);
@@ -93,10 +106,11 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                 public void onClick(View view) {
 
 
-                    CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
+                    CheckList checkList  = (CheckList) checkListViewHolder.no.getTag();
                     checkList.setYesOptions(2); //2 = no
 
-                    if(!checkListViewHolder.no.isSelected()) {
+//                    if(!checkListViewHolder.no.isSelected()) {
+                    if(checkList.YesOptions == 2) {
                         checkListViewHolder.no.setBackgroundColor(Color.RED);
                         checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.na.setBackgroundColor(Color.WHITE);
@@ -124,9 +138,10 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                 @Override
                 public void onClick(View view) {
 
-                    CheckList checkList  = (CheckList) checkListViewHolder.yes.getTag();
+                    CheckList checkList  = (CheckList) checkListViewHolder.na.getTag();
                     checkList.setYesOptions(3); //3 = na
-                    if(!checkListViewHolder.na.isSelected()) {
+//                    if(!checkListViewHolder.na.isSelected()) {
+                    if(checkList.YesOptions == 3) {
                         checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
                         checkListViewHolder.no.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.yes.setBackgroundColor(Color.WHITE);

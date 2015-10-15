@@ -18,6 +18,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.GeneralTabSubmitAct;
 
 /**
  * Created by Mhr on 10/3/2015.
@@ -128,5 +129,10 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         return createPermitObjectFromFields();
 
 
+    }
+
+    @Override
+    public Permit onSubmitActivityPause() {
+        return createPermitObjectFromFields();
     }
 }

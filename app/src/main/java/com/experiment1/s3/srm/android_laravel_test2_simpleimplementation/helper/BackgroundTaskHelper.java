@@ -40,6 +40,8 @@ import retrofit.client.Response;
 public class BackgroundTaskHelper  {
 
 
+
+    private String LOCAL_BASE_URL ;
     private String TAG = this.getClass().getSimpleName();
 
     RestAdapter restAdapter;
@@ -63,9 +65,15 @@ public class BackgroundTaskHelper  {
 
         globalVars = (GlobalVars) activity.getApplication();
 
+
+        saveDataHelper = new SaveDataHelper(activity);
+
+        this.LOCAL_BASE_URL = saveDataHelper.getBaseUrl();
+
+
         Flags.tokenReceiveSuccessFlag = 0;
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
         loginApi = restAdapter.create(CustomAPI.class);
 
@@ -77,9 +85,13 @@ public class BackgroundTaskHelper  {
 
         globalVars = (GlobalVars) activity.getApplication();
 
+        saveDataHelper = new SaveDataHelper(activity);
+        this.LOCAL_BASE_URL = saveDataHelper.getBaseUrl();
+
+
         Flags.tokenReceiveSuccessFlag = 0;
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
         loginApi = restAdapter.create(CustomAPI.class);
 
@@ -186,7 +198,7 @@ public class BackgroundTaskHelper  {
 
 
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
 
         loginApi = restAdapter.create(CustomAPI.class);
@@ -264,7 +276,7 @@ public class BackgroundTaskHelper  {
         RestAdapter restAdapter;
         CustomAPI loginApi;
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
 
         loginApi = restAdapter.create(CustomAPI.class);
@@ -297,10 +309,18 @@ public class BackgroundTaskHelper  {
 
 
                         Log.d("===login with token==", "error = " + arg0.getMessage());
+                        //set login false
+                        globalVars.setIfLoggedIn(false);
+//                        saveDataHelper.setIfLoggedIn(false);
 
                     }
 
                     public void success(LoginMessage loginMessage, Response arg1) {
+
+                        //set login true
+                        globalVars.setIfLoggedIn(true);
+                        saveDataHelper.setIfLoggedIn(true);
+
                         Log.d("login string = ", loginMessage.message);
                         returnTokenIsOk = true;
 
@@ -320,27 +340,12 @@ public class BackgroundTaskHelper  {
                                 Intent intent2 = new Intent();
                                 intent2.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.BACKGROUND_DATA_LOADING_INTENT_SERVICE");
                                 activity.startService(intent2);
-                                //===
-
-
                                 //start activity
                                 Intent intent1 = new Intent(activity, ProjectActivity.class);
-                                // intent1.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.PROJECT_ACTIVITY");
-
-                                //intent1.putExtra("access_token",Constants.access_token);
-
                                 activity.startActivity(intent1);
+
+
                             } else if (ifRequestFromLoginDialogSubmitActivity) {
-
-
-//                                globalVars.setIfLoggedIn(true);
-
-//                                Intent returnInt = new Intent();
-//                                returnInt.putExtra("login_status",false);
-//                                activity.setResult(Activity.RESULT_OK ,returnInt);
-//
-
-
                                 activity.finish();
                             }
 
@@ -349,13 +354,11 @@ public class BackgroundTaskHelper  {
                         } else
                             Log.d("==now here ==", "false");
 
-//                            Toast.makeText(
-//                                    getApplicationContext()
-//                                    ,"Welcome!!" ,Toast.LENGTH_LONG).show();
 
                         activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
                         //start activity for project list
+
 
                     }
 
@@ -387,7 +390,7 @@ public class BackgroundTaskHelper  {
         RestAdapter restAdapter;
         CustomAPI loginApi;
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
 
         loginApi = restAdapter.create(CustomAPI.class);
@@ -704,7 +707,7 @@ public class BackgroundTaskHelper  {
 
         //todo delete temporary
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
                 .build();
 
         loginApi = restAdapter.create(CustomAPI.class);

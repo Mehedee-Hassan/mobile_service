@@ -53,7 +53,7 @@
 
 
         <activity android:name=".ui.LoginActivity"
-            android:noHistory="true">
+            >
             <!--<intent-filter>-->
                 <!--<action android:name="com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.LOGIN_ACTIVITY" />-->
             <!--</intent-filter>-->

@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.CustomAPI;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
@@ -343,6 +344,8 @@ public class ProjectActivity extends Activity {
         super.onResume();
 
 
+        backgroundTaskHelper.loadProjectListFromDatabase(projectActivity
+                , databaseHelper, list, customAdapter);
         //registered again
         registerUIUpdateBroadcastReceiver();
 
@@ -364,5 +367,8 @@ public class ProjectActivity extends Activity {
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

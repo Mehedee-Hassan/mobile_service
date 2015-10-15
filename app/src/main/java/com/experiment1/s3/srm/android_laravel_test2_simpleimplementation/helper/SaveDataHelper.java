@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 
 /**
  * Created by Mhr on 9/22/2015.
@@ -16,6 +17,7 @@ public class SaveDataHelper {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     private String[] accessToken;
+    private Permit generalTabData;
 
 
     public SaveDataHelper(){
@@ -33,6 +35,19 @@ public class SaveDataHelper {
 
     }
 
+
+
+    public void setIfLoggedIn(boolean val){
+        editor.putBoolean(Constants.PREF_KEY_IF_LOGGED_IN , val);
+    }
+
+
+    public boolean getIfLoggedIn(){
+        boolean returnvalue = preferences.getBoolean(Constants.PREF_KEY_IF_LOGGED_IN ,false);
+
+
+    return returnvalue;
+    }
 
     public boolean saveSettings(String clientId
             ,String clientSecret
@@ -206,5 +221,14 @@ public class SaveDataHelper {
         editor.remove(Constants.PREF_KEY_ACCESS_TOKEN_TYPE);
 
         editor.commit();
+    }
+
+
+    public String getBaseUrl(){
+        return preferences.getString(Constants.PREF_KEY_BASE_URL,Constants.BASE_URL);
+    }
+
+    public void setGeneralTabData(Permit generalTabData) {
+        this.generalTabData = generalTabData;
     }
 }

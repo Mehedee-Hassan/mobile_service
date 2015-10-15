@@ -96,4 +96,6 @@ public class GlobalVars extends Application {
     public User getCurrentLoggedInUser() {
         return currentLoggedInUser;
     }
+
+
 }

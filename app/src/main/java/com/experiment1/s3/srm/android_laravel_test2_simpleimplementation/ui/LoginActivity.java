@@ -63,10 +63,22 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
         backgroundTaskHelper = new BackgroundTaskHelper(saveDataHelper ,this);
 
 
-        checkIfLoggedIn(saveDataHelper);
+
+
+
+
 
         globalVars = (GlobalVars) getApplication();
+        globalVars.setIfLoggedIn(saveDataHelper.getIfLoggedIn());
 
+
+        boolean loginCon = saveDataHelper.getIfLoggedIn();
+        if(loginCon == false){
+            checkIfLoggedIn(saveDataHelper);
+        }
+        else{
+            finish();
+        }
 
 
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -94,17 +106,6 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
 
 
 
-
-        if(globalVars.getIsLoginActStdFromSubmit()){
-            stayLocalButton.setVisibility(View.GONE);
-        }
-        else{
-            stayLocalButton.setVisibility(View.VISIBLE);
-
-        }
-
-
-
     }
 
     private void checkIfLoggedIn(SaveDataHelper saveDataHelper) {
@@ -120,8 +121,8 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
             boolean ifRequestFromLoginDialogSubmitActivity = false;
 
              backgroundTaskHelper.loginHelper3(token[0] //token
-                                    , token[1] // token type
-                     ,this, //activity
+                     , token[1] // token type
+                     , this, //activity
                      ifRequestFromLoginDialogSubmitActivity);
 
         }
@@ -190,7 +191,9 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
     protected void onResume() {
         super.onResume();
 
-
+        if(saveDataHelper.getIfLoggedIn() == true){
+            finish();
+        }
     }
 
     public void doStuff(){
@@ -221,10 +224,6 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
                         usernameEditText.getText().toString(),
                         passwordEditText.getText().toString(),
                         this,saveDataHelper,this , false);
-
-
-
-
 
 
 
@@ -412,6 +411,7 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
         super.onDestroy();
         Flags.SAVE_CREDENTIAL_FLAG = false;
     }
+
 
 
 }

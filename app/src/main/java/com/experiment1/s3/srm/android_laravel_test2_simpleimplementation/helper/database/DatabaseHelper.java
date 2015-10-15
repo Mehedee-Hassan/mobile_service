@@ -190,6 +190,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +");");
 
 
+        db.execSQL("CREATE TABLE IF NOT EXISTS"
+                +" general_tab_draft_table" +
+                "(id integer primary key autoincrement"
+                +", permit_id integer "
+                +", project_id integer "
+                +", project_name varchar(255)"
+                +", permit_template_id integer "
+                +", permit_name varchar(255)"
+                +", contractor varchar(255)"
+                +", location varchar(255)"
+                +", work_activity varchar(255)"
+                +", permit_date datetime"
+                +", start_time datetime"
+                +", end_time datetime"
+                +");");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS"
+                +" check_list_tab_draft_table" +
+                "(id integer primary key autoincrement"
+                +", permit_template_details_id int"
+                +", options int"
+                +");");
+
+
 
 
 

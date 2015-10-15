@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
@@ -47,7 +48,7 @@ public class SubmitActivity extends FragmentActivity
 
     public String TAG = this.getClass().getSimpleName();
 
-
+    Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector;
 
     PTWTypeTemplateDBHelper ptwTypeTemplateDBHelper;
     private FragmentTabHost mTabHost;
@@ -63,6 +64,7 @@ public class SubmitActivity extends FragmentActivity
     List<Fragment> fragments;
     public Project currentProject;
     private TextView projectNameTv;
+    SaveDataHelper saveDataHelper;
 
     BackgroundTaskHelper backgroundTaskHelper;
 
@@ -74,6 +76,10 @@ public class SubmitActivity extends FragmentActivity
 
 
         setContentView(R.layout.activity_submit);
+
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
         globalVars = ((GlobalVars) getApplication());
@@ -92,6 +98,7 @@ public class SubmitActivity extends FragmentActivity
 
         setTitle(permitNumber);
 
+         saveDataHelper  = new SaveDataHelper(this);
         ptwTypeTemplateDBHelper = new PTWTypeTemplateDBHelper(this);
         backgroundTaskHelper = new BackgroundTaskHelper(this);
 
@@ -152,7 +159,7 @@ public class SubmitActivity extends FragmentActivity
         pagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
 
         pager.setAdapter(pagerAdapter);
-
+        pager.setOffscreenPageLimit(4);
 
 //        PagerTabStrip stripe = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
 //        stripe.setTextColor(Color.BLACK);
@@ -188,12 +195,17 @@ public class SubmitActivity extends FragmentActivity
         switch (id) {
             case android.R.id.home:
                 finish();
+                return true;
+
+
+              case R.id.action_settings:
+            Intent intent = new Intent(this, SettingActivity.class);
+                  startActivityForResult(intent ,103);
+                  break;
         }
 
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
 
         return super.onOptionsItemSelected(item);
@@ -208,7 +220,7 @@ public class SubmitActivity extends FragmentActivity
             case R.id.submit_button:
 
 
-                Log.d(TAG+" == ", "button clicked");
+                Log.d(TAG + " == ", "button clicked");
 
                 //confirmation dialog
 
@@ -263,7 +275,7 @@ public class SubmitActivity extends FragmentActivity
                 alert.cancel();
 
 
-                Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector = (Tab1GeneralFragmentEventConnector)
+                 tab1GeneralFragmentEventConnector = (Tab1GeneralFragmentEventConnector)
                         globalVars.getSubmitActTab1GenInterface();
 
 
@@ -335,6 +347,30 @@ public class SubmitActivity extends FragmentActivity
 
         backgroundTaskHelper.saveToPermitTable(returnedPermitObject,this);
 
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+
+        handleSavedData();
+    }
+
+    private void handleSavedData() {
+
+        Permit permitObjectFromGeneralTab = tab1GeneralFragmentEventConnector.onSubmitActivityPause();
+        saveDataHelper.setGeneralTabData(permitObjectFromGeneralTab);
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handleSavedData();
 
     }
 
