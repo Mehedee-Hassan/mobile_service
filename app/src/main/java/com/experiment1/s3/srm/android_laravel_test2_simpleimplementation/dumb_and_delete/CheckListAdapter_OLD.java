@@ -94,7 +94,7 @@ public class CheckListAdapter_OLD extends BaseAdapter {
                     viewHolder.no.setSelected(false);
                     Log.d("==", "click na");
 
-                    tempObj.YesOptions = 3;
+                    tempObj.yesOptions = 3;
                 }
                 else{
                     viewHolder.na.setBackgroundColor(Color.GRAY);
@@ -103,7 +103,7 @@ public class CheckListAdapter_OLD extends BaseAdapter {
                     viewHolder.no.setSelected(false);
                     Log.d("==", "click na");
 
-                    tempObj.YesOptions = 1;
+                    tempObj.yesOptions = 1;
                 }
             }
         });
@@ -121,7 +121,7 @@ public class CheckListAdapter_OLD extends BaseAdapter {
 
 
                 Log.d("==", "click no");
-                tempObj.YesOptions = 2;
+                tempObj.yesOptions = 2;
             }
         });
 
@@ -135,7 +135,7 @@ public class CheckListAdapter_OLD extends BaseAdapter {
                 viewHolder.no.setSelected(false);
                 Log.d("==","click yes");
 
-                tempObj.YesOptions = 1;
+                tempObj.yesOptions = 1;
             }
         });
 

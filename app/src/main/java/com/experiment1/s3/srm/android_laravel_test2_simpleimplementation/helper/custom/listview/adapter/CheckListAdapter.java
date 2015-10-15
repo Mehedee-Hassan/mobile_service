@@ -55,7 +55,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
             //=== setup back color by selection
 
-            if(checkListValues.get(position).YesOptions != 1)
+            if(checkListValues.get(position).yesOptions != 1)
             checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
             //=================================
 
@@ -74,7 +74,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 
 //                    if(!checkListViewHolder.yes.isSelected()) {
-                    if(checkList.YesOptions == 1) {
+                    if(checkList.yesOptions == 1) {
                         checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
                         checkListViewHolder.no.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.na.setBackgroundColor(Color.WHITE);
@@ -110,7 +110,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                     checkList.setYesOptions(2); //2 = no
 
 //                    if(!checkListViewHolder.no.isSelected()) {
-                    if(checkList.YesOptions == 2) {
+                    if(checkList.yesOptions == 2) {
                         checkListViewHolder.no.setBackgroundColor(Color.RED);
                         checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.na.setBackgroundColor(Color.WHITE);
@@ -141,7 +141,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                     CheckList checkList  = (CheckList) checkListViewHolder.na.getTag();
                     checkList.setYesOptions(3); //3 = na
 //                    if(!checkListViewHolder.na.isSelected()) {
-                    if(checkList.YesOptions == 3) {
+                    if(checkList.yesOptions == 3) {
                         checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
                         checkListViewHolder.no.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
@@ -191,7 +191,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
         checkListViewHolder1.questionIdTv.setText(""+checkListValues.get(position).id);
 
 
-        Log.d("YesOption", " == " + checkListValues.get(position).YesOptions);
+        Log.d("YesOption", " == " + checkListValues.get(position).yesOptions);
 
 
 

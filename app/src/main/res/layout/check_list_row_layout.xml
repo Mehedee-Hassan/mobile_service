@@ -7,7 +7,8 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5">
+        android:layout_weight="5"
+        >
 
         <TextView
             android:layout_width="fill_parent"
@@ -20,6 +21,8 @@
             android:gravity="center"
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
+            android:background="@drawable/right_border_shape"
+
             />
 
         <TextView
@@ -40,7 +43,9 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:layout_marginBottom="2dip">
 
         <ImageButton
             android:layout_width="fill_parent"

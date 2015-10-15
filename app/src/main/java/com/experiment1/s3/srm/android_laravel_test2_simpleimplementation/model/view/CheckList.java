@@ -5,18 +5,19 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.
  */
 public class CheckList {
 
-    public int YesOptions;
+    public int yesOptions;
     public int id;
     public String question;
+    public int checkListTemplateDetailsId;
 
 
     public CheckList(){
-        YesOptions = 0;
+        yesOptions = 0;
     }
 
 
     public CheckList(int id , String q){
-        YesOptions = 0;
+        yesOptions = 0;
         this.id = id;
         this.question = q;
 
@@ -29,7 +30,7 @@ public class CheckList {
 //        2 = no
 //        3 = na
 
-        this.YesOptions = option;
+        this.yesOptions = option;
 
     }
 

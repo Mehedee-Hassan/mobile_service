@@ -95,8 +95,8 @@
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="sqlite-jdbc-3.8.7" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.1.0" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.1.0" level="project" />
     <orderEntry type="library" exported="" name="sqlite-analyzer-0.3.2" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />

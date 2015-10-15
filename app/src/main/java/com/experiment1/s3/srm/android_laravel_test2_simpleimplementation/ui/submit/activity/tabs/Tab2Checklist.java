@@ -87,6 +87,7 @@ public class Tab2Checklist extends Fragment {
 
         CheckListAdapter adapter = new CheckListAdapter(getActivity() , checkLists);
 
+
         Log.d("tab2 ==", "oncreateView 4");
 
         listViw = (ListView) view.findViewById(R.id.checklist_tab2_listView);
@@ -94,6 +95,7 @@ public class Tab2Checklist extends Fragment {
         Log.d("tab2 ==", "oncreateView 5");
 
         listViw.setAdapter(adapter);
+
 
 
         Log.d("tab2 ==", "oncreateView 7");

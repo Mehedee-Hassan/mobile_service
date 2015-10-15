@@ -211,6 +211,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(id integer primary key autoincrement"
                 +", permit_template_details_id int"
                 +", options int"
+                +", FOREIGN KEY (permit_template_details_id) REFERENCES permit_details(id)"
                 +");");
 
 
