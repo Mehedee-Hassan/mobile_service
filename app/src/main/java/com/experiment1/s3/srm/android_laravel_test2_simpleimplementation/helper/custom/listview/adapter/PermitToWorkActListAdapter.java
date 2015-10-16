@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.PTWForView;
 
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.List;
 public class PermitToWorkActListAdapter extends BaseAdapter {
 
     private Activity context;
-    private List<PTWForView> list;
+    private List<Permit> list;
     private LayoutInflater layoutInflater = null;
 
 
-    public PermitToWorkActListAdapter(Activity context, List<PTWForView> list){
+    public PermitToWorkActListAdapter(Activity context, List<Permit> list){
 
         this.context = context;
         this.list = list;
@@ -71,11 +72,11 @@ public class PermitToWorkActListAdapter extends BaseAdapter {
         }
 
 
-        PTWForView tempObj = list.get(position);
-        viewHolder.rowTextTitle.setText(tempObj.rowTextTitle);
-        viewHolder.rowTextDescription.setText(tempObj.rowTextDescription);
-        viewHolder.rowTextLocation.setText(tempObj.rowTextLocation);
-        viewHolder.rowTextTime.setText(tempObj.rowTextTime);
+        Permit tempObj = list.get(position);
+        viewHolder.rowTextTitle.setText(tempObj.auto_gen_permit_no);
+        viewHolder.rowTextDescription.setText(tempObj.work_activity);
+        viewHolder.rowTextLocation.setText(tempObj.location);
+        viewHolder.rowTextTime.setText(tempObj.start_time+" - "+tempObj.end_time);
 
 
 

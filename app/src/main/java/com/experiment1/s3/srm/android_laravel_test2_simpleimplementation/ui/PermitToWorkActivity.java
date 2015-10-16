@@ -23,12 +23,12 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.PermitToWorkActListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.PTWForView;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +46,7 @@ implements View.OnClickListener, OnItemClickListener {
 
     Dialog dialog ;
     Button newPermitButton;
-    PTWTypeTemplateDBHelper ptwTypeTemplateDBHelper;
+    PermitDBHelper ptwTypeTemplateDBHelper;
     List<String> listOfPtwTypes;
     ProjectActivityListViewAdapter ptwTypeListDialogAdapter;
     ListView dialogListView;
@@ -79,7 +79,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
         newPermitButton = (Button) findViewById(R.id.new_permit_button);
-        ptwTypeTemplateDBHelper = new PTWTypeTemplateDBHelper(this);
+        ptwTypeTemplateDBHelper = new PermitDBHelper(this);
         newPermitButton.setOnClickListener(this);
 
         //dialogListView = (ListView) findViewById(R.id.permitToWorkDialoglistView);
@@ -94,6 +94,7 @@ implements View.OnClickListener, OnItemClickListener {
         submitActDraftDBHelper = new SubmitActDraftDBHelper(this);
         globalVars = (GlobalVars) getApplication();
 
+        permitListViewSetup(1);
     }
 
     private void handleDialog() {
@@ -300,30 +301,40 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-    private void setPtwTypeDetailInListView(int item) {
+    private void permitListViewSetup(int item) {
 
 
 
-        List<PTW> list = ptwTypeTemplateDBHelper.getListOfDetailsPtw(item);
+
+        List<Permit> list = ptwTypeTemplateDBHelper.getListOfPermitSaved();
 
 
-        List<PTWForView> ptwForViews = new ArrayList<>();
-        PTWForView ptwForView ;
+        List<Permit> ptwForViews = new ArrayList<>();
+        Permit permitForView ;
 
-        for(PTW ptw :list){
+        for(Permit permit :list){
+
+            String[] dateTimeSplitStart;
+            String[] dateTimeSplitEnd;
+            if(permit.start_time !=null) {
+                dateTimeSplitStart = permit.start_time.split("\\ ");
+                dateTimeSplitEnd = permit.end_time.split("\\ ");
+            }
+
+            else {
+                    dateTimeSplitStart = new String[]{"",""};
+                    dateTimeSplitEnd = new String[]{"",""};
+            }
+
+            permitForView = new Permit();
+            permitForView.auto_gen_permit_no = ""+permit.auto_gen_permit_no;
+            permitForView.work_activity = permit.work_activity;
+            permitForView.location = permit.location;
+            permitForView.start_time = dateTimeSplitStart[1];
+            permitForView.end_time =  dateTimeSplitEnd[1];
 
 
-            String[] dateTimeSplitStart = ptw.startTime.split("\\ ");
-            String[] dateTimeSplitEnd = ptw.endTime.split("\\ ");
-
-            ptwForView = new PTWForView();
-            ptwForView.rowTextTitle = ""+ptw.id;
-            ptwForView.rowTextDescription = ptw.workDescription;
-            ptwForView.rowTextLocation = ptw.location;
-            ptwForView.rowTextTime = dateTimeSplitStart[1] + " "+ dateTimeSplitEnd[1];
-
-
-            ptwForViews.add(ptwForView);
+            ptwForViews.add(permitForView);
         }
 
 

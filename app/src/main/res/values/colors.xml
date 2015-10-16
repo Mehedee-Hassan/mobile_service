@@ -6,4 +6,5 @@
     <color name="orange_custom">#FFA319</color>
     <color name="green_custom">#19E819</color>
     <color name="black">#000000</color>
+    <color name="custom_red">#FF5858</color>
 </resources>

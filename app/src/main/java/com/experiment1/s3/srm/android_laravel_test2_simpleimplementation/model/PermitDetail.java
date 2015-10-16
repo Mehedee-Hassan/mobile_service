@@ -5,13 +5,13 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model;
  */
 public class PermitDetail {
 
-    int id;
-    String question;
-    String extra_text;
-    String status;
-    int permit_id;
-    int allowed_text;
-    int sno;
+    public int id;
+    public String question;
+    public String extra_text;
+    public String status;
+    public int permit_id;
+    public int allowed_text;
+    public int sno;
 
 
 

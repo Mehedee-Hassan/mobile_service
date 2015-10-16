@@ -26,7 +26,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
@@ -50,7 +50,7 @@ public class SubmitActivity extends FragmentActivity
 
     Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector;
 
-    PTWTypeTemplateDBHelper ptwTypeTemplateDBHelper;
+    PermitDBHelper ptwTypeTemplateDBHelper;
     private FragmentTabHost mTabHost;
     Button submitButton;
     GlobalVars globalVars;
@@ -99,7 +99,7 @@ public class SubmitActivity extends FragmentActivity
         setTitle(permitNumber);
 
          saveDataHelper  = new SaveDataHelper(this);
-        ptwTypeTemplateDBHelper = new PTWTypeTemplateDBHelper(this);
+        ptwTypeTemplateDBHelper = new PermitDBHelper(this);
         backgroundTaskHelper = new BackgroundTaskHelper(this);
 
         initComponent();
@@ -134,7 +134,7 @@ public class SubmitActivity extends FragmentActivity
         submitButton = (Button) findViewById(R.id.submit_button);
 
         submitButton.setOnClickListener(this);
-        ptwTypeTemplateDBHelper = new PTWTypeTemplateDBHelper(this);
+        ptwTypeTemplateDBHelper = new PermitDBHelper(this);
 
         projectNameTv = (TextView) findViewById(R.id.ptw_type_name_textView);
 

@@ -359,8 +359,13 @@ public class ProjectActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-            CurrentVars.PROJECT = new Project(databaseHelper.getProjectAt(pos));
+            Project project = new Project(databaseHelper.getProjectAt(pos));
 
+            //todo change curretn vars
+            CurrentVars.PROJECT =project;
+
+
+            ((GlobalVars)getApplication()).setProject(project);
             Intent intent = new Intent(ProjectActivity.this , PermitToWorkActivity.class);
             startActivity(intent);
         }

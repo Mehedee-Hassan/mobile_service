@@ -49,7 +49,7 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
 
             permitTemplateDetails1.question = cr.getString(cr.getColumnIndexOrThrow("question"));
             permitTemplateDetails1.extraText = cr.getString(cr.getColumnIndexOrThrow("extra_text"));
-            permitTemplateDetails1.id = cr.getInt(cr.getColumnIndexOrThrow("id"));
+            permitTemplateDetails1.id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
             permitTemplateDetails1.sno = cr.getInt(cr.getColumnIndexOrThrow("sno"));
 
 

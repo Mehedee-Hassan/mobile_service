@@ -42,15 +42,18 @@ public class Tab3Team extends Fragment {
         this.container = container;
 
 
-        userButton = (Button) view.findViewById(R.id.user_button);
-        userButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showDialog();
-                    }
-                }
-        );
+
+        //todo in next face of the app
+        //todo uncomment and use
+//        userButton = (Button) view.findViewById(R.id.user_button);
+//        userButton.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        showDialog();
+//                    }
+//                }
+//        );
 
 
         return view;
