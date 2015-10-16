@@ -85,8 +85,11 @@ public class SubmitActivity extends FragmentActivity
         globalVars = ((GlobalVars) getApplication());
 
         Bundle extras = getIntent().getExtras();
-        currentProject = new Project((Project) extras.getParcelable("CURRENT_PROJECT_OBJECT"));
-        int permitTemplateItemAt = extras.getInt("list_position");
+        currentProject = globalVars.getProject();
+
+//old logic
+        //new Project((Project) extras.getParcelable("CURRENT_PROJECT_OBJECT"));
+//        int permitTemplateItemAt = extras.getInt("list_position");
 
 
 
@@ -343,7 +346,7 @@ public class SubmitActivity extends FragmentActivity
 
 
 
-//        ptwTypeTemplateDBHelper.saveToPermitTabel(returnedPermitObject);
+//        permitDBHelper.saveToPermitTabel(returnedPermitObject);
 
         backgroundTaskHelper.saveToPermitTable(returnedPermitObject,this);
 

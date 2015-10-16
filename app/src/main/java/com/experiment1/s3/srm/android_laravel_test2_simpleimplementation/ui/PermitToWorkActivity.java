@@ -25,7 +25,6 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
@@ -46,14 +45,17 @@ implements View.OnClickListener, OnItemClickListener {
 
     Dialog dialog ;
     Button newPermitButton;
-    PermitDBHelper ptwTypeTemplateDBHelper;
+    PermitDBHelper permitDBHelper;
     List<String> listOfPtwTypes;
-    ProjectActivityListViewAdapter ptwTypeListDialogAdapter;
+//    ProjectActivityListViewAdapter ptwTypeListDialogAdapter;
     ListView dialogListView;
     ListView ptwListview;
     Project CurretnProject;
     PermitToWorkActListAdapter customAdapter;
     GlobalVars globalVars;
+
+
+    //todo change db helper
     SubmitActDraftDBHelper submitActDraftDBHelper;
 
 
@@ -79,7 +81,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
         newPermitButton = (Button) findViewById(R.id.new_permit_button);
-        ptwTypeTemplateDBHelper = new PermitDBHelper(this);
+        permitDBHelper = new PermitDBHelper(this);
         newPermitButton.setOnClickListener(this);
 
         //dialogListView = (ListView) findViewById(R.id.permitToWorkDialoglistView);
@@ -122,7 +124,7 @@ implements View.OnClickListener, OnItemClickListener {
 
             case R.id.action_settings:
                 Intent intent = new Intent(this ,SettingActivity.class);
-                startActivityForResult(intent ,102);
+                startActivityForResult(intent, 102);
                 break;
 
             case android.R.id.home:
@@ -154,7 +156,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-                temp= ptwTypeTemplateDBHelper.getPtwTypeList();
+                temp= permitDBHelper.getPtwTypeList();
 
                 Log.d("== PermitToWorkActivity", "temp size" + temp.size());
 
@@ -175,7 +177,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
                         //todo change CurrentVar to GlobalVars
-                        PermitTemplate permitTemplate = ptwTypeTemplateDBHelper.getPTWTypeAt(item);
+                        PermitTemplate permitTemplate = permitDBHelper.getPTWTypeAt(item);
 
 
                         //
@@ -183,17 +185,19 @@ implements View.OnClickListener, OnItemClickListener {
                         //find permit details
 
                         ((GlobalVars) getApplication()).currentPermitTemplateId = permitTemplate.id;
-
                         ((GlobalVars) getApplication()).setPermitTemplate(permitTemplate);
+                        ((GlobalVars) getApplication()).setProject(CurretnProject);
 
 
 
 
 
-                        CurrentVars.PROJECT = CurretnProject;
                         Intent intent= new Intent(PermitToWorkActivity.this, SubmitActivity.class);
-                        intent.putExtra("CURRENT_PROJECT_OBJECT", CurretnProject);
-                        intent.putExtra("list_position",item);
+
+
+//old logic
+//                        intent.putExtra("CURRENT_PROJECT_OBJECT", CurretnProject);
+//                        intent.putExtra("list_position",item);
 
 
                         String permitNumber = generatePermitNumber();
@@ -208,8 +212,8 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-
-                        savePermitDraftHandler(permitTemplate ,permitNumber);
+                            //todo uncomment testing purpose close
+//                        savePermitDraftHandler(permitTemplate ,permitNumber);
 
 
 
@@ -235,6 +239,8 @@ implements View.OnClickListener, OnItemClickListener {
 
        Project project = globalVars.getProject();
 
+
+        //permit draft saved
        submitActDraftDBHelper.currentStateIsDraftedInDB(permitTemplate ,project,permitNumber);
 
 
@@ -294,10 +300,7 @@ implements View.OnClickListener, OnItemClickListener {
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-    }
 
 
 
@@ -306,7 +309,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-        List<Permit> list = ptwTypeTemplateDBHelper.getListOfPermitSaved();
+        List<Permit> list = permitDBHelper.getListOfPermitSaved();
 
 
         List<Permit> ptwForViews = new ArrayList<>();
@@ -347,4 +350,25 @@ implements View.OnClickListener, OnItemClickListener {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        permitListViewSetup(1);
+    }
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+        String permitNumber = permitDBHelper.getPermitDraftAt(position);
+
+        Intent intent = new Intent(PermitToWorkActivity.this ,SubmitActivity.class);
+        intent.putExtra("permit_number", permitNumber);
+
+        startActivity(intent);
+
+
+    }
 }

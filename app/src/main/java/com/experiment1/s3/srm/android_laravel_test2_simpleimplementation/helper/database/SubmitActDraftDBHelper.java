@@ -188,7 +188,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cr = db.rawQuery("SELECT Count(*) FROM " +
                 "check_list_tab_draft_table"
-                ,null);
+                , null);
 
 
         cr.moveToFirst();
@@ -242,5 +242,12 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
        long rowId =  db.insert("permit", null, contentValues);
 
         return  rowId;
+    }
+
+
+    public String getPermitDraftAt(int position) {
+
+
+        return null;
     }
 }

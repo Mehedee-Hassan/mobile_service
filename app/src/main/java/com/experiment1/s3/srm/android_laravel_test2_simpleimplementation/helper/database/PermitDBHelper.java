@@ -215,4 +215,12 @@ public class PermitDBHelper extends DatabaseHelper {
     }
 
 
+    public String getPermitDraftAt(int position) {
+
+
+        Permit permit = savedPermtiList.get(position);
+
+        return permit.auto_gen_permit_no;
+
+    }
 }
