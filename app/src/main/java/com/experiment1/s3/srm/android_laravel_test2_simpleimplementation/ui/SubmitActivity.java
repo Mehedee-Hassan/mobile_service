@@ -28,7 +28,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTWType;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
@@ -56,7 +56,7 @@ public class SubmitActivity extends FragmentActivity
     GlobalVars globalVars;
     private ViewPager pager;
     private CustomPagerAdapter pagerAdapter;
-    PTWType permitTemplate;
+    PermitTemplate permitTemplate;
     EditText projectNameEt, subContractorNameTe3,
             locationEt4, descriptionWorkEt5, dateEt6, startEt7, endEt8;
     private TextView ptwTypeNameTextView;

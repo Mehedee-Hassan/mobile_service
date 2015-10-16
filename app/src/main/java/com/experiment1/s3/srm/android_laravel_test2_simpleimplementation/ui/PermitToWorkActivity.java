@@ -24,14 +24,16 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.PermitToWorkActListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PTWTypeTemplateDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTWType;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.PTWForView;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 //import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ implements View.OnClickListener, OnItemClickListener {
     Project CurretnProject;
     PermitToWorkActListAdapter customAdapter;
     GlobalVars globalVars;
+    SubmitActDraftDBHelper submitActDraftDBHelper;
 
 
 
@@ -87,6 +90,8 @@ implements View.OnClickListener, OnItemClickListener {
         listOfPtwTypes = new ArrayList<>();
 
 
+
+        submitActDraftDBHelper = new SubmitActDraftDBHelper(this);
         globalVars = (GlobalVars) getApplication();
 
     }
@@ -169,19 +174,16 @@ implements View.OnClickListener, OnItemClickListener {
 
 
                         //todo change CurrentVar to GlobalVars
-
-//                        CurrentVars.PTWTYPE_TEMPLATE
-
-                        PTWType ptwType= ptwTypeTemplateDBHelper.getPTWTypeAt(item);
+                        PermitTemplate permitTemplate = ptwTypeTemplateDBHelper.getPTWTypeAt(item);
 
 
                         //
                         //set permit_template id for question
                         //find permit details
 
-                        ((GlobalVars) getApplication()).currentPermitTemplateId = ptwType.id;
+                        ((GlobalVars) getApplication()).currentPermitTemplateId = permitTemplate.id;
 
-                        ((GlobalVars) getApplication()).setPermitTemplate(ptwType);
+                        ((GlobalVars) getApplication()).setPermitTemplate(permitTemplate);
 
 
 
@@ -194,16 +196,23 @@ implements View.OnClickListener, OnItemClickListener {
 
 
                         String permitNumber = generatePermitNumber();
-                        intent.putExtra("permit_number",permitNumber);
+                        intent.putExtra("permit_number", permitNumber);
 
 
 
 
                         Toast.makeText(PermitToWorkActivity.this, "permit number generated:\n"+permitNumber+"" , Toast.LENGTH_LONG).show();
-
                         Log.d("==", permitNumber);
-
                         startActivity(intent);
+
+
+
+
+                        savePermitDraftHandler(permitTemplate ,permitNumber);
+
+
+
+
 
                     }
                 });
@@ -219,41 +228,61 @@ implements View.OnClickListener, OnItemClickListener {
     }
 
 
+
+    private void savePermitDraftHandler(PermitTemplate permitTemplate, String permitNumber) {
+
+
+       Project project = globalVars.getProject();
+
+       submitActDraftDBHelper.currentStateIsDraftedInDB(permitTemplate ,project,permitNumber);
+
+
+        return ;
+    }
+
+
     public String generatePermitNumber(){
 
         String permitNUmber = "";
 
 
-        Calendar c = Calendar.getInstance();
-        int yyyy = c.get(Calendar.YEAR);
-        int mm = c.get(Calendar.MONTH);
-        int dd = c.get(Calendar.DAY_OF_MONTH);
+        Date d = new Date();
+        SimpleDateFormat dateFormatHour = new SimpleDateFormat("HH");
+        SimpleDateFormat dateFormatMin = new SimpleDateFormat("mm");
+        SimpleDateFormat dateFormatSec = new SimpleDateFormat("ss");
+
+        int sum = 0 ;
+        sum += Integer.parseInt(dateFormatHour.format(d).toString())*3600;
+        sum += Integer.parseInt(dateFormatMin.format(d).toString())*60;
+        sum += Integer.parseInt(dateFormatSec.format(d).toString());
+
+
+
+
+        SimpleDateFormat dateFormatY = new SimpleDateFormat("yyyy");
+        SimpleDateFormat dateFormatM = new SimpleDateFormat("MM");
+        SimpleDateFormat dateFormatd = new SimpleDateFormat("dd");
+
+
+        int yyyy =  Integer.parseInt(dateFormatY.format(d).toString());
+        int mm =  Integer.parseInt(dateFormatM.format(d).toString());
+        int dd =  Integer.parseInt(dateFormatd.format(d).toString());
 
         String username = Constants.username.substring(0, 2);
-        int tt = c.get(Calendar.SECOND);
 
 
 
-        //todo correction needed
-        // calender.MINUTE not working properly
-        //have to check in real device
-        //constant value = 12
-        //if(Constants.APPLICATION_TEST_MODE == false)
+
+
 
 
         if(true)
         {
-            permitNUmber += yyyy + "" + (mm < 10 ? "0" + mm : mm)
-                    + "" + (dd < 10 ? "0" + dd : dd)
+            permitNUmber += yyyy
+                    + "" + mm
+                    + "" + dd
                     + "" + username.toUpperCase()
-                    + ((int) (tt + ((int)(3600 * Calendar.HOUR_OF_DAY)) + ((int)(60 * Calendar.MINUTE))));
-
-        }
-        else{
-            permitNUmber += yyyy+""+( mm <10 ? "0"+mm : mm)
-                    +""+(dd<10 ? "0"+dd : dd )
-                    +""+username
-                    +((tt ))+" "+ ((( Calendar.HOUR_OF_DAY))) +" "+(((60*Calendar.MINUTE)));
+                    + sum;
 
         }
 

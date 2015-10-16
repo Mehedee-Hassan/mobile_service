@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
 import java.util.ArrayList;
@@ -205,6 +207,40 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
     }
 
 
+//    dummy
+
+    public void currentStateIsDraftedInDB(PermitTemplate permitTemplate, Project project, String permitNumber) {
 
 
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        long permit_id = insertIntoPermiTable(permitTemplate, project, permitNumber, db);
+
+
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("permit_id" ,permit_id);
+        contentValues.put("status" ,"draft");
+
+        db.insert("permit_details",null ,contentValues);
+
+
+    }
+
+
+
+    private long insertIntoPermiTable(PermitTemplate permitTemplate, Project project, String permitNumber, SQLiteDatabase db) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("project_id" ,project.id);
+        contentValues.put("permit_no"  ,permitNumber);
+        contentValues.put("project_name"  ,project.name);
+        contentValues.put("permit_template_id", permitTemplate.id);
+        contentValues.put("permit_name", permitTemplate.name);
+
+       long rowId =  db.insert("permit", null, contentValues);
+
+        return  rowId;
+    }
 }

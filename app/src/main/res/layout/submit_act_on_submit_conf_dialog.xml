@@ -27,25 +27,28 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ok"
+            android:text="OK"
             android:id="@+id/ok_button"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:layout_weight="50"
             android:background="@color/green_custom"
-            android:layout_margin="3dip"
+            android:layout_margin="5dip"
+            android:textColor="@color/white"
+
             />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cancel"
+            android:text="CANCEL"
             android:id="@+id/cancel_button"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:layout_weight="50"
             android:background="@color/orange_custom"
-            android:layout_margin="3dip"
+            android:layout_margin="5dip"
+            android:textColor="@color/white"
 
             />
     </LinearLayout>

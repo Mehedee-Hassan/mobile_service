@@ -135,8 +135,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" permit" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", permit_id integer "
+                +", permit_no integer "
                 +", project_id integer "
                 +", project_name varchar(255)"
                 +", permit_template_id integer "
@@ -162,10 +163,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" permit_details" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", question varchar(255)"
                 +", extra_text varchar(50)"
                 +", status varchar(5)"
+                +", allowed_text integer "
                 +", permit_id integer "
                 +", FOREIGN KEY(permit_id) REFERENCES permits(id)"
                 +");");
@@ -173,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" permit_template_details" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", question varchar(255)"
                 +", extra_text integer"
                 +", sno integer "
@@ -184,7 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" permit_templates" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", name varchar(50)"
                 +", company_id integer"
                 +");");
@@ -192,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" general_tab_draft_table" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", permit_id integer "
                 +", project_id integer "
                 +", project_name varchar(255)"
@@ -208,7 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" check_list_tab_draft_table" +
-                "(id integer primary key autoincrement"
+                "(_id integer primary key autoincrement"
                 +", permit_template_details_id int"
                 +", options int"
                 +", FOREIGN KEY (permit_template_details_id) REFERENCES permit_details(id)"

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTWType;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
-    List<PTWType> ptwTypeItems;
+    List<PermitTemplate> permitTemplateItems;
     private List<PTW> listOfDetailsPtw;
     List<String> ptwTypeNames;
     SQLiteDatabase db ;//= this.getWritableDatabase();
@@ -30,7 +30,7 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
 
         this.db = this.getWritableDatabase();
-        ptwTypeItems = new ArrayList<PTWType>();
+        permitTemplateItems = new ArrayList<PermitTemplate>();
     }
 
 
@@ -49,9 +49,9 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
         ptwTypeNames.clear();
 
-        for(PTWType ptwType : ptwTypeItems){
+        for(PermitTemplate permitTemplate : permitTemplateItems){
 
-            ptwTypeNames.add(ptwType.name);
+            ptwTypeNames.add(permitTemplate.name);
         }
 
         Log.d("==" + PTWTypeTemplateDBHelper.class.toString(), "getlist end");
@@ -82,22 +82,22 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
 
 //        if(cr.getCount() != 0)
-        ptwTypeItems.clear();
+        permitTemplateItems.clear();
         while(!cr.isAfterLast()){
 
 
 
-            PTWType ptwType  = new PTWType();
-            ptwType.name = cr.getString(cr.getColumnIndexOrThrow("name"));
-            ptwType.id = cr.getInt(cr.getColumnIndexOrThrow("id"));
-            ptwType.company_id = cr.getInt(cr.getColumnIndexOrThrow("company_id"));
+            PermitTemplate permitTemplate = new PermitTemplate();
+            permitTemplate.name = cr.getString(cr.getColumnIndexOrThrow("name"));
+            permitTemplate.id = cr.getInt(cr.getColumnIndexOrThrow("id"));
+            permitTemplate.company_id = cr.getInt(cr.getColumnIndexOrThrow("company_id"));
 
 
-            Log.d("==PTWTypeTemplateDBHel" , ""+ptwType.name);
+            Log.d("==PTWTypeTemplateDBHel" , ""+ permitTemplate.name);
 
 
             cr.moveToNext();
-            ptwTypeItems.add(ptwType);
+            permitTemplateItems.add(permitTemplate);
 
         }
         Log.d("==" + PTWTypeTemplateDBHelper.class.toString(), "getObject end");
@@ -116,7 +116,7 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
     public void getDetailsPermitToWorkTypeAt(int i) {
 
-        PTWType ptwType  = ptwTypeItems.get(i);
+        PermitTemplate permitTemplate = permitTemplateItems.get(i);
 
         return ;
 
@@ -126,11 +126,11 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
 
 
-        PTWType ptwType = ptwTypeItems.get(position);
+        PermitTemplate permitTemplate = permitTemplateItems.get(position);
 
-        Log.d("==getListOfDetailsPtw()" , ""+ptwType.name);
+        Log.d("==getListOfDetailsPtw()" , ""+ permitTemplate.name);
 
-        int ptwTypeId = ptwType.id;
+        int ptwTypeId = permitTemplate.id;
 
         PTWDatabaseHelper ptwDatabaseHelper = new PTWDatabaseHelper(context);
         List<PTW> ptwlist = ptwDatabaseHelper.getListOfSamePTWType(ptwTypeId);
@@ -142,9 +142,9 @@ public class PTWTypeTemplateDBHelper extends DatabaseHelper {
 
 
 
-    public PTWType getPTWTypeAt(int pos) {
+    public PermitTemplate getPTWTypeAt(int pos) {
 
-        return ptwTypeItems.get(pos);
+        return permitTemplateItems.get(pos);
 
     }
 }
