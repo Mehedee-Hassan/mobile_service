@@ -42,10 +42,11 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         contentValues.put("work_activity" ,generalTabDataAsPermit.work_activity);
         contentValues.put("permit_date" ,generalTabDataAsPermit.permit_date);
         contentValues.put("start_time" ,generalTabDataAsPermit.start_time);
-        contentValues.put("end_time" ,generalTabDataAsPermit.end_time);
+        contentValues.put("end_time", generalTabDataAsPermit.end_time);
 
 
-        db.insert("general_tab_draft_table",null ,contentValues);
+        db.insert("general_tab_draft_table", null, contentValues);
+
 
 
 //        +", permit_id integer "
@@ -74,6 +75,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
             contentValues.put("permit_template_details_id", checkListObject.checkListTemplateDetailsId);
             db.insert("check_list_tab_draft_table",null ,contentValues);
         }
+
 
 
     }
@@ -113,6 +115,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         db.rawQuery("DELETE FROM " +
                 "general_tab_draft_table",null);
 
+        cr.close();
 
         return permitForGEneratlTab;
     }
@@ -147,8 +150,58 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
                 "check_list_tab_draft_table"
                 ,null);
 
+        cr.close();
 
         return returnList;
+    }
+
+
+
+    public boolean checkIfDraftGeneralIsEmpty(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cr = db.rawQuery("SELECT Count(*) FROM " +
+                "general_tab_draft_table"
+                ,null);
+
+
+        cr.moveToFirst();
+
+
+        int count = cr.getInt(0);
+        if( count > 0){
+
+            cr.close();
+            return false;
+        }
+
+        cr.close();
+
+        return true;
+    }
+
+
+    public boolean checkIfDraftCheckListIsEmpty(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cr = db.rawQuery("SELECT Count(*) FROM " +
+                "check_list_tab_draft_table"
+                ,null);
+
+
+        cr.moveToFirst();
+
+
+        int count = cr.getInt(0);
+        if( count > 0){
+
+            cr.close();
+            return false;
+        }
+
+        cr.close();
+
+        return true;
     }
 
 

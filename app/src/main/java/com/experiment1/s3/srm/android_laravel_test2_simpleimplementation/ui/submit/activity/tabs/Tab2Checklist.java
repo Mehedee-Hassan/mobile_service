@@ -17,6 +17,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDetailsDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
@@ -33,6 +34,8 @@ public class Tab2Checklist extends Fragment {
     PermitTemplateDetailsDBHelper permitTemplateDetailsDBHelper;
     ListView listViw;
     Context context;
+    SubmitActDraftDBHelper databaseHelper;
+
 
 
     @Override
@@ -45,6 +48,10 @@ public class Tab2Checklist extends Fragment {
         permitTemplateDetailsDBHelper = new PermitTemplateDetailsDBHelper(getActivity());
 
         Log.d("tab2 ==", "oncreate 2");
+
+        databaseHelper = new SubmitActDraftDBHelper(getActivity());
+
+
 
 
 

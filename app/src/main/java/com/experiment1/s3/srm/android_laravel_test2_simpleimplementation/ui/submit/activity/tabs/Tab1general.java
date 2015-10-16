@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.GeneralTabSubmitAct;
@@ -42,6 +43,8 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
     GlobalVars globalVars;
 
 
+    SubmitActDraftDBHelper databaseHelper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -52,6 +55,9 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
         globalVars = (GlobalVars) getActivity().getApplication();
         globalVars.setSubmitActTab1GenInterface(this);
+
+        databaseHelper  = new SubmitActDraftDBHelper(context);
+
     }
 
     @Nullable
@@ -134,5 +140,15 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
     @Override
     public Permit onSubmitActivityPause() {
         return createPermitObjectFromFields();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+
+        databaseHelper.saveGeneralTabData(createPermitObjectFromFields());
+
     }
 }

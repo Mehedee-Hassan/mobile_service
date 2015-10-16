@@ -245,7 +245,7 @@ implements View.OnClickListener, OnItemClickListener {
         {
             permitNUmber += yyyy + "" + (mm < 10 ? "0" + mm : mm)
                     + "" + (dd < 10 ? "0" + dd : dd)
-                    + "" + username
+                    + "" + username.toUpperCase()
                     + ((int) (tt + ((int)(3600 * Calendar.HOUR_OF_DAY)) + ((int)(60 * Calendar.MINUTE))));
 
         }

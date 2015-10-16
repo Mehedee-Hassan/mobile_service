@@ -361,8 +361,8 @@ public class SubmitActivity extends FragmentActivity
 
     private void handleSavedData() {
 
-        Permit permitObjectFromGeneralTab = tab1GeneralFragmentEventConnector.onSubmitActivityPause();
-        saveDataHelper.setGeneralTabData(permitObjectFromGeneralTab);
+//        Permit permitObjectFromGeneralTab = tab1GeneralFragmentEventConnector.onSubmitActivityPause();
+ //       saveDataHelper.setGeneralTabData(permitObjectFromGeneralTab);
 
     }
 

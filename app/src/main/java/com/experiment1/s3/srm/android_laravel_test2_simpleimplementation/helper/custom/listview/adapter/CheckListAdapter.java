@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
 import java.util.List;
@@ -21,7 +22,10 @@ import java.util.List;
 public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
     private final List<CheckList> checkListValues;
+    private List<CheckList> savedCheckListDraft;
     private final Activity context;
+    SubmitActDraftDBHelper draftDBHelper;
+    boolean draftIsEmptye;
 
     public CheckListAdapter(Activity context, List<CheckList> values) {
         super(context, R.layout.check_list_row_layout ,values);
@@ -30,6 +34,17 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
         this.checkListValues = values;
         this.context = context;
 
+
+       draftDBHelper = new SubmitActDraftDBHelper(context);
+        if(draftDBHelper.checkIfDraftCheckListIsEmpty() == false){
+
+            savedCheckListDraft = draftDBHelper.getCheckListTabData();
+            draftIsEmptye = false;
+        }else{
+            draftIsEmptye = true;
+        }
+
+
     }
 
 
@@ -37,6 +52,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final CheckListViewHolder checkListViewHolder = new CheckListViewHolder();;
         View rowView;
+
+
+
 
         if(convertView == null){
 
@@ -52,16 +70,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
             checkListViewHolder.na = (ImageButton) rowView.findViewById(R.id.na_imageButton);
 
 
-
-            //=== setup back color by selection
-
-            if(checkListValues.get(position).yesOptions != 1)
-            checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
-            //=================================
-
-
-
-
+            extractDraftIfExesits(position, checkListViewHolder);
 
 
             checkListViewHolder.yes.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +190,8 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
             ((CheckListViewHolder)rowView.getTag()).no.setTag(checkListValues.get(position));
             ((CheckListViewHolder)rowView.getTag()).na.setTag(checkListValues.get(position));
 
+            extractDraftIfExesits(position, checkListViewHolder);
+
 
         }
 
@@ -198,6 +209,25 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
         return rowView;
 
+    }
+
+    private void extractDraftIfExesits(int position, CheckListViewHolder checkListViewHolder) {
+        if(draftIsEmptye == false){
+
+            //=== setup back color by selection
+
+            if(savedCheckListDraft.get(position).yesOptions == 1)
+                checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+            else if(savedCheckListDraft.get(position).yesOptions == 2){
+                checkListViewHolder.no.setBackgroundColor(Color.GREEN);
+            }
+            else if(savedCheckListDraft.get(position).yesOptions == 3){
+                checkListViewHolder.na.setBackgroundColor(Color.GREEN);
+            }
+            //=================================
+
+
+        }
     }
 
     class CheckListViewHolder{
