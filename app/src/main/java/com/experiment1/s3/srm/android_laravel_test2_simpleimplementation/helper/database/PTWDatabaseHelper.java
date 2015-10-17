@@ -26,7 +26,7 @@ public class PTWDatabaseHelper extends DatabaseHelper{
 //
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" PTW" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", workdescription text"
 //                +", location text"
 //                +", contractor text"
@@ -43,10 +43,10 @@ public class PTWDatabaseHelper extends DatabaseHelper{
 //                +", ptw_type_id integer"
 //                +", worker_id integer"
 //                +", answer_id integer"
-//                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
-//                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(id)"
-//                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(id)"
-//                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(id)"
+//                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+//                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(permit_id)"
+//                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(permit_id)"
+//                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(permit_id)"
 //                +");");
 
         PTW ptw;
@@ -70,7 +70,7 @@ public class PTWDatabaseHelper extends DatabaseHelper{
             ptw = new PTW();
 
             ptw.location = cr.getString(cr.getColumnIndexOrThrow("location"));
-            ptw.id = cr.getInt(cr.getColumnIndexOrThrow("id"));
+            ptw.id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
             ptw.appliedDate = cr.getString(cr.getColumnIndexOrThrow("applied_date_time"));
             ptw.workDescription = cr.getString(cr.getColumnIndexOrThrow("workdescription"));
             ptw.startTime = cr.getString(cr.getColumnIndexOrThrow("start_date_time"));

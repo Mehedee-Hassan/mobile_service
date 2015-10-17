@@ -28,7 +28,7 @@ public class Permit {
 
 
 //+" permit" +
-//        "(id integer primary key autoincrement"
+//        "(permit_id integer primary key autoincrement"
 //        +", permit_id integer "
 //        +", project_name varchar(255)"
 //        +", permit_template_id integer "
@@ -40,7 +40,7 @@ public class Permit {
 //        +", start_time datetime"
 //        +", end_time datetime"
 //        +", created_by integer"
-//        +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(id)"
-//        +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(id)"
-//        +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+//        +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(permit_id)"
+//        +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
+//        +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
 //        +");");

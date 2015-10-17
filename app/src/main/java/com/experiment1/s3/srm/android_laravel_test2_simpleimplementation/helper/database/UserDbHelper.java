@@ -34,7 +34,7 @@ public class UserDbHelper extends DatabaseHelper {
 
         users = new ArrayList<User>();
 
-        Cursor cr = db.rawQuery("SELECT id ,name ,email " +
+        Cursor cr = db.rawQuery("SELECT permit_id ,name ,email " +
                 "FROM USER_TABLE" ,null);
 
         cr.moveToFirst();
@@ -46,7 +46,7 @@ public class UserDbHelper extends DatabaseHelper {
 
             user.name = cr.getString(cr.getColumnIndexOrThrow("name"));
             user.email = cr.getString(cr.getColumnIndexOrThrow("email"));
-            user.id = cr.getInt(cr.getColumnIndexOrThrow("id"));
+            user.id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
 
 
             Log.d("in ret from data =", "" + user.name);

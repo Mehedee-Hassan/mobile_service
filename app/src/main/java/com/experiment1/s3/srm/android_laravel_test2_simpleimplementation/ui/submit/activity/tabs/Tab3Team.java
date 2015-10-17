@@ -45,7 +45,7 @@ public class Tab3Team extends Fragment {
 
         //todo in next face of the app
         //todo uncomment and use
-//        userButton = (Button) view.findViewById(R.id.user_button);
+//        userButton = (Button) view.findViewById(R.permit_id.user_button);
 //        userButton.setOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override
@@ -75,7 +75,7 @@ public class Tab3Team extends Fragment {
 //
 //        View dialogView = inflater.inflate(R.layout.submit_activity_tab3_user_dialog_layout, container, false);
 //
-////        ListView listView = (ListView)dialogView.findViewById(R.id.user_dialog_listView);
+////        ListView listView = (ListView)dialogView.findViewById(R.permit_id.user_dialog_listView);
 ////        dialog.
 //
 //

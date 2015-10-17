@@ -54,7 +54,7 @@ public class ProjectListActivity extends ListActivity {
 
 //        listAtapter = new ArrayAdapter<String>()
 //
-//        ArrayAdapter<String> aa = new ArrayAdapter<String>(this,R.layout.row_layout ,R.id.listItemTextView ,projectList);
+//        ArrayAdapter<String> aa = new ArrayAdapter<String>(this,R.layout.row_layout ,R.permit_id.listItemTextView ,projectList);
 
 
 

@@ -6,7 +6,7 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.
 public class CheckList {
 
     public int yesOptions;
-    public int id;
+    public int permit_id;
     public String question;
     public int checkListTemplateDetailsId;
 
@@ -16,9 +16,9 @@ public class CheckList {
     }
 
 
-    public CheckList(int id , String q ,String status){
+    public CheckList(int permit_id, String q ,String status){
         yesOptions = 0;
-        this.id = id;
+        this.permit_id = permit_id;
         this.question = q;
 
 

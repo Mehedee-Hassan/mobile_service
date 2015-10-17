@@ -18,8 +18,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDetailsDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetail;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
 import java.util.ArrayList;
@@ -36,7 +35,8 @@ public class Tab2Checklist extends Fragment {
     ListView listViw;
     Context context;
     SubmitActDraftDBHelper databaseHelper;
-
+    List<PermitDetails> ptdetailsList;
+    List<CheckList> checkLists;
     GlobalVars globalVars;
 
     @Override
@@ -69,48 +69,27 @@ public class Tab2Checklist extends Fragment {
         handleSavedDraftLoading();
 
 
-
-        Log.d("tab2 ==", "oncreateView 1");
-
-
-        //todo get id
+        //todo get permit_id
 
 //        GlobalVars globalVars = (GlobalVars) getActivity().getApplication();
 //todo change
         int nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).getPermit().id;
 
-        List<PermitDetail> ptdetailsList =
+        ptdetailsList =
                 permitTemplateDetailsDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
 
-        Log.d("tab2 ==", "oncreateView 1.1");
 
-        List<CheckList> checkLists = new ArrayList<CheckList>();
 
-        Log.d("tab2 ==", "oncreateView 2");
+        checkLists = new ArrayList<CheckList>();
 
-        for(PermitDetail ptde: ptdetailsList){
 
-            checkLists.add(new CheckList(ptde.id ,ptde.question ,ptde.status));
-
+        for(PermitDetails permitDetails : ptdetailsList){
+            checkLists.add(new CheckList(permitDetails.id , permitDetails.question , permitDetails.status));
         }
-        Log.d("tab2 ==", "oncreateView 3");
-
 
         CheckListAdapter adapter = new CheckListAdapter(getActivity() , checkLists);
-
-
-        Log.d("tab2 ==", "oncreateView 4");
-
         listViw = (ListView) view.findViewById(R.id.checklist_tab2_listView);
-
-        Log.d("tab2 ==", "oncreateView 5");
-
         listViw.setAdapter(adapter);
-
-
-
-        Log.d("tab2 ==", "oncreateView 7");
-
 
         return view;
     }
@@ -131,4 +110,50 @@ public class Tab2Checklist extends Fragment {
         }
 
     }
+
+
+
+    private void saveCheckList() {
+
+
+        Log.d("save","sdf" + checkLists.size());
+        if(checkLists.size() > 0){
+
+            for(CheckList checkList : checkLists){
+                databaseHelper.saveCheckListStatus(checkList);
+                Log.d("save", "sdf" + checkList.yesOptions);
+
+            }
+        }
+
+    }
+
+
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        saveCheckList();
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        saveCheckList();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+
+
+
 }

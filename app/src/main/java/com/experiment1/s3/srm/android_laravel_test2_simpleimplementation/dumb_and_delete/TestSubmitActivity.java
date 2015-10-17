@@ -54,7 +54,7 @@ public class TestSubmitActivity extends FragmentActivity {
         pager.setAdapter(pagerAdapter);
 
 
-//        PagerTabStrip stripe = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
+//        PagerTabStrip stripe = (PagerTabStrip) findViewById(R.permit_id.pager_tab_strip);
 //        stripe.setTextColor(Color.BLACK);
 
 

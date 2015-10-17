@@ -6,11 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetail;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.helper.query.PermitCombineClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,12 +187,12 @@ public class PermitDBHelper extends DatabaseHelper {
 
 
         Permit permit;
-        PermitDetail permitDetail;
+        PermitDetails permitDetails;
         cr.moveToFirst();
         while (!cr.isAfterLast()){
 
             permit = new Permit();
-            permitDetail = new PermitDetail();
+            permitDetails = new PermitDetails();
 
             permit.id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
             permit.project_id = cr.getInt(cr.getColumnIndexOrThrow("project_id"));

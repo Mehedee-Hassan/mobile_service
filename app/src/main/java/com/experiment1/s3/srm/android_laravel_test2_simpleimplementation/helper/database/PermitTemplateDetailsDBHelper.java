@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetail;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
     }
 
 
-    public List<PermitDetail>getPermitTemplateDetailsListWherePTId(int pt_id){
-        List<PermitDetail> permitTemplateDetails2 = new ArrayList<PermitDetail>();
+    public List<PermitDetails>getPermitTemplateDetailsListWherePTId(int pt_id){
+        List<PermitDetails> permitTemplateDetails2 = new ArrayList<PermitDetails>();
 
-        Log.d("tab2 db helper ==", "id 1");
+        Log.d("tab2 db helper ==", "permit_id 1");
 
-        PermitDetail permitTemplateDetails1;
+        PermitDetails permitTemplateDetails1;
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cr = db.rawQuery("select * " +
@@ -40,14 +40,14 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
                 "WHERE permit_id= "+pt_id , null);
 
 
-        Log.d("tab2 db helper ==", "id 2");
+        Log.d("tab2 db helper ==", "permit_id 2");
 
         cr.moveToFirst();
 
         while(!cr.isAfterLast())
         {
 
-            permitTemplateDetails1 = new PermitDetail();
+            permitTemplateDetails1 = new PermitDetails();
 
             permitTemplateDetails1.question = cr.getString(cr.getColumnIndexOrThrow("question"));
             permitTemplateDetails1.extra_text = cr.getString(cr.getColumnIndexOrThrow("extra_text"));
@@ -65,7 +65,7 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
 
 
         }
-        Log.d("tab2 db helper==", "id 3");
+        Log.d("tab2 db helper==", "permit_id 3");
 
 
         cr.close();

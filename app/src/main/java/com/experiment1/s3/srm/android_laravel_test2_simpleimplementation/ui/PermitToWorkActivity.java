@@ -101,7 +101,7 @@ implements View.OnClickListener, OnItemClickListener {
         permitDBHelper = new PermitDBHelper(this);
         newPermitButton.setOnClickListener(this);
 
-        //dialogListView = (ListView) findViewById(R.id.permitToWorkDialoglistView);
+        //dialogListView = (ListView) findViewById(R.permit_id.permitToWorkDialoglistView);
 
         ptwListview = (ListView) findViewById(R.id.permit_to_work_before_listView);
         ptwListview.setOnItemClickListener(this);
@@ -199,7 +199,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
                         //
-                        //set permit_template id for question
+                        //set permit_template permit_id for question
                         //find permit details
 
                         Permit permit = globalVars.getNotNullPermit();
@@ -207,10 +207,10 @@ implements View.OnClickListener, OnItemClickListener {
                         permit.permit_name = permitTemplate.name;
                         permit.permit_template_id = permitTemplate.id;
 
-//                        globalVars.currentPermitTemplateId = permitTemplate.id;
+//                        globalVars.currentPermitTemplateId = permitTemplate.permit_id;
 
                         globalVars.setPermit(permit);
-                        Log.d(TAG+" == " , "permit name" +permit.permit_name);
+                        Log.d(TAG + " == ", "permit name" + permit.permit_name);
                         globalVars.setPermitTemplate(permitTemplate);
                         //globalVars.setProject(CurretnProject);
 

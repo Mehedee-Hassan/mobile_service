@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.nfc.Tag;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
@@ -179,7 +177,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
 
 
             returnList.add(checkList);
-cr.moveToNext();
+            cr.moveToNext();
         }
 
         //delete all draft after returning
@@ -333,7 +331,7 @@ cr.moveToNext();
                 + permitId
                 , null);
 
-        Log.d("permitid " ,""+permitId);
+        Log.d("permitid ", "" + permitId);
 
         cr.moveToFirst();
         int count = cr.getInt(0);
@@ -394,7 +392,56 @@ cr.close();
 
         contentValues.put("status" , status);
 
-        db.update("permit_details", contentValues, " permit_id = ?" ,args );
+        db.update("permit_details", contentValues, " permit_id = ?", args);
+
+
+
+    }
+
+    public void saveCheckListStatus(CheckList checkList){
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+//                String[] args = new String[] {checkList.permit_id};
+
+                ContentValues contentValues;
+                contentValues = new ContentValues();
+
+
+        String status = "";
+
+        if(checkList.yesOptions == 0){
+            contentValues.put("status" , "null");
+            status = "null";
+
+        }
+        else
+        if(checkList.yesOptions == 1){
+            contentValues.put("status" , "ok");
+            status = "ok";
+
+        }
+        else
+        if(checkList.yesOptions == 2){
+            contentValues.put("status" , "nok");
+            status = "nok";
+
+        }
+        else
+        if(checkList.yesOptions == 3){
+            contentValues.put("status" , "na");
+            status = "na";
+
+        }
+
+
+
+        Log.d("save" ,"update ==" +checkList.yesOptions +" at  ="+checkList.permit_id);
+//        db.update("permit_details", contentValues, " permit_id = ? " ,args );
+
+        db.execSQL("UPDATE permit_details " +
+                "SET status='"+status+"'"
+                + " WHERE _id="+checkList.permit_id);
 
 
 

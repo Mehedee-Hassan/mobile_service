@@ -1,16 +1,16 @@
 Nyan Myo Aung: when you create the
-permit, you aldy create the permitid, projectname, project id, template name, template id in your local db
+permit, you aldy create the permitid, projectname, project permit_id, template name, template permit_id in your local db
 Nyan Myo Aung: whatever change happen in this permit will save  locally as draft until user is submitted.
 
 
 //==========================
 on permit creation :
 ===================
-1) permit id  ::::::::::::: [permit table]
+1) permit permit_id  ::::::::::::: [permit table]
 2) project name ::::::::::: [project table for status]
-3) project id ::::::::::::: [project id for foreign from permit ]
+3) project permit_id ::::::::::::: [project permit_id for foreign from permit ]
 4) template name :::::::::: [permit_details for status]
-5) template id :::::::::::: [permit_dtaisls for status and foregin key in permit template will follow it]
+5) template permit_id :::::::::::: [permit_dtaisls for status and foregin key in permit template will follow it]
 ==================
 table relation :
 ==================

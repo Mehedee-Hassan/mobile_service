@@ -39,14 +39,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         mainDatabase = db;
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " +PROJECT_TABLE_NAME
-                +"(id integer primary key autoincrement," +
+                +"(permit_id integer primary key autoincrement," +
                 PROJECT_TABLE_COL_PROJECT_ID+" integer ," +
                 PROJECT_TABLE_COL_PROJECT_NAME+" text);");
 
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" WORKER_TABLE" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", name varchar(200)"
                 +", designation varchar(100)"
                 +", NRIC integer"
@@ -55,10 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" PTW_TYPE_TABLE" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", type varchar(200)"
                 +", project_id integer"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
                 +");");
 
 
@@ -66,24 +66,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" CHECK_LIST_QUESTION_TABLE" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", question text"
                 +", type text"
                 +", ptw_id integer"
-                +", FOREIGN KEY(ptw_id) REFERENCES PTW_TYPE_TABLE(id)"
+                +", FOREIGN KEY(ptw_id) REFERENCES PTW_TYPE_TABLE(permit_id)"
                 +");");
 
 
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" ANSWER_TABLE" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", textra_text text"
                 +", option integer"
                 +", check_list_que_id integer"
                 +", project_id integer"
-                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(id)"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(permit_id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
                 +");");
 
 
@@ -91,7 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" PTW" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", workdescription text"
                 +", location text"
                 +", contractor text"
@@ -108,17 +108,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", ptw_type_id integer"
                 +", worker_id integer"
                 +", answer_id integer"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
-                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(id)"
-                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(id)"
-                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(permit_id)"
+                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(permit_id)"
+                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(permit_id)"
                 +");");
 
 
 
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" USER_TABLE" +
-                "(id integer primary key autoincrement"
+                "(permit_id integer primary key autoincrement"
                 +", name varchar(200)"
                 +", email varchar(200)"
                 +", password varchar(60)"
@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", company_id integer"
                 +", role integer"
                 +", project_id integer"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
                 +");");
 
 
@@ -149,9 +149,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", start_time datetime"
                 +", end_time datetime"
                 +", created_by integer"
-                +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(id)"
-                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(id)"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+                +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(permit_id)"
+                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
                 +");");
 
 
@@ -169,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", status varchar(5)"
                 +", allowed_text integer "
                 +", permit_id integer "
-                +", FOREIGN KEY(permit_id) REFERENCES permits(id)"
+                +", FOREIGN KEY(permit_id) REFERENCES permits(permit_id)"
                 +");");
 
 
@@ -180,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", extra_text integer"
                 +", sno integer "
                 +", permit_template_id integer "
-                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(id)"
+                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
                 +");");
 
 
@@ -213,7 +213,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(_id integer primary key autoincrement"
                 +", permit_template_details_id int"
                 +", options int"
-                +", FOREIGN KEY (permit_template_details_id) REFERENCES permit_details(id)"
+                +", FOREIGN KEY (permit_template_details_id) REFERENCES permit_details(permit_id)"
                 +");");
 
 
@@ -222,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS " +
-//                "(id integer primary key autoincrement,");
+//                "(permit_id integer primary key autoincrement,");
 
         Log.d("sqlite ","on create");
 
@@ -269,12 +269,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" permit_template_details" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", question varchar(255)"
 //                +", extra_text integer"
 //                +", sno integer "
 //                +", permit_template_id integer "
-//                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(id)"
+//                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
 //                +");");
 
 
@@ -307,13 +307,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" ANSWER_TABLE" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", textra_text text"
 //                +", option integer"
 //                +", check_list_que_id integer"
 //                +", project_id integer"
-//                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(id)"
-//                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+//                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(permit_id)"
+//                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
 //                +");");
 
 
@@ -372,13 +372,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" ANSWER_TABLE" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", textra_text text"
 //                +", option integer"
 //                +", check_list_que_id integer"
 //                +", project_id integer"
-//                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(id)"
-//                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+//                +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(permit_id)"
+//                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
 //                +");");
 
 
@@ -399,7 +399,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" WORKER_TABLE" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", name varchar(200)"
 //                +", designation varchar(100)"
 //                +", NRIC integer"
@@ -419,7 +419,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" PTW" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", workdescription text"
 //                +", location text"
 //                +", contractor text"
@@ -436,10 +436,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //                +", ptw_type_id integer"
 //                +", worker_id integer"
 //                +", answer_id integer"
-//                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
-//                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(id)"
-//                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(id)"
-//                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(id)"
+//                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+//                +", FOREIGN KEY(ptw_type_id) REFERENCES PTW_TYPE_TABLE(permit_id)"
+//                +", FOREIGN KEY(worker_id) REFERENCES WORKER_TABLE(permit_id)"
+//                +", FOREIGN KEY(answer_id) REFERENCES ANSWER_TABLE(permit_id)"
 //                +");");
 
 
@@ -491,10 +491,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private void insertDummyPTWType(SQLiteDatabase db){
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" PTW_TYPE_TABLE" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", type varchar(200)"
 //                +", project_id integer"
-//                +", FOREIGN KEY(project_id) REFERENCES Projects(id)"
+//                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
 //                +");");
 
 
@@ -521,11 +521,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 //        db.execSQL("CREATE TABLE IF NOT EXISTS"
 //                +" CHECK_LIST_QUESTION_TABLE" +
-//                "(id integer primary key autoincrement"
+//                "(permit_id integer primary key autoincrement"
 //                +", question text"
 //                +", type text"
 //                +", ptw_id integer"
-//                +", FOREIGN KEY(ptw_id) REFERENCES PTW_TYPE_TABLE(id)"
+//                +", FOREIGN KEY(ptw_id) REFERENCES PTW_TYPE_TABLE(permit_id)"
 //                +");");
 
 

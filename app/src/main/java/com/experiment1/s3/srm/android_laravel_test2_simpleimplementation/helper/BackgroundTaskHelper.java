@@ -175,7 +175,7 @@ public class BackgroundTaskHelper  {
 
                 Toast.makeText(loginActivity.getApplicationContext()
                         ,"Error!!!  Please check Internet Connection" +
-                        "\n Please check client id and Secret\n"+retrofitError.getMessage() ,Toast.LENGTH_SHORT).show();
+                        "\n Please check client permit_id and Secret\n"+retrofitError.getMessage() ,Toast.LENGTH_SHORT).show();
 
 
             }

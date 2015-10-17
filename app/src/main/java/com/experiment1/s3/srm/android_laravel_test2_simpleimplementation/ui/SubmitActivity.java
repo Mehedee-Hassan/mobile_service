@@ -173,7 +173,7 @@ public class SubmitActivity extends FragmentActivity
         pager.setAdapter(pagerAdapter);
         pager.setOffscreenPageLimit(4);
 
-//        PagerTabStrip stripe = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
+//        PagerTabStrip stripe = (PagerTabStrip) findViewById(R.permit_id.pager_tab_strip);
 //        stripe.setTextColor(Color.BLACK);
 
 
@@ -329,7 +329,7 @@ public class SubmitActivity extends FragmentActivity
         returnedPermitObject.auto_gen_permit_no = globalPermit.auto_gen_permit_no;
         returnedPermitObject.permit_template_id = globalPermit.permit_template_id;
         returnedPermitObject.permit_name = globalPermit.permit_name;
-//        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().id; //todo change temporary
+//        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().permit_id; //todo change temporary
 
 
         //sqlite format yyyy-mm-dd

@@ -76,7 +76,7 @@ public class CheckListAdapter_OLD extends BaseAdapter {
 
         final CheckList tempObj = list.get(position);
 
-        viewHolder.questionIdTv.setText(tempObj.id+"");
+        viewHolder.questionIdTv.setText(tempObj.permit_id +"");
         viewHolder.questionTv.setText(tempObj.question);
 
 
