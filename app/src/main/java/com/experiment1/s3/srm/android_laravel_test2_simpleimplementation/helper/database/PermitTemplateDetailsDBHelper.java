@@ -26,7 +26,7 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
     }
 
 
-    public List<PermitDetails>getPermitTemplateDetailsListWherePTId(int pt_id){
+    public List<PermitDetails>getPermitTemplateDetailsListWherePTId(long pt_id){
         List<PermitDetails> permitTemplateDetails2 = new ArrayList<PermitDetails>();
 
         Log.d("tab2 db helper ==", "permit_id 1");

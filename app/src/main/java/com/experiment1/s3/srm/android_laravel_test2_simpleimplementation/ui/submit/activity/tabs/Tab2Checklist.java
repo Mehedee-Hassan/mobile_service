@@ -73,7 +73,12 @@ public class Tab2Checklist extends Fragment {
 
 //        GlobalVars globalVars = (GlobalVars) getActivity().getApplication();
 //todo change
-        int nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).getPermit().id;
+        long nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).getPermit().id;
+
+
+        Log.d("save == ","2 permit id = " + nowPermitTemplateDetailsId );
+
+
 
         ptdetailsList =
                 permitTemplateDetailsDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
@@ -97,14 +102,18 @@ public class Tab2Checklist extends Fragment {
     private void handleSavedDraftLoading() {
 
 
-        int permitId = globalVars.getPermit().id;
+        long permitId = globalVars.getPermit().id;
         int permitTemplateId = globalVars.getPermit().permit_template_id;
+
+        Log.d("save == ","permit id = " + permitId +" permit template id = "+ permitTemplateId);
+
+
         checkIfPermiQuestionIsEmpetyFor(permitId ,permitTemplateId);
 
 
     }
 
-    private void checkIfPermiQuestionIsEmpetyFor(int permitId ,int permitTemplateId) {
+    private void checkIfPermiQuestionIsEmpetyFor(long permitId ,int permitTemplateId) {
         if(databaseHelper.checkIfPermiQuestionIsEmpetyFor(permitId)){
             databaseHelper.transferPermitTempQToPermitDet(permitId ,permitTemplateId);
         }

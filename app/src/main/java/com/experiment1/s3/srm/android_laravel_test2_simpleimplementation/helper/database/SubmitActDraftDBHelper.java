@@ -1,11 +1,13 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
@@ -23,7 +25,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
     }
 
 
-    public void saveGeneralTabData(Permit generalTabDataAsPermit){
+    public void saveGeneralTabData(Permit generalTabDataAsPermit ,Activity activity){
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -50,14 +52,15 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         String[] args = new String[] {generalTabDataAsPermit.auto_gen_permit_no};
 
 
+        Log.d(" == ", "save " + generalTabDataAsPermit.auto_gen_permit_no);
 
         int number= db.update("permit", contentValues, "permit_no =?"
                 , args);
 
 
         if(number <= 0){
-            db.insert("permit" ,null ,contentValues);
-            Log.d("==" ,"insert ");
+          //   long savedId = db.insert("permit" ,null ,contentValues);
+            Log.d("==", "insert ");
         }
 
 
@@ -320,7 +323,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         return permit;
     }
 
-    public boolean checkIfPermiQuestionIsEmpetyFor(int permitId) {
+    public boolean checkIfPermiQuestionIsEmpetyFor(long permitId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
 
@@ -346,7 +349,7 @@ cr.close();
         return true;
     }
 
-    public void transferPermitTempQToPermitDet(int permitId ,int permitTemplateId) {
+    public void transferPermitTempQToPermitDet(long permitId ,int permitTemplateId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 

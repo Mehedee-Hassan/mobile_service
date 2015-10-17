@@ -197,7 +197,7 @@ implements View.OnClickListener, OnItemClickListener {
                         PermitTemplate permitTemplate = permitDBHelper.getPTWTypeAt(item);
 
 
-
+                        String permitNumber = generatePermitNumber();
                         //
                         //set permit_template permit_id for question
                         //find permit details
@@ -206,19 +206,29 @@ implements View.OnClickListener, OnItemClickListener {
 
                         permit.permit_name = permitTemplate.name;
                         permit.permit_template_id = permitTemplate.id;
+                        permit.auto_gen_permit_no = permitNumber;
 
 //                        globalVars.currentPermitTemplateId = permitTemplate.permit_id;
 
+
+                        //save to permit database and get the saved
+                        //record id
+
+                        long savedPermitId = permitDBHelper.saveNewHalfDonePermit(permit);
+
+
+                        if (savedPermitId != -1) {
+                            permit.id = savedPermitId;
+                        }
+
                         globalVars.setPermit(permit);
                         Log.d(TAG + " == ", "permit name" + permit.permit_name);
+                        Log.d(TAG + " == ", "permit id" + permit.id);
                         globalVars.setPermitTemplate(permitTemplate);
                         //globalVars.setProject(CurretnProject);
 
 
-
-
-
-                        Intent intent= new Intent(PermitToWorkActivity.this, SubmitActivity.class);
+                        Intent intent = new Intent(PermitToWorkActivity.this, SubmitActivity.class);
 
 
 //old logic
@@ -226,23 +236,16 @@ implements View.OnClickListener, OnItemClickListener {
 //                        intent.putExtra("list_position",item);
 
 
-                        String permitNumber = generatePermitNumber();
                         intent.putExtra("permit_number", permitNumber);
 
 
-
-
-                        Toast.makeText(PermitToWorkActivity.this, "permit number generated:\n"+permitNumber+"" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(PermitToWorkActivity.this, "permit number generated:\n" + permitNumber + "", Toast.LENGTH_LONG).show();
                         Log.d("==", permitNumber);
                         startActivity(intent);
 
 
-
-                            //todo uncomment testing purpose close
-                        savePermitDraftHandler(permitTemplate ,permitNumber);
-
-
-
+                        //todo uncomment testing purpose close
+                        savePermitDraftHandler(permitTemplate, permitNumber);
 
 
                     }
@@ -309,19 +312,19 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-        if(true)
-        {
-            permitNUmber += yyyy
+        permitNUmber += yyyy
                     + "" + mm
                     + "" + dd
                     + "" + username.toUpperCase()
                     + sum;
 
-        }
+
 
 
         globalVars.setPermitNumber(permitNUmber);
-        globalVars.getPermit().auto_gen_permit_no = permitNUmber;
+
+
+        //globalVars.getPermit().auto_gen_permit_no = permitNUmber;
 
 
         return permitNUmber;
@@ -337,9 +340,10 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-Log.d(TAG+" == ",""+globalVars.getProject().name);
+        Log.d(TAG+" == ","1 "+globalVars.getProject().name);
 
         List<Permit> list = permitDBHelper.getListOfPermitSaved(globalVars.getProject());
+
 
 
         List<Permit> ptwForViews = new ArrayList<>();
@@ -401,7 +405,8 @@ Log.d(TAG+" == ",""+globalVars.getProject().name);
         globalVars.setPermit(permit);
 
 
-        Log.d(TAG +" == " ,"permit name" + permit.permit_name);
+        Log.d(TAG + " == ", "permit name" + permit.permit_name);
+        Log.d(TAG +" == " ,"permit id" + permit.id);
         startActivity(intent);
 
 

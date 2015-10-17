@@ -1,5 +1,6 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -232,5 +233,33 @@ public class PermitDBHelper extends DatabaseHelper {
 
         return permit;
 
+    }
+
+    public long saveNewHalfDonePermit(Permit permit) {
+
+        //currently in object
+//        permit.permit_name = permitTemplate.name;
+//        permit.permit_template_id = permitTemplate.id;
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues contentValues = new ContentValues();
+
+
+        contentValues.put("permit_name",permit.permit_name);
+        contentValues.put("permit_template_id",permit.permit_template_id);
+        contentValues.put("permit_no" , permit.auto_gen_permit_no);
+
+       long id = db.insert("permit" ,null ,contentValues);
+        Log.d("==" ,"insert "+id);
+
+
+
+
+
+
+        return id;
     }
 }

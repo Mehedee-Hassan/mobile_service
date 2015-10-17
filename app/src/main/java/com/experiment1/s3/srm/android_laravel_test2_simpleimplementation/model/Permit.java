@@ -5,7 +5,7 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model;
  */
 public class Permit {
 
-    public int id;
+    public long id;
 //    public int permit_id;
     public String auto_gen_permit_no;
     public int project_id;

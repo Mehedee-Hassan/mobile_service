@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android_laravel_test2_simpleImplementation.iml" filepath="$PROJECT_DIR$/android_laravel_test2_simpleImplementation.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/second_android_laravel.iml" filepath="$PROJECT_DIR$/second_android_laravel.iml" />
     </modules>
   </component>
 </project>

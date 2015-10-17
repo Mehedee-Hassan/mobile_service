@@ -112,6 +112,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         permit.auto_gen_permit_no = globalVars.getPermit().auto_gen_permit_no;
         permit.permit_name = globalVars.getPermit().permit_name;
         permit.permit_template_id = globalVars.getPermit().permit_template_id;
+        permit.id = globalVars.getPermit().id;
 
         permit.project_id =  globalVars.getProject().id;
         permit.project_name = globalVars.getProject().name;
@@ -127,7 +128,8 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         permit.work_activity =descriptionWorkEt5.getText().toString();
 
 
-        Log.d(TAG+ " ==* " ,"permit name =" + permit.work_activity);
+        Log.d(TAG+ " ==* " ,"permit name =" + permit.id);
+        Log.d(TAG+ " ==* " ,"permit name =" + permit.permit_template_id);
         Log.d(TAG + " ==* ", "permit name =" + permit.project_name);
         Log.d(TAG + " ==* ", "permit name =" + permit.contractor);
 
@@ -159,7 +161,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
         Log.d(TAG + " == " ,"onPause");
 
-        databaseHelper.saveGeneralTabData(createPermitObjectFromFields());
+        databaseHelper.saveGeneralTabData(createPermitObjectFromFields() ,this.getActivity());
 
     }
 
@@ -177,7 +179,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         super.onStop();
         Log.d(TAG + " == ", "onStop");
 
-        databaseHelper.saveGeneralTabData(createPermitObjectFromFields());
+        databaseHelper.saveGeneralTabData(createPermitObjectFromFields() ,this.getActivity());
 
     }
 
