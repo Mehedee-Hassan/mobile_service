@@ -1,9 +1,11 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +59,8 @@ public class SubmitActivity extends FragmentActivity
     GlobalVars globalVars;
     private ViewPager pager;
     private CustomPagerAdapter pagerAdapter;
-    PermitTemplate permitTemplate;
+
+    Permit globalPermit;
     EditText projectNameEt, subContractorNameTe3,
             locationEt4, descriptionWorkEt5, dateEt6, startEt7, endEt8;
     private TextView ptwTypeNameTextView;
@@ -78,7 +82,9 @@ public class SubmitActivity extends FragmentActivity
         setContentView(R.layout.activity_submit);
 
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF9900")));
+        bar.setDisplayHomeAsUpEnabled(true);
 
 
 
@@ -90,29 +96,30 @@ public class SubmitActivity extends FragmentActivity
 //old logic
         //new Project((Project) extras.getParcelable("CURRENT_PROJECT_OBJECT"));
 //        int permitTemplateItemAt = extras.getInt("list_position");
+//        globalVars.setProject(currentProject);
 
-
-
-
-        globalVars.setProject(currentProject);
 
         String permitNumber = extras.getString("permit_number");
 
 
-        setTitle(permitNumber);
 
-         saveDataHelper  = new SaveDataHelper(this);
+        bar.setTitle(Html.fromHtml("<font color='#ffffff'>" +
+                permitNumber +
+                "</font>"));
+
+
+        saveDataHelper  = new SaveDataHelper(this);
         ptwTypeTemplateDBHelper = new PermitDBHelper(this);
         backgroundTaskHelper = new BackgroundTaskHelper(this);
+
 
         initComponent();
 
 
-         permitTemplate =  ((GlobalVars) getApplication()).getPermitTemplate();
+        globalPermit = globalVars.getPermit();
 
-
-        Log.d(TAG+" == ","submitactivity on create1");
-        ptwTypeNameTextView.setText(permitTemplate.name);
+        Log.d(TAG+" == ","submitactivity on create1" + globalPermit.permit_name);
+        ptwTypeNameTextView.setText(globalPermit.permit_name);
         //change activity back color
         ptwTypeNameTextView.getRootView().setBackgroundColor(Color.WHITE);
 
@@ -129,6 +136,8 @@ public class SubmitActivity extends FragmentActivity
 //        dateEt6 = (EditText) findViewById();
 //        startEt7 = (EditText) findViewById();
 //        endEt8 = (EditText) findViewById();
+
+
 
 
         tabHostInit();
@@ -311,17 +320,15 @@ public class SubmitActivity extends FragmentActivity
 
 
 
-
-
         Log.d(TAG+" == ", " submit act ,save to permit");
 
 
         Calendar calendar = Calendar.getInstance();
 
 
-        returnedPermitObject.auto_gen_permit_no = globalVars.getPermitNumber();
-        returnedPermitObject.permit_template_id = globalVars.getPermitTemplate().id;
-        returnedPermitObject.permit_name = returnedPermitObject.auto_gen_permit_no; //todo confusion
+        returnedPermitObject.auto_gen_permit_no = globalPermit.auto_gen_permit_no;
+        returnedPermitObject.permit_template_id = globalPermit.permit_template_id;
+        returnedPermitObject.permit_name = globalPermit.permit_name;
 //        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().id; //todo change temporary
 
 

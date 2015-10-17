@@ -44,6 +44,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
 
     SubmitActDraftDBHelper databaseHelper;
+    private Object savedDraftFromDb;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
         databaseHelper  = new SubmitActDraftDBHelper(context);
 
+
     }
 
     @Nullable
@@ -69,7 +71,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
          View view = inflater.inflate(R.layout.submit_activity_tab1_general, container, false);
 
         initLayoutComponents(view);
-
+        getSavedDraftFromDb();
 
         return view;
     }
@@ -94,6 +96,8 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
 
 
+
+
         projectNameEt.setText(currentProject.name);
     }
 
@@ -105,7 +109,11 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
         Permit permit = new Permit();
 
-        permit.project_id = globalVars.getProject().id;
+        permit.auto_gen_permit_no = globalVars.getPermit().auto_gen_permit_no;
+        permit.permit_name = globalVars.getPermit().permit_name;
+        permit.permit_template_id = globalVars.getPermit().permit_template_id;
+
+        permit.project_id =  globalVars.getProject().id;
         permit.project_name = globalVars.getProject().name;
         permit.contractor = subContractorNameTe3.getText().toString();
         permit.location = locationEt4.getText().toString();
@@ -115,12 +123,13 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         permit.end_time = endEt8.getText().toString();
 
 
+
         permit.work_activity =descriptionWorkEt5.getText().toString();
 
 
         Log.d(TAG+ " ==* " ,"permit name =" + permit.work_activity);
-        Log.d(TAG+ " ==* " ,"permit name =" + permit.project_name);
-        Log.d(TAG+ " ==* " ,"permit name =" + permit.location);
+        Log.d(TAG + " ==* ", "permit name =" + permit.project_name);
+        Log.d(TAG + " ==* ", "permit name =" + permit.contractor);
 
         return permit;
 
@@ -148,7 +157,52 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         super.onPause();
 
 
+        Log.d(TAG + " == " ,"onPause");
+
         databaseHelper.saveGeneralTabData(createPermitObjectFromFields());
 
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG + " == ", "onResume");
+
+        getSavedDraftFromDb();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG + " == ", "onStop");
+
+        databaseHelper.saveGeneralTabData(createPermitObjectFromFields());
+
+    }
+
+    public void getSavedDraftFromDb() {
+
+       Permit permit = databaseHelper.getPermitDraftWith(globalVars.getPermit().auto_gen_permit_no);
+
+        populateGeneralTabEditTexts(permit.project_name
+                ,permit.contractor , permit.location,permit.work_activity,permit.permit_date
+                ,permit.start_time,permit.end_time);
+
+    }
+
+    public void populateGeneralTabEditTexts(String projectName ,String contractor
+            ,String location ,String workActivity
+            ,String date ,String startDate ,String endDate){
+
+
+        projectNameEt.setText(projectName);
+        subContractorNameTe3.setText(contractor);
+        locationEt4.setText(location);
+        descriptionWorkEt5.setText(workActivity);
+        dateEt6.setText(date);
+        startEt7.setText(startDate);
+        endEt8.setText(endDate);
+    }
+
 }

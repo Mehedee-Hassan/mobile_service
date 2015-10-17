@@ -4,7 +4,11 @@
     <color name="white">#ffff</color>
     <color name="gray">#DBD9D9</color>
     <color name="orange_custom">#FFA319</color>
-    <color name="green_custom">#19E819</color>
+    <color name="green_custom">#47D147</color>
+    <color name="green_light_custom">#19E819</color>
     <color name="black">#000000</color>
     <color name="custom_red">#FF5858</color>
+    <color name="halka_gheea">#FFF7EA</color>
+    <color name="halka_neel">#B2D1FF</color>
+    <color name="halka_tiya">#EBFFD6</color>
 </resources>

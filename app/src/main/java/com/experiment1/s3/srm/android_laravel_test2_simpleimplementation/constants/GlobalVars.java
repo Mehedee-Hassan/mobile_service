@@ -3,6 +3,7 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.consta
 import android.app.Application;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.User;
@@ -17,7 +18,7 @@ public class GlobalVars extends Application {
         private static GlobalVars  globalVars;
 
         public Project nonStaticProject;
-        public int currentPermitTemplateId;
+//        public int currentPermitTemplateId;
         private Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector;
         private boolean isLoginActStdFromSubmit = false;
         private Tab1GeneralFragmentEventConnector submitActTab1GenInterface;
@@ -25,7 +26,7 @@ public class GlobalVars extends Application {
         private String permitNumber;
         private PermitTemplate permitTemplate;
         private User currentLoggedInUser;
-
+        private Permit permit;
 
 
     public static GlobalVars getInstance(){
@@ -90,6 +91,27 @@ public class GlobalVars extends Application {
 
     public PermitTemplate getPermitTemplate() {
        return this.permitTemplate;
+    }
+
+
+
+
+    public void setPermit(Permit permit){
+        this.permit = permit ;
+    }
+    public Permit getPermit(){
+
+        return this.permit;
+
+    }
+
+    public Permit getNotNullPermit(){
+        if(this.permit == null){
+            this.permit = new Permit();
+            return this.permit;
+        }
+
+        return this.permit;
     }
 
     public User getCurrentLoggedInUser() {

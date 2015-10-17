@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetail;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 
 import java.util.ArrayList;
@@ -25,17 +26,18 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
     }
 
 
-    public List<PermitTemplateDetails>getPermitTemplateDetailsListWherePTId(int pt_id){
-        List<PermitTemplateDetails> permitTemplateDetails = new ArrayList<>();
+    public List<PermitDetail>getPermitTemplateDetailsListWherePTId(int pt_id){
+        List<PermitDetail> permitTemplateDetails2 = new ArrayList<PermitDetail>();
 
         Log.d("tab2 db helper ==", "id 1");
 
-        PermitTemplateDetails permitTemplateDetails1;
+        PermitDetail permitTemplateDetails1;
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cr = db.rawQuery("select * " +
-                "from permit_template_details " +
-                "WHERE permit_template_id= "+pt_id , null);
+                "from " +
+                "permit_details " +
+                "WHERE permit_id= "+pt_id , null);
 
 
         Log.d("tab2 db helper ==", "id 2");
@@ -45,18 +47,19 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
         while(!cr.isAfterLast())
         {
 
-            permitTemplateDetails1 = new PermitTemplateDetails();
+            permitTemplateDetails1 = new PermitDetail();
 
             permitTemplateDetails1.question = cr.getString(cr.getColumnIndexOrThrow("question"));
-            permitTemplateDetails1.extraText = cr.getString(cr.getColumnIndexOrThrow("extra_text"));
+            permitTemplateDetails1.extra_text = cr.getString(cr.getColumnIndexOrThrow("extra_text"));
+            permitTemplateDetails1.status = cr.getString(cr.getColumnIndexOrThrow("status"));
             permitTemplateDetails1.id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
-            permitTemplateDetails1.sno = cr.getInt(cr.getColumnIndexOrThrow("sno"));
+//            permitTemplateDetails1.sno = cr.getInt(cr.getColumnIndexOrThrow("sno"));
 
 
-            Log.d("in ret from data ==", "" + permitTemplateDetails1.question);
+            Log.d("in ret from data ==", "" + permitTemplateDetails1.status);
 
 
-            permitTemplateDetails.add(permitTemplateDetails1);
+            permitTemplateDetails2.add(permitTemplateDetails1);
 
             cr.moveToNext();
 
@@ -70,7 +73,7 @@ public class PermitTemplateDetailsDBHelper extends DatabaseHelper {
 
 
 
-        return permitTemplateDetails;
+        return permitTemplateDetails2;
     }
 
 

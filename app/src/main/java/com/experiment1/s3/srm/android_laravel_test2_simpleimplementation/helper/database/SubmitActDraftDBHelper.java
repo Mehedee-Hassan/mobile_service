@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.nfc.Tag;
+import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
@@ -29,26 +31,36 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //delete previous draft data
-        db.rawQuery("DELETE FROM general_tab_draft_table",null);
+      //  db.rawQuery("DELETE FROM general_tab_draft_table",null);
 
         //insert data make new draft
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("permit_id" ,generalTabDataAsPermit.auto_gen_permit_no); //todo confusion
         contentValues.put("project_id" ,generalTabDataAsPermit.project_id);
         contentValues.put("project_name" ,generalTabDataAsPermit.project_name);
         contentValues.put("permit_template_id" ,generalTabDataAsPermit.permit_template_id);
         contentValues.put("permit_name" ,generalTabDataAsPermit.permit_name);
+        contentValues.put("permit_no" ,generalTabDataAsPermit.auto_gen_permit_no);
         contentValues.put("contractor" ,generalTabDataAsPermit.contractor);
         contentValues.put("location" ,generalTabDataAsPermit.location);
         contentValues.put("work_activity" ,generalTabDataAsPermit.work_activity);
         contentValues.put("permit_date" ,generalTabDataAsPermit.permit_date);
-        contentValues.put("start_time" ,generalTabDataAsPermit.start_time);
+        contentValues.put("start_time", generalTabDataAsPermit.start_time);
         contentValues.put("end_time", generalTabDataAsPermit.end_time);
 
 
-        db.insert("general_tab_draft_table", null, contentValues);
+        String[] args = new String[] {generalTabDataAsPermit.auto_gen_permit_no};
 
+
+
+        int number= db.update("permit", contentValues, "permit_no =?"
+                , args);
+
+
+        if(number <= 0){
+            db.insert("permit" ,null ,contentValues);
+            Log.d("==" ,"insert ");
+        }
 
 
 //        +", permit_id integer "
@@ -131,8 +143,8 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cr = db.rawQuery("SELECT * FROM " +
-                "check_list_tab_draft_table"
+        Cursor cr = db.rawQuery("SELECT status FROM " +
+                "permit_details"
                 , null);
 
 
@@ -141,10 +153,33 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         while (!cr.isAfterLast()){
 
             checkList = new CheckList();
-            checkList.yesOptions = cr.getInt(cr.getColumnIndexOrThrow("options"));
+            String status ="";
+                   status = cr.getString(cr.getColumnIndexOrThrow("status"));
+
+
+
+            if(status.contentEquals("null")){
+                checkList.yesOptions = 0;
+            }
+
+            if(status.contentEquals("ok")){
+                checkList.yesOptions = 1;
+
+            }
+
+            if(status.contentEquals("nok")){
+                checkList.yesOptions = 2;
+
+            }
+
+            if(status.contentEquals("na")){
+                checkList.yesOptions = 3;
+
+            }
+
 
             returnList.add(checkList);
-
+cr.moveToNext();
         }
 
         //delete all draft after returning
@@ -210,20 +245,20 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
 //    dummy
 
     public void currentStateIsDraftedInDB(PermitTemplate permitTemplate, Project project, String permitNumber) {
+//not used
 
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-
-        long permit_id = insertIntoPermiTable(permitTemplate, project, permitNumber, db);
-
-
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("permit_id" ,permit_id);
-        contentValues.put("status" ,"draft");
-
-        db.insert("permit_details",null ,contentValues);
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//
+//        long permit_id = insertIntoPermiTable(permitTemplate, project, permitNumber, db);
+//
+//
+//
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("permit_id" ,permit_id);
+//        contentValues.put("status" ,"draft");
+//
+//        db.insert("permit_details",null ,contentValues);
 
 
     }
@@ -245,9 +280,124 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
     }
 
 
-    public String getPermitDraftAt(int position) {
+
+    public Permit getPermitDraftWith(String auto_gen_permit_no) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cr = db.rawQuery("SELECT * FROM " +
+                " permit " +
+                "WHERE " +
+                "permit_no = '" + auto_gen_permit_no
+                +"' ;"
+                , null);
 
 
-        return null;
+        cr.moveToFirst();
+
+
+        Permit permit = new Permit();
+        while (!cr.isAfterLast()){
+
+            permit.project_id = cr.getInt(cr.getColumnIndexOrThrow("project_id"));
+            permit.project_name =cr.getString(cr.getColumnIndexOrThrow("project_name"));
+            permit.permit_template_id = cr.getInt(cr.getColumnIndexOrThrow("permit_template_id"));
+            permit.permit_name = cr.getString(cr.getColumnIndexOrThrow("permit_name"));
+            permit.auto_gen_permit_no = auto_gen_permit_no;
+            permit.work_activity = cr.getString(cr.getColumnIndexOrThrow("work_activity"));
+            permit.contractor = cr.getString(cr.getColumnIndexOrThrow("contractor"));
+            permit.location = cr.getString(cr.getColumnIndexOrThrow("location"));
+            permit.permit_date = cr.getString(cr.getColumnIndexOrThrow("permit_date"));
+            permit.start_time = cr.getString(cr.getColumnIndexOrThrow("start_time"));
+            permit.end_time = cr.getString(cr.getColumnIndexOrThrow("end_time"));
+            permit.created_by = cr.getInt(cr.getColumnIndexOrThrow("created_by"));
+
+
+
+
+            cr.moveToNext();
+
+
+        }
+
+
+        return permit;
     }
+
+    public boolean checkIfPermiQuestionIsEmpetyFor(int permitId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor cr = db.rawQuery("SELECT Count(*) FROM " +
+                " permit_details " +
+                " WHERE " +
+                " permit_id = "
+                + permitId
+                , null);
+
+        Log.d("permitid " ,""+permitId);
+
+        cr.moveToFirst();
+        int count = cr.getInt(0);
+
+        if(count > 0) {
+
+            cr.close();
+
+            return false;
+        }
+cr.close();
+        return true;
+    }
+
+    public void transferPermitTempQToPermitDet(int permitId ,int permitTemplateId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        Cursor cr = db.rawQuery("SELECT * FROM " +
+                " permit_template_details " +
+                " WHERE " +
+                " permit_template_id = "
+                + permitTemplateId
+                , null);
+
+
+        cr.moveToFirst();
+        ContentValues contentValues;
+
+
+        while (!cr.isAfterLast()){
+
+            contentValues = new ContentValues();
+
+            contentValues.put("question" ,cr.getString(cr.getColumnIndexOrThrow("question")));
+            contentValues.put("permit_id" , permitId);
+            contentValues.put("status" , "null");
+
+            db.insert("permit_details" ,null ,contentValues);
+
+            cr.moveToNext();
+        }
+
+        cr.close();
+
+    }
+
+
+    public void saveCheckListStatus(int permitId ,String status){
+
+            SQLiteDatabase db = this.getWritableDatabase();
+
+                String[] args = new String[] {permitId+""};
+
+                ContentValues contentValues;
+                contentValues = new ContentValues();
+
+        contentValues.put("status" , status);
+
+        db.update("permit_details", contentValues, " permit_id = ?" ,args );
+
+
+
+    }
+
 }

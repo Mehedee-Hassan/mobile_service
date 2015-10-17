@@ -9,6 +9,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetail;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.helper.query.PermitCombineClass;
 
 import java.util.ArrayList;
@@ -155,7 +156,7 @@ public class PermitDBHelper extends DatabaseHelper {
 
 
 
-    public List<Permit>  getListOfPermitSaved(){
+    public List<Permit>  getListOfPermitSaved(Project project){
 
 
         savedPermtiList = new ArrayList<>();
@@ -165,12 +166,22 @@ public class PermitDBHelper extends DatabaseHelper {
 
         Cursor cr = db.rawQuery("select * from " +
                 "permit " +
-                "inner join " +
-                "permit_details " +
-                "on permit._id = permit_details.permit_id " +
-                "where " +
-                "permit_details.status = 'draft';  "
+//                "inner join " +
+//                "permit_details " +
+//                "on permit._id = permit_details.permit_id " +
+                "WHERE " +
+//                "permit_details.status = 'draft'" +
+//                " and " +
+//                "permit." +
+                "project_id = " +project.id +
+                ";"
                 , null);
+
+
+
+
+
+        int count = cr.getCount();
 
 
 
@@ -210,17 +221,17 @@ public class PermitDBHelper extends DatabaseHelper {
             cr.moveToNext();
         }
 
-
+        cr.close();
         return savedPermtiList;
     }
 
 
-    public String getPermitDraftAt(int position) {
+    public Permit getPermitDraftAt(int position) {
 
 
         Permit permit = savedPermtiList.get(position);
 
-        return permit.auto_gen_permit_no;
+        return permit;
 
     }
 }

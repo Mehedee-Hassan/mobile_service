@@ -1,13 +1,17 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,18 +70,31 @@ implements View.OnClickListener, OnItemClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permit_to_work);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        ActionBar bar = getActionBar();
+        bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF9900")));
 
-        initComponent();
+        bar.setDisplayHomeAsUpEnabled(true);
+
+        globalVars = (GlobalVars) getApplication();
+
+        initComponent(bar);
 
     }
 
-    private void initComponent() {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void initComponent(ActionBar bar) {
 
-        CurretnProject = CurrentVars.PROJECT;
+        CurretnProject =globalVars.getProject();
 
-        setTitle("  "+CurretnProject.name+"");
+        Log.d(" == global var" ,""+CurretnProject.name);
+
+
+        bar.setTitle(Html.fromHtml("<font color='#ffffff'>" +
+                CurretnProject.name +
+                "</font>"));
+
+
 
 
         newPermitButton = (Button) findViewById(R.id.new_permit_button);
@@ -180,13 +197,22 @@ implements View.OnClickListener, OnItemClickListener {
                         PermitTemplate permitTemplate = permitDBHelper.getPTWTypeAt(item);
 
 
+
                         //
                         //set permit_template id for question
                         //find permit details
 
-                        ((GlobalVars) getApplication()).currentPermitTemplateId = permitTemplate.id;
-                        ((GlobalVars) getApplication()).setPermitTemplate(permitTemplate);
-                        ((GlobalVars) getApplication()).setProject(CurretnProject);
+                        Permit permit = globalVars.getNotNullPermit();
+
+                        permit.permit_name = permitTemplate.name;
+                        permit.permit_template_id = permitTemplate.id;
+
+//                        globalVars.currentPermitTemplateId = permitTemplate.id;
+
+                        globalVars.setPermit(permit);
+                        Log.d(TAG+" == " , "permit name" +permit.permit_name);
+                        globalVars.setPermitTemplate(permitTemplate);
+                        //globalVars.setProject(CurretnProject);
 
 
 
@@ -213,7 +239,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
                             //todo uncomment testing purpose close
-//                        savePermitDraftHandler(permitTemplate ,permitNumber);
+                        savePermitDraftHandler(permitTemplate ,permitNumber);
 
 
 
@@ -295,6 +321,9 @@ implements View.OnClickListener, OnItemClickListener {
 
 
         globalVars.setPermitNumber(permitNUmber);
+        globalVars.getPermit().auto_gen_permit_no = permitNUmber;
+
+
         return permitNUmber;
 
     }
@@ -308,8 +337,9 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
+Log.d(TAG+" == ",""+globalVars.getProject().name);
 
-        List<Permit> list = permitDBHelper.getListOfPermitSaved();
+        List<Permit> list = permitDBHelper.getListOfPermitSaved(globalVars.getProject());
 
 
         List<Permit> ptwForViews = new ArrayList<>();
@@ -333,8 +363,8 @@ implements View.OnClickListener, OnItemClickListener {
             permitForView.auto_gen_permit_no = ""+permit.auto_gen_permit_no;
             permitForView.work_activity = permit.work_activity;
             permitForView.location = permit.location;
-            permitForView.start_time = dateTimeSplitStart[1];
-            permitForView.end_time =  dateTimeSplitEnd[1];
+            permitForView.start_time = permit.start_time;
+            permitForView.end_time =  permit.end_time;
 
 
             ptwForViews.add(permitForView);
@@ -362,11 +392,16 @@ implements View.OnClickListener, OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-        String permitNumber = permitDBHelper.getPermitDraftAt(position);
+        Permit permit = permitDBHelper.getPermitDraftAt(position);
+
 
         Intent intent = new Intent(PermitToWorkActivity.this ,SubmitActivity.class);
-        intent.putExtra("permit_number", permitNumber);
+        intent.putExtra("permit_number", permit.auto_gen_permit_no);
 
+        globalVars.setPermit(permit);
+
+
+        Log.d(TAG +" == " ,"permit name" + permit.permit_name);
         startActivity(intent);
 
 

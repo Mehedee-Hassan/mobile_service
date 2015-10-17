@@ -36,13 +36,8 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 
        draftDBHelper = new SubmitActDraftDBHelper(context);
-        if(draftDBHelper.checkIfDraftCheckListIsEmpty() == false){
 
-            savedCheckListDraft = draftDBHelper.getCheckListTabData();
-            draftIsEmptye = false;
-        }else{
-            draftIsEmptye = true;
-        }
+       savedCheckListDraft = draftDBHelper.getCheckListTabData();
 
 
     }

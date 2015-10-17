@@ -23,7 +23,11 @@
             android:layout_marginLeft="0dp"
             android:id="@+id/ptw_type_name_textView"
             android:layout_weight="20"
-
+            android:background="@drawable/submit_activity_permit_title_back"
+            android:padding="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="3dip"
+            android:textColor="@color/black"
             />
 
         <Button
@@ -33,20 +37,25 @@
             android:text="Submit"
             android:id="@+id/submit_button"
             android:layout_weight="80"
-            android:background="#FF9100"
-            android:textColor="#FFFFFF"
+            android:background="@color/green_custom"
+            android:textColor="@color/white"
             android:layout_marginBottom="5dip"
 
 
             />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#FFC80D"
+        android:id="@+id/border"
+        />
 
 
 
     <com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout
         android:id="@+id/sliding_tabs"
-        android:background="#FFFFFF"
+        android:background="@color/white"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,10 +16,29 @@ public class CheckList {
     }
 
 
-    public CheckList(int id , String q){
+    public CheckList(int id , String q ,String status){
         yesOptions = 0;
         this.id = id;
         this.question = q;
+
+
+        if(status.contentEquals("null")){
+            yesOptions = 0;
+        }
+        else if(status.contentEquals("ok")){
+            yesOptions = 1;
+
+        }
+
+        else if(status.contentEquals("nok")){
+            yesOptions = 2;
+
+        }
+
+        else if(status.contentEquals("na")){
+            yesOptions = 3;
+
+        }
 
     }
 

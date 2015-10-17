@@ -61,6 +61,8 @@ public class ProjectActivity extends Activity {
     ProgressBar progressBar;
 
 
+    GlobalVars globalVars;
+
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -68,7 +70,7 @@ public class ProjectActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
-
+        globalVars = (GlobalVars) getApplication();
         //get itselt
         projectActivity = this;
 
@@ -362,10 +364,11 @@ public class ProjectActivity extends Activity {
             Project project = new Project(databaseHelper.getProjectAt(pos));
 
             //todo change curretn vars
-            CurrentVars.PROJECT =project;
+//            CurrentVars.PROJECT =project;
+
+            globalVars.setProject(project);
 
 
-            ((GlobalVars)getApplication()).setProject(project);
             Intent intent = new Intent(ProjectActivity.this , PermitToWorkActivity.class);
             startActivity(intent);
         }
