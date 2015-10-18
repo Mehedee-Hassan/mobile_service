@@ -66,7 +66,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
             checkListViewHolder.na = (ImageButton) rowView.findViewById(R.id.na_imageButton);
 
 
-            extractDraftIfExesits(position, checkListViewHolder);
+//            extractDraftIfExesits(position, checkListViewHolder);
 
 
             checkListViewHolder.yes.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +176,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
             checkListViewHolder.no.setTag(checkListValues.get(position));
             checkListViewHolder.na.setTag(checkListValues.get(position));
 
+            extractDraftIfExesits(position, checkListViewHolder);
 
         }
         else {
@@ -187,7 +188,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
             ((CheckListViewHolder)rowView.getTag()).no.setTag(checkListValues.get(position));
             ((CheckListViewHolder)rowView.getTag()).na.setTag(checkListValues.get(position));
 
-            //extractDraftIfExesits(position, checkListViewHolder);
+//            extractDraftIfExesits(position, checkListViewHolder);
 
 
         }
@@ -197,6 +198,8 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
         checkListViewHolder1.questionTv.setText((String) checkListValues.get(position).question);
         checkListViewHolder1.questionIdTv.setText(""+checkListValues.get(position).permit_id);
+
+//        extractDraftIfExesits(position ,checkListViewHolder1);
 
 
         Log.d("YesOption", " == " + checkListValues.get(position).yesOptions);
@@ -213,7 +216,8 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 
     private void extractDraftIfExesits(int position, CheckListViewHolder checkListViewHolder) {
-        if(draftIsEmptye == false){
+        //if(draftIsEmptye == false)
+        {
 
             //=== setup back color by selection
 
