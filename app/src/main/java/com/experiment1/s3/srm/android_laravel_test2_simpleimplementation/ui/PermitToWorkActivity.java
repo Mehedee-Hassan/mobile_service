@@ -207,6 +207,8 @@ implements View.OnClickListener, OnItemClickListener {
                         permit.permit_name = permitTemplate.name;
                         permit.permit_template_id = permitTemplate.id;
                         permit.auto_gen_permit_no = permitNumber;
+                        permit.project_name = globalVars.getProject().name;
+                        permit.project_id = globalVars.getProject().id;
 
 //                        globalVars.currentPermitTemplateId = permitTemplate.permit_id;
 
@@ -225,7 +227,7 @@ implements View.OnClickListener, OnItemClickListener {
                         Log.d(TAG + " == ", "permit name" + permit.permit_name);
                         Log.d(TAG + " == ", "permit id" + permit.id);
                         globalVars.setPermitTemplate(permitTemplate);
-                        //globalVars.setProject(CurretnProject);
+//                        globalVars.setProject(CurretnProject);
 
 
                         Intent intent = new Intent(PermitToWorkActivity.this, SubmitActivity.class);

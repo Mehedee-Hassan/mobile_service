@@ -15,22 +15,7 @@
         >
 
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Permit"
-            android:id="@+id/new_permit_button"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:paddingLeft="3dip"
-            android:paddingRight="2dip"
-            android:layout_marginRight="3dip"
-            android:layout_marginBottom="2dp"
 
-            android:background="#FF9100"
-            android:textColor="#FFFFFF"
-            />
 
         <ListView
             android:layout_width="fill_parent"
@@ -39,4 +24,20 @@
             android:layout_weight="1"
             android:layout_marginTop="10dip"
             />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="New Permit"
+        android:id="@+id/new_permit_button"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:paddingLeft="3dip"
+        android:paddingRight="2dip"
+        android:layout_margin="5dip"
+
+        android:background="#FF9100"
+        android:textColor="#FFFFFF"
+        />
 </LinearLayout>

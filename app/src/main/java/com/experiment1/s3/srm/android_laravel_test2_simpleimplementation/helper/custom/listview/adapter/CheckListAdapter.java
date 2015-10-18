@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
@@ -27,6 +28,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
     SubmitActDraftDBHelper draftDBHelper;
     boolean draftIsEmptye;
 
+    GlobalVars globalVars ;
     public CheckListAdapter(Activity context, List<CheckList> values) {
         super(context, R.layout.check_list_row_layout ,values);
 
@@ -37,7 +39,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
        draftDBHelper = new SubmitActDraftDBHelper(context);
 
-       savedCheckListDraft = draftDBHelper.getCheckListTabData();
+        globalVars = (GlobalVars) context.getApplication();
+
+       savedCheckListDraft = draftDBHelper.getCheckListTabData(  globalVars.getPermit().id);
 
 
     }
@@ -80,9 +84,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 //                    if(!checkListViewHolder.yes.isSelected()) {
                     if(checkList.yesOptions == 1) {
-                        checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
-                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
-                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+//                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
 
 
                         checkListViewHolder.yes.setSelected(true);
@@ -92,7 +96,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
                     }
                     else {
-                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
 //                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
 //                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
                         checkListViewHolder.yes.setSelected(false);
@@ -116,9 +120,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
 //                    if(!checkListViewHolder.no.isSelected()) {
                     if(checkList.yesOptions == 2) {
-                        checkListViewHolder.no.setBackgroundColor(Color.RED);
-                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
-                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.no.setBackgroundColor(Color.RED);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
 
                         checkListViewHolder.no.setSelected(true);
                         checkListViewHolder.na.setSelected(false);
@@ -126,11 +130,11 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
                     }
                     else {
-                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
-//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
-//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
-
-                        checkListViewHolder.no.setSelected(false);
+//                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+////                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+////                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+//
+//                        checkListViewHolder.no.setSelected(false);
 
                         checkListViewHolder.na.setSelected(false);
                         checkListViewHolder.yes.setSelected(false);
@@ -147,9 +151,9 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
                     checkList.setYesOptions(3); //3 = na
 //                    if(!checkListViewHolder.na.isSelected()) {
                     if(checkList.yesOptions == 3) {
-                        checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
-                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
-                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
+//                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
 
                         checkListViewHolder.na.setSelected(true);
                         checkListViewHolder.no.setSelected(false);
@@ -157,7 +161,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
                     }
                     else {
-                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
+//                        checkListViewHolder.na.setBackgroundColor(Color.WHITE);
 //                        checkListViewHolder.no.setBackgroundColor(Color.WHITE);
 //                        checkListViewHolder.yes.setBackgroundColor(Color.WHITE);
 
@@ -221,14 +225,20 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 
             //=== setup back color by selection
 
-            if(savedCheckListDraft.get(position).yesOptions == 1)
-                checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+            if(savedCheckListDraft.get(position).yesOptions == 1) {
 
+//                checkListViewHolder.yes.setBackgroundColor(Color.GREEN);
+                checkListViewHolder.yes.setSelected(true);
+            }
             else if(savedCheckListDraft.get(position).yesOptions == 2){
-                checkListViewHolder.no.setBackgroundColor(Color.RED);
+//                checkListViewHolder.no.setBackgroundColor(Color.RED);
+                checkListViewHolder.no.setSelected(true);
+
             }
             else if(savedCheckListDraft.get(position).yesOptions == 3){
-                checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
+//                checkListViewHolder.na.setBackgroundColor(Color.YELLOW);
+                checkListViewHolder.na.setSelected(true);
+
             }
             //=================================
 

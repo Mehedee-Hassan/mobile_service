@@ -136,7 +136,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
     }
 
 
-    public List<CheckList> getCheckListTabData(){
+    public List<CheckList> getCheckListTabData( long permit_id){
 
 
         CheckList checkList;
@@ -145,7 +145,9 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cr = db.rawQuery("SELECT status FROM " +
-                "permit_details"
+                "permit_details " +
+                " WHERE " +
+                "permit_id = "+permit_id
                 , null);
 
 

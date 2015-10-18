@@ -40,48 +40,75 @@
             />
     </LinearLayout>
 
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey3">
+
+    </View>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="2dip"
-        android:layout_marginBottom="2dip">
+        android:layout_marginBottom="2dip"
+        android:weightSum="100"
+        android:layout_marginTop="2dip">
 
-        <ImageButton
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="20dp"
+            android:layout_weight="33"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            >
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:id="@+id/yes_imageButton"
-            android:layout_weight="33"
-            android:src="@drawable/yes"
-            android:background="@color/white"
+            android:background="@drawable/right_button_back"
             android:padding="0dip"
 
-
             />
-
-        <ImageButton
+    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            >
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:id="@+id/no_imageButton"
-            android:layout_weight="33"
-            android:src="@drawable/no"
-            android:background="@color/white"
+            android:background="@drawable/cross_button_back"
             android:padding="0dip"
 
 
             />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="33"
+        android:gravity="center"
 
-        <ImageButton
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/na_imageButton"
-            android:layout_weight="33"
-            android:src="@drawable/na"
-            android:background="@color/white"
-            android:padding="0dip"
+        >
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:id="@+id/na_imageButton"
+                android:background="@drawable/na_button_back"
+                android:padding="0dip"
 
 
-            />
+                />
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

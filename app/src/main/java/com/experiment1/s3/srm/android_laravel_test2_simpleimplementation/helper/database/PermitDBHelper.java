@@ -251,6 +251,8 @@ public class PermitDBHelper extends DatabaseHelper {
         contentValues.put("permit_name",permit.permit_name);
         contentValues.put("permit_template_id",permit.permit_template_id);
         contentValues.put("permit_no" , permit.auto_gen_permit_no);
+        contentValues.put("project_name" , permit.project_name);
+        contentValues.put("project_id" , permit.project_id);
 
        long id = db.insert("permit" ,null ,contentValues);
         Log.d("==" ,"insert "+id);

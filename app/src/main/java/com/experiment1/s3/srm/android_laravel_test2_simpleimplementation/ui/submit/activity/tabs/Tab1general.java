@@ -73,6 +73,8 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         initLayoutComponents(view);
         getSavedDraftFromDb();
 
+
+
         return view;
     }
 
@@ -95,10 +97,6 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
 
 
-
-
-
-        projectNameEt.setText(currentProject.name);
     }
 
 
