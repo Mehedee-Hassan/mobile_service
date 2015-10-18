@@ -59,7 +59,7 @@ public class ProjectActivityListViewAdapter extends BaseAdapter {
 
         if(convertView == null){
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            tempView = li.inflate(R.layout.row_layout,null);
+            tempView = li.inflate(R.layout.project_list_row_layout,null);
 
             viewHolder = new ProjectListViewHolder(tempView);
             tempView.setTag(viewHolder);

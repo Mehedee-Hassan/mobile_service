@@ -10,6 +10,7 @@
         tools:context=".LoginActivity"
         android:orientation="vertical"
         android:label="@string/app_name"
+    android:background="@color/white"
         
     >
 
@@ -40,7 +41,13 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/usernameeditText" android:hint="Email"
+            android:id="@+id/usernameeditText"
+            android:hint="Email"
+            android:background="@drawable/login_edit_text_back"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dip"
+            android:layout_marginLeft="15dip"
             />
 
     </LinearLayout>
@@ -67,6 +74,11 @@
                 android:inputType="textPassword"
                 android:id="@+id/passwordeditText"
                 android:hint="Password"
+                android:background="@drawable/login_edit_text_back"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="5dip"
+                android:layout_marginLeft="15dip"
                 />
 
         </LinearLayout>

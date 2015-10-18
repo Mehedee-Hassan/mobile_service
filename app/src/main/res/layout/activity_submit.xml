@@ -28,6 +28,7 @@
             android:layout_marginRight="5dip"
             android:layout_marginBottom="3dip"
             android:textColor="@color/black"
+            android:gravity="center"
             />
 
         <Button
