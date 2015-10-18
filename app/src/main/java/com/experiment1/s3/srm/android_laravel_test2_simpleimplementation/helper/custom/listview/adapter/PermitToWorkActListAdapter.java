@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.PTWForView;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class PermitToWorkActListAdapter extends BaseAdapter {
 
         if(convertView == null){
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            tempView = li.inflate(R.layout.ptw_before_permit_row_layout,null);
+            tempView = li.inflate(R.layout.row_ptw_before_permit_layout,null);
 
             viewHolder = new PTWHolder(tempView);
             tempView.setTag(viewHolder);

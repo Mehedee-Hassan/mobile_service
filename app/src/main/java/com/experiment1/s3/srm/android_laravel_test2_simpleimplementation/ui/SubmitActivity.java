@@ -31,14 +31,13 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab3Team;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Ordinal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Endros;
 
 import java.util.Calendar;
 import java.util.List;
@@ -166,7 +165,7 @@ public class SubmitActivity extends FragmentActivity
         fragments.add(Fragment.instantiate(this, Tab1general.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab2Checklist.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab3Team.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4Ordinal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab4Endros.class.getName()));
 
         pagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
 

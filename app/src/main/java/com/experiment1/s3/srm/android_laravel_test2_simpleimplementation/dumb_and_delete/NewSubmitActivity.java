@@ -21,7 +21,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab3Team;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Ordinal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Endros;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +59,7 @@ public class NewSubmitActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
 
 
-        setContentView(R.layout.activity_submit_new);
+        setContentView(R.layout.activity_submit_old);
         setTitle("Permit Number");
 
 
@@ -174,7 +174,7 @@ public class NewSubmitActivity extends FragmentActivity
 
 
         NewSubmitActivity.AddTab(this, this.tabHost,
-                this.tabHost.newTabSpec("ORDINAL").setIndicator("ORDINAL"), (tabInfo = new TabInfo("ORDINAL", Tab4Ordinal.class, savedInstanceState)));
+                this.tabHost.newTabSpec("ORDINAL").setIndicator("ORDINAL"), (tabInfo = new TabInfo("ORDINAL", Tab4Endros.class, savedInstanceState)));
 
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
 
@@ -201,7 +201,7 @@ public class NewSubmitActivity extends FragmentActivity
 
         fragments.add(Fragment.instantiate(this, Tab2Checklist.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab3Team.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4Ordinal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab4Endros.class.getName()));
 
         Log.d("UserSearchDialog Ac ==", "11");
 

@@ -16,7 +16,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab3Team;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Ordinal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Endros;
 
 import java.util.List;
 import java.util.Vector;
@@ -47,7 +47,7 @@ public class TestSubmitActivity extends FragmentActivity {
         fragments.add(Fragment.instantiate(this, Tab1general.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab2Checklist.class.getName()));
         fragments.add(Fragment.instantiate(this, Tab3Team.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4Ordinal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab4Endros.class.getName()));
 
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(),fragments);
 

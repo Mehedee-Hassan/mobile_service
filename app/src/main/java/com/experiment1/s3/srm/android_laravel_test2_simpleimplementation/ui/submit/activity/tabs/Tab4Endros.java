@@ -16,7 +16,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
  * Created by Mhr on 10/3/2015.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Tab4Ordinal extends Fragment {
+public class Tab4Endros extends Fragment {
 
     View view;
 
@@ -31,7 +31,7 @@ public class Tab4Ordinal extends Fragment {
         // return super.onCreateView(inflater, container, savedInstanceState);
 
 
-        View view = inflater.inflate(R.layout.submit_activity_tab4ordinal, container, false);
+        View view = inflater.inflate(R.layout.submit_activity_tab4endros, container, false);
 
 
         return view;

@@ -223,21 +223,21 @@ public class BackgroundTaskHelper  {
 
                 }
 
-//                adapter.clear();
-//
-//                List<String> temp = new ArrayList<String>();
-//
-//                int i = 0 ;
-//
-//
-//                for(Project project : projects){
-////                    temp.add(project.name);
-////                    adapter.add(project.name);
-//                }
+                adapter.clear();
+
+                List<String> temp = new ArrayList<String>();
+
+                int i = 0 ;
+
+
+                for(Project project : projects){
+                    temp.add(project.name);
+                    adapter.add(project.name);
+                }
 
 
 
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
