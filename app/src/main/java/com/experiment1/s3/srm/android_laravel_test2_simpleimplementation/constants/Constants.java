@@ -40,7 +40,7 @@ public class Constants {
     public static String PREF_KEY_ACCESS_TOKEN_TYPE = "ACCESS_TOKEN_TYPE";
 
     public static String DATABASE_NAME = "PW_DB.db";
-    public static long SERVICE_WEAK_INTERVAL = (30*60*1000); //10 min
+    public static long SERVICE_WAKE_INTERVAL = (1*20*1000); //10 min
     public static String PREF_KEY_IF_LOGGED_IN = "PREF_KEY_IF_LOGGED_IN";
 
 

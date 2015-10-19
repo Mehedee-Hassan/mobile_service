@@ -185,10 +185,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
             cr.moveToNext();
         }
 
-        //delete all draft after returning
-        db.rawQuery("DELETE FROM " +
-                "check_list_tab_draft_table"
-                ,null);
+
 
         cr.close();
 

@@ -136,20 +136,6 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
     }
 
 
-    @Override
-    public Permit onSubmitButtonClick() {
-
-        Log.d(TAG+" == " ,"onSubmitButtonClick, Tab1General.class");
-
-        return createPermitObjectFromFields();
-
-
-    }
-
-    @Override
-    public Permit onSubmitActivityPause() {
-        return createPermitObjectFromFields();
-    }
 
 
     @Override
@@ -177,7 +163,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         super.onStop();
         Log.d(TAG + " == ", "onStop");
 
-        databaseHelper.saveGeneralTabData(createPermitObjectFromFields() ,this.getActivity());
+        databaseHelper.saveGeneralTabData(createPermitObjectFromFields(), this.getActivity());
 
     }
 
@@ -186,8 +172,8 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
        Permit permit = databaseHelper.getPermitDraftWith(globalVars.getPermit().auto_gen_permit_no);
 
         populateGeneralTabEditTexts(permit.project_name
-                ,permit.contractor , permit.location,permit.work_activity,permit.permit_date
-                ,permit.start_time,permit.end_time);
+                , permit.contractor, permit.location, permit.work_activity, permit.permit_date
+                , permit.start_time, permit.end_time);
 
     }
 
@@ -204,5 +190,16 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
         startEt7.setText(startDate);
         endEt8.setText(endDate);
     }
+
+
+    @Override
+    public Permit onSubmitButtonClick() {
+
+        Log.d(TAG + " == ", "onSubmitButtonClick, Tab1General.class");
+        return createPermitObjectFromFields();
+    }
+
+
+
 
 }

@@ -29,9 +29,11 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constan
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab2CheckListFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
@@ -51,6 +53,7 @@ public class SubmitActivity extends FragmentActivity
     public String TAG = this.getClass().getSimpleName();
 
     Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector;
+    Tab2CheckListFragmentEventConnector tab2CheckFragmentEventConnector;
 
     PermitDBHelper ptwTypeTemplateDBHelper;
     private FragmentTabHost mTabHost;
@@ -290,8 +293,20 @@ public class SubmitActivity extends FragmentActivity
                         globalVars.getSubmitActTab1GenInterface();
 
 
+                 tab1GeneralFragmentEventConnector = globalVars.getSubmitActTab1GenInterface();
+                tab2CheckFragmentEventConnector = globalVars.getSubmitActTab2ChecklistInterface();
+
+
+
+
                 Log.d(TAG + " == ", "Submit activity ,onclicklistnersetup ,interface ");
+
                 Permit returnedPermitObject = tab1GeneralFragmentEventConnector.onSubmitButtonClick();
+
+                List<PermitDetails> returnedPermitDetailsOvjList =
+                        tab2CheckFragmentEventConnector.onSubmitButtonClick();
+
+
 
 
                 //go to login page
@@ -301,6 +316,8 @@ public class SubmitActivity extends FragmentActivity
 
                 Log.d(TAG + " == ", "returned permit object = " + returnedPermitObject.project_name);
                 saveToPermitTable(returnedPermitObject);
+                saveToPermitDetailsTable(returnedPermitDetailsOvjList);
+
 
 
             }
@@ -321,8 +338,8 @@ public class SubmitActivity extends FragmentActivity
 
         Log.d(TAG+" == ", " submit act ,save to permit");
 
-
-        Calendar calendar = Calendar.getInstance();
+//
+//        Calendar calendar = Calendar.getInstance();
 
 
         returnedPermitObject.auto_gen_permit_no = globalPermit.auto_gen_permit_no;
@@ -331,30 +348,34 @@ public class SubmitActivity extends FragmentActivity
 //        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().permit_id; //todo change temporary
 
 
-        //sqlite format yyyy-mm-dd
 
-//        returnedPermitObject.created_at = ""+calendar.get(Calendar.YEAR)
-//                +"-"+calendar.get(Calendar.MONTH)
-//                +"-"+calendar.get(Calendar.DAY_OF_MONTH)
-//                +" "+calendar.get(Calendar.HOUR_OF_DAY)
-//                +":"+calendar.get(Calendar.MINUTE)
-//                +":"+calendar.get(Calendar.SECOND);
+
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this);
+
+
+    }
+
+    private void saveToPermitDetailsTable(List<PermitDetails> returnedPermitDetailsObjectList) {
+
+
+
+
+        Log.d(TAG+" == ", " submit act ,save to permit");
+
 //
-//
-//        returnedPermitObject.updated_at = ""+calendar.get(Calendar.YEAR)
-//                +"-"+calendar.get(Calendar.MONTH)
-//                +"-"+calendar.get(Calendar.DAY_OF_MONTH)
-//                +" "+calendar.get(Calendar.HOUR_OF_DAY)
-//                +":"+calendar.get(Calendar.MINUTE)
-//                +":"+calendar.get(Calendar.SECOND);
+//        Calendar calendar = Calendar.getInstance();
+
+
+        for(PermitDetails permitDetails : returnedPermitDetailsObjectList){
+
+            backgroundTaskHelper.saveToPermitDetailsTable(permitDetails ,this);
+
+
+        }
 
 
 
 
-
-//        permitDBHelper.saveToPermitTabel(returnedPermitObject);
-
-        backgroundTaskHelper.saveToPermitTable(returnedPermitObject,this);
 
 
     }

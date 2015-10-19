@@ -15,10 +15,14 @@ import android.widget.ListView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab2CheckListFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapter;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDetailsDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.view.CheckList;
 
 import java.util.ArrayList;
@@ -28,10 +32,11 @@ import java.util.List;
  * Created by Mhr on 10/3/2015.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Tab2Checklist extends Fragment {
+public class Tab2Checklist extends Fragment
+implements Tab2CheckListFragmentEventConnector {
 
     View view;
-    PermitTemplateDetailsDBHelper permitTemplateDetailsDBHelper;
+    PermitTemplateDBHelper permitTemplateDBHelper;
     ListView listViw;
     Context context;
     SubmitActDraftDBHelper databaseHelper;
@@ -46,14 +51,16 @@ public class Tab2Checklist extends Fragment {
 
         Log.d("tab2 ==", "oncreate 1");
 
-        permitTemplateDetailsDBHelper = new PermitTemplateDetailsDBHelper(getActivity());
+        permitTemplateDBHelper = new PermitTemplateDBHelper(getActivity());
 
         Log.d("tab2 ==", "oncreate 2");
+
+
 
         databaseHelper = new SubmitActDraftDBHelper(getActivity());
         globalVars = (GlobalVars) getActivity().getApplication();
 
-
+        globalVars.setSubmitActTab2CheckInterface(this);
     }
 
     @Nullable
@@ -81,7 +88,7 @@ public class Tab2Checklist extends Fragment {
 
 
         ptdetailsList =
-                permitTemplateDetailsDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
+                permitTemplateDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
 
 
 
@@ -162,7 +169,46 @@ public class Tab2Checklist extends Fragment {
     }
 
 
+    @Override
+    public List<PermitDetails> onSubmitButtonClick() {
+
+        Log.d(" == response ", "call from tab2checklis");
+
+        PermitDetails permitDetails;
+        List<PermitDetails> permitDetailsList = new ArrayList<>();
+
+        saveCheckList();
+
+
+        for (CheckList checkList : checkLists){
+            permitDetails = new PermitDetails();
+
+            permitDetails.permit_id = checkList.permit_id;
+            permitDetails.question = checkList.question;
+            permitDetails.extra_text = "empty"; // temporary
+
+            if(checkList.yesOptions == 0)
+                permitDetails.status = "null";
+
+        if(checkList.yesOptions == 1)
+                permitDetails.status = "OK";
+
+        if(checkList.yesOptions == 2)
+                permitDetails.status = "NOK";
+
+        if(checkList.yesOptions == 3)
+                permitDetails.status = "NA";
+
+
+            permitDetailsList.add(permitDetails);
+
+        }
 
 
 
+
+
+
+        return permitDetailsList;
+    }
 }

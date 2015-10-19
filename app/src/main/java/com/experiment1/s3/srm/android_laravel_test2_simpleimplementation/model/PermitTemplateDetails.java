@@ -7,9 +7,9 @@ public class PermitTemplateDetails {
 
     public int id;
     public String question;
-    public String extraText;
+    public String extra_text;
     public int sno;
-    public int permitTemplateId;
+    public int permit_template_id;
 
 
 }

@@ -11,7 +11,10 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.Cus
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 
 import java.util.List;
@@ -27,11 +30,13 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
     BackgroundTaskHelper backgroundTaskHelper;
     SaveDataHelper saveDataHelper;
-    private Object data;
+    final PermitTemplateDBHelper permitTemplateDBHelper;
 
     public BackgroundDataLoadingIntentService() {
         super("BackgroundDataLoadingIntentService");
 
+         permitTemplateDBHelper =
+                new PermitTemplateDBHelper(this);
 
 
     }
@@ -42,8 +47,9 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 
         if(isNetworkAvailable(this)){
-            getData();
-
+            getProjectListFromServer();
+            getPermitTemplateListFromServer();
+            getPermitTemplateDetailsListFromServer();
             //stop after data loading finished
             stopSelf();
         }
@@ -55,7 +61,7 @@ public class BackgroundDataLoadingIntentService extends IntentService {
     }
 
 
-    public Object getData() {
+    public void getProjectListFromServer() {
 
         RestAdapter restAdapter;
         CustomAPI loginApi;
@@ -88,7 +94,7 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 
 //                      after insertion to sqlite database
-                        Log.d("starting==","ui update===");
+                        Log.d("starting==", "ui update===");
                         Intent intent = new Intent();
                         intent.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.PROJECT_ACTIVITY_LIST_VIEW_UPDATE");
                         sendBroadcast(intent);
@@ -101,7 +107,89 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 
 
-        return data;
+    }
+
+    public void getPermitTemplateListFromServer() {
+
+        RestAdapter restAdapter;
+        CustomAPI loginApi;
+//        final PermitTemplateDBHelper permitTemplateDBHelper =
+//                new PermitTemplateDBHelper(this);
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+        saveDataHelper = new SaveDataHelper(this);
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        String[] token = saveDataHelper.getAccessTokenDetails();
+
+        loginApi.getPermitTemplateList(token[0],
+                token[1], new Callback<List<PermitTemplate>>() {
+
+                    public void failure(RetrofitError arg0) {
+                        Log.d("===service login  ==", " permit template error = " + arg0.getMessage());
+
+                    }
+
+                    public void success(List<PermitTemplate> permitTemplate, Response arg1) {
+                        Log.d("login string service= ", " permit template  ,success");
+
+//                        databaseHelper.saveProjects(projects);
+                        permitTemplateDBHelper.insertPermitTemplate(permitTemplate);
+
+
+                    }
+
+
+                });
+
+
+    }
+
+    public void getPermitTemplateDetailsListFromServer() {
+
+        RestAdapter restAdapter;
+        CustomAPI loginApi;
+//        final PermitTemplateDBHelper permitTemplateDBHelper =
+//                new PermitTemplateDBHelper(this);
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+        saveDataHelper = new SaveDataHelper(this);
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        String[] token = saveDataHelper.getAccessTokenDetails();
+
+        loginApi.getPermitTemplateDetailsList(token[0],
+                token[1], new Callback<List<PermitTemplateDetails>>() {
+
+                    public void failure(RetrofitError arg0) {
+                        Log.d("===service login  ==", " permit template details error = " + arg0.getMessage());
+
+                    }
+
+                    public void success(List<PermitTemplateDetails> permitTemplateDetails, Response arg1) {
+                        Log.d("login string service= ", " permit template details ,success");
+
+//                        databaseHelper.saveProjects(projects);
+                        permitTemplateDBHelper.insertPermitTemplateDetails(permitTemplateDetails);
+
+
+                    }
+
+
+                });
+
+
+
     }
 
 

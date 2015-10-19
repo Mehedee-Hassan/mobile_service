@@ -9,6 +9,5 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.v
 public interface Tab1GeneralFragmentEventConnector {
 
 public Permit onSubmitButtonClick();
-public Permit onSubmitActivityPause();
 
 }

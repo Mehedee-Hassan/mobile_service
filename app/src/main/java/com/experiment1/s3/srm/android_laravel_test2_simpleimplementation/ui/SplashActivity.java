@@ -65,7 +65,7 @@ public class SplashActivity extends Activity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP
                 , System.currentTimeMillis() + (10000)
-                , Constants.SERVICE_WEAK_INTERVAL
+                , Constants.SERVICE_WAKE_INTERVAL
                 , pendingIntent);
     }
 

@@ -22,7 +22,9 @@ public class Permit {
     public String created_at;
     public String updated_at;
 
-
+    public Permit(){
+        created_by = 0;
+    }
 }
 
 

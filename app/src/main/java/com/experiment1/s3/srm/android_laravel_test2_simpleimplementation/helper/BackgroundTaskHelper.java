@@ -18,6 +18,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.LoginMessage;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Token;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.PermitStoreToServer;
@@ -713,36 +714,94 @@ public class BackgroundTaskHelper  {
         loginApi = restAdapter.create(CustomAPI.class);
         //
 
-        loginApi.storeGeneralTabToPermitTabel(
-                permit.permit_name
-                , permit.permit_template_id
+
+
+        Log.d("== submit button" ,"clicked" + "project_id = "+permit.project_id);
+
+        int startTime = Integer.parseInt(permit.start_time);
+        int endTime = Integer.parseInt(permit.end_time);
+
+        loginApi.storeGeneralTabToPermitTabel2(
+                Constants.access_token,
+                Constants.token_type
+                ,permit.auto_gen_permit_no
                 , permit.project_id
                 , permit.project_name
-                , permit.auto_gen_permit_no
-                , permit.location
+                , permit.permit_template_id
+                , permit.permit_name
                 , permit.contractor
+                , permit.location
                 , permit.work_activity
                 , permit.permit_date
-                , permit.start_time
-                , permit.end_time
-                , new Callback<ServerMessage>() {
+                , startTime
+                , endTime
+                , permit.created_by
+                , new Callback<List<ServerMessage>>() {
                     @Override
-                    public void success(ServerMessage serverReturnMessage, Response response) {
+                    public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
 
                         Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG+" == " ," success "+serverReturnMessage.message);
+                        Log.d(TAG + " == back task ", " success " + serverReturnMessage.get(0).message);
 
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Log.d(TAG+" == " ," fail "+error.getMessage());
+                        Log.d(TAG + " == back task ", " fail " + error.getMessage());
 
                     }
                 }
         );
 
+
+    }
+
+
+
+    public void saveToPermitDetailsTable(PermitDetails permitDetails, final Activity submitActivity) {
+
+        //todo delete temporary
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
+                .build();
+
+        loginApi = restAdapter.create(CustomAPI.class);
+        //
+
+
+
+        Log.d("== submit button" ," check list clicked" + "status = "+permitDetails.status);
+
+
+
+        loginApi.sendPermitDetails(
+                Constants.access_token,
+                Constants.token_type
+                ,permitDetails.permit_id
+                ,permitDetails.sno
+                ,permitDetails.question
+                ,permitDetails.allowed_text
+                ,permitDetails.extra_text
+                ,permitDetails.status
+                , new Callback<List<ServerMessage>>() {
+                    @Override
+                    public void success(List<ServerMessage> serverReturnMessage, Response response) {
+
+
+                        Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
+                        Log.d(TAG + " == back task 2", " success " + serverReturnMessage.get(0).message);
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                        Log.d(TAG + " == back task 2 ", " fail " + error.getMessage());
+
+                    }
+                }
+        );
     }
 }

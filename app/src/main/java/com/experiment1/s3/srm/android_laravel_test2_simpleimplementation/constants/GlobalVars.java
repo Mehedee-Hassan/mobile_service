@@ -3,11 +3,13 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.consta
 import android.app.Application;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab1GeneralFragmentEventConnector;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab2CheckListFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.User;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 
 /**
  * Created by Mhr on 10/5/2015.
@@ -22,6 +24,7 @@ public class GlobalVars extends Application {
         private Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector;
         private boolean isLoginActStdFromSubmit = false;
         private Tab1GeneralFragmentEventConnector submitActTab1GenInterface;
+        private Tab2CheckListFragmentEventConnector submitActTab2CheckInterface;
         private boolean ifLoggedIn;
         private String permitNumber;
         private PermitTemplate permitTemplate;
@@ -64,8 +67,16 @@ public class GlobalVars extends Application {
         this.submitActTab1GenInterface = submitActTab1GenInterface;
     }
 
+    public void setSubmitActTab2CheckInterface(Tab2Checklist submitActTab2CheckInterface) {
+        this.submitActTab2CheckInterface = submitActTab2CheckInterface;
+    }
+
     public Tab1GeneralFragmentEventConnector getSubmitActTab1GenInterface() {
         return this.submitActTab1GenInterface;
+    }
+
+    public Tab2CheckListFragmentEventConnector getSubmitActTab2ChecklistInterface() {
+        return this.submitActTab2CheckInterface;
     }
 
     public void setIfLoggedIn(boolean ifLoggedIn) {

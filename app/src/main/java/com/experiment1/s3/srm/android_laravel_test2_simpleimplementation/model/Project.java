@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class Project implements Parcelable{
 
-    public int id;
+    public int id; // here id  =  server id
     public String name;
 
     public Project(){}
