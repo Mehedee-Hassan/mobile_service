@@ -19,6 +19,12 @@ public class Constants {
 
 
 
+    public static String PERMIT_STATUS_VALIDATE = "VALIDATE";
+    public static String PERMIT_STATUS_REJECT = "ACCEPTANCE";
+
+
+
+
     //temp credential
     public static String username = "user1@gamil.com";
     public static String password = "pass@word1";
@@ -82,4 +88,7 @@ public class Constants {
     public static String PERMIT_TEMPLATE_DETAILS_TABLE_NAME = "permit_template_details";
 
 
+    public static String CURRENT_USER_ROLE = "CURRENT_USER_ROLE";
+
+    public static String CURRENT_USER_ID = "CURRENT_USER_ID";
 }

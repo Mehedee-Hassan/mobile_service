@@ -6,5 +6,7 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model;
 public class LoginMessage {
 
     public String message;
+    public int user_role;
+    public int user_id;
 
 }

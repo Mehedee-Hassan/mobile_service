@@ -20,6 +20,7 @@ public class SaveDataHelper {
     private Permit generalTabData;
 
 
+
     public SaveDataHelper(){
 
     }
@@ -230,5 +231,33 @@ public class SaveDataHelper {
 
     public void setGeneralTabData(Permit generalTabData) {
         this.generalTabData = generalTabData;
+    }
+
+
+    public void setCurrentUserRole(int currentUserRole) {
+
+        editor.putInt(Constants.CURRENT_USER_ROLE , (currentUserRole));
+        editor.commit();
+    }
+
+    public int getCurrentUserRole(){
+
+        int role = preferences.getInt(Constants.CURRENT_USER_ROLE, 0 );
+
+        return role;
+    }
+
+    public int getCurrentUserId() {
+
+        int idSaved = preferences.getInt(Constants.CURRENT_USER_ID ,0);
+        return idSaved;
+
+    }
+
+    public void setCurrentUserId(int id) {
+
+        editor.putInt(Constants.CURRENT_USER_ID ,id);
+        editor.commit();
+
     }
 }

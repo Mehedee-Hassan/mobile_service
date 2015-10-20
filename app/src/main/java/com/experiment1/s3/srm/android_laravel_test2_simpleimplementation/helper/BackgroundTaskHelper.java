@@ -19,9 +19,9 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.LoginMessage;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Token;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.PermitStoreToServer;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.ServerMessage;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.LoginActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.ProjectActivity;
@@ -140,9 +140,7 @@ public class BackgroundTaskHelper  {
 
 
 
-
-                saveDataHelper.saveToken(token.access_token ,token.token_type);
-
+                saveDataHelper.saveToken(token.access_token, token.token_type);
 
 
                 Flags.tokenReceiveSuccessFlag = 1;
@@ -157,8 +155,11 @@ public class BackgroundTaskHelper  {
 
 
                     loginHelper3(token.access_token
-                            , token.token_type, activity,
-                            isReqFromLoginDialog);
+                            , token.token_type
+                            , activity
+                            , isReqFromLoginDialog
+
+                    );
 
 
 
@@ -265,8 +266,9 @@ public class BackgroundTaskHelper  {
     boolean returnTokenIsOk = false;
     public boolean loginHelper3(final String access_token
             , final String token_type
-            , final Activity activity,
-                                final boolean ifRequestFromLoginDialogSubmitActivity)  {
+            , final Activity activity
+            , final boolean ifRequestFromLoginDialogSubmitActivity
+            )  {
 
         returnTokenIsOk = false;
 
@@ -299,6 +301,9 @@ public class BackgroundTaskHelper  {
                         globalVars.setIfLoggedIn(false);
 
 
+
+
+
                         Flags.LOGIN_SUCCESS_FLAG = false;
 
                         Toast.makeText(
@@ -311,8 +316,15 @@ public class BackgroundTaskHelper  {
 
                         Log.d("===login with token==", "error = " + arg0.getMessage());
                         //set login false
+
                         globalVars.setIfLoggedIn(false);
-//                        saveDataHelper.setIfLoggedIn(false);
+
+                        //set user role [logged in for ui]
+
+
+//
+//
+// saveDataHelper.setIfLoggedIn(false);
 
                     }
 
@@ -322,8 +334,16 @@ public class BackgroundTaskHelper  {
                         globalVars.setIfLoggedIn(true);
                         saveDataHelper.setIfLoggedIn(true);
 
-                        Log.d("login string = ", loginMessage.message);
+//                        globalVars.setCurrentUserRole();
+                        saveDataHelper.setCurrentUserRole(loginMessage.user_role);
+                        saveDataHelper.setCurrentUserId(loginMessage.user_id);
+
+
+                        Log.d("login string == ", loginMessage.message);
+                        Log.d("login string == ", ""+loginMessage.user_role);
                         returnTokenIsOk = true;
+
+
 
 
                         Flags.LOGIN_SUCCESS_FLAG = true;
@@ -342,6 +362,8 @@ public class BackgroundTaskHelper  {
                                 intent2.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.BACKGROUND_DATA_LOADING_INTENT_SERVICE");
                                 activity.startService(intent2);
                                 //start activity
+
+
                                 Intent intent1 = new Intent(activity, ProjectActivity.class);
                                 activity.startActivity(intent1);
 
@@ -721,10 +743,10 @@ public class BackgroundTaskHelper  {
         int startTime = Integer.parseInt(permit.start_time);
         int endTime = Integer.parseInt(permit.end_time);
 
-        loginApi.storeGeneralTabToPermitTabel2(
+        loginApi.storeGeneralTabToPermitTable(
                 Constants.access_token,
                 Constants.token_type
-                ,permit.auto_gen_permit_no
+                , permit.auto_gen_permit_no
                 , permit.project_id
                 , permit.project_name
                 , permit.permit_template_id
@@ -736,20 +758,61 @@ public class BackgroundTaskHelper  {
                 , startTime
                 , endTime
                 , permit.created_by
+                , permit.status
                 , new Callback<List<ServerMessage>>() {
                     @Override
                     public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
 
                         Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG + " == back task ", " success " + serverReturnMessage.get(0).message);
+                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(0).message);
 
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Log.d(TAG + " == back task ", " fail " + error.getMessage());
+                        Log.d(TAG + " == back task ", " fail saveToPermitTable =" + error.getMessage());
+
+                    }
+                }
+        );
+
+
+    }
+    public void saveToPermitPermissionTable(PermitPermission permitPermission, final Activity submitActivity) {
+
+        //todo delete temporary
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(LOCAL_BASE_URL)  //call your base url
+                .build();
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        Log.d(TAG + " == ", "permit permission requesting ....  ");
+
+
+        loginApi.sendPermitPermission(
+                Constants.access_token,
+                Constants.token_type
+                ,permitPermission.user_id
+                ,3 //permitPermission.permit_id
+                ,permitPermission.status
+                ,new Callback<List<ServerMessage>>(){
+                    @Override
+                    public void success(List<ServerMessage> serverReturnMessage, Response response) {
+
+
+                        Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
+                        Log.d(TAG + " == back task 3", " permission permit success saveToPermitPermissionTable =" + serverReturnMessage.get(0).message);
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                        Log.d(TAG + " == back task 3", "permit permission fail saveToPermitPermissionTable =" + error.getMessage());
 
                     }
                 }
@@ -772,33 +835,41 @@ public class BackgroundTaskHelper  {
 
 
 
-        Log.d("== submit button" ," check list clicked" + "status = "+permitDetails.status);
+        Log.d("== submit button" ," check list clicked" + "status = "+permitDetails.status  +" permit id = "+ permitDetails.permit_id
+                +"sno = "+ permitDetails.sno
+                + "question =" + permitDetails.question
+                + "allowed text = " + permitDetails.allowed_text
+                + "extra text = " +permitDetails.extra_text
+                + "status = "+permitDetails.status);
+
+
+
 
 
 
         loginApi.sendPermitDetails(
                 Constants.access_token,
                 Constants.token_type
-                ,permitDetails.permit_id
-                ,permitDetails.sno
-                ,permitDetails.question
-                ,permitDetails.allowed_text
-                ,permitDetails.extra_text
-                ,permitDetails.status
+                , 3//permitDetails.permit_id
+                , permitDetails.sno
+                , permitDetails.question
+                , permitDetails.allowed_text
+                , permitDetails.extra_text
+                , permitDetails.status
                 , new Callback<List<ServerMessage>>() {
                     @Override
                     public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
 
                         Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG + " == back task 2", " success " + serverReturnMessage.get(0).message);
+                        Log.d(TAG + " == back task 2", " success saveToPermitDetailsTable " + serverReturnMessage.get(0).message);
 
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
 
-                        Log.d(TAG + " == back task 2 ", " fail " + error.getMessage());
+                        Log.d(TAG + " == back task 2 ", " fail saveToPermitDetailsTable " + error.getMessage());
 
                     }
                 }

@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -25,7 +25,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
@@ -35,20 +34,23 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.SettingActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab3Team;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab4Endros;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab1generalVal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab2ChecklistVal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab3TeamVal;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab4EndrosVal;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
 
-public class SubmitActivity extends FragmentActivity
+public class SubmitActValidate extends FragmentActivity
         implements OnClickListener {
 
 
@@ -65,8 +67,8 @@ public class SubmitActivity extends FragmentActivity
     private CustomPagerAdapter pagerAdapter;
 
     Permit globalPermit;
-    EditText projectNameEt, subContractorNameTe3,
-            locationEt4, descriptionWorkEt5, dateEt6, startEt7, endEt8;
+
+
     private TextView ptwTypeNameTextView;
 
     List<Fragment> fragments;
@@ -167,10 +169,10 @@ public class SubmitActivity extends FragmentActivity
         fragments = new Vector<Fragment>();
 
 
-        fragments.add(Fragment.instantiate(this, Tab1general.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab2Checklist.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab3Team.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4Endros.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab1generalVal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab2ChecklistVal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab3TeamVal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab4EndrosVal.class.getName()));
 
         pagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
 
@@ -305,11 +307,6 @@ public class SubmitActivity extends FragmentActivity
 
                 Permit returnedPermitObject = tab1GeneralFragmentEventConnector.onSubmitButtonClick();
 
-                //adding validate status
-                returnedPermitObject.status = Constants.PERMIT_STATUS_VALIDATE;
-
-
-
                 List<PermitDetails> returnedPermitDetailsOvjList =
                         tab2CheckFragmentEventConnector.onSubmitButtonClick();
 
@@ -317,14 +314,14 @@ public class SubmitActivity extends FragmentActivity
 
 
                 //go to login page
-                Intent intent = new Intent(SubmitActivity.this, LoginDialogActivity.class);
+                Intent intent = new Intent(SubmitActValidate.this, LoginDialogActivity.class);
                 startActivityForResult(intent, 2);
 
 
                 Log.d(TAG + " == ", "returned permit object = " + returnedPermitObject.project_name);
                 saveToPermitTable(returnedPermitObject);
                 saveToPermitDetailsTable(returnedPermitDetailsOvjList);
-                saveToPermitPermissionTable(getPermitPermission());
+
 
 
             }
@@ -338,26 +335,6 @@ public class SubmitActivity extends FragmentActivity
         });
     }
 
-
-
-    public PermitPermission getPermitPermission(){
-
-
-        PermitPermission permitPermission = new PermitPermission();
-
-        permitPermission.status = Constants.PERMIT_STATUS_VALIDATE;
-        permitPermission.permit_id = globalVars.getPermit().id;
-        permitPermission.user_id = saveDataHelper.getCurrentUserId();
-
-
-
-
-        return permitPermission;
-    }
-
-
-
-
     private void saveToPermitTable(Permit returnedPermitObject) {
 
 
@@ -370,11 +347,7 @@ public class SubmitActivity extends FragmentActivity
 
 
         returnedPermitObject.auto_gen_permit_no = globalPermit.auto_gen_permit_no;
-        returnedPermitObject.permit_template_id = globalVars.getPermit().permit_template_id;
-
-
-        Log.d(" == " , "Submit activity , permit template id"+returnedPermitObject.permit_template_id);
-
+        returnedPermitObject.permit_template_id = globalPermit.permit_template_id;
         returnedPermitObject.permit_name = globalPermit.permit_name;
 //        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().permit_id; //todo change temporary
 
@@ -382,29 +355,6 @@ public class SubmitActivity extends FragmentActivity
 
 
         backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this);
-
-
-    }
-
-    private void saveToPermitPermissionTable(PermitPermission returnedPermitObject) {
-
-
-
-
-        Log.d(TAG+" == ", " submit act ,save to permit");
-
-//
-//        Calendar calendar = Calendar.getInstance();
-
-
-        returnedPermitObject.permit_id = globalPermit.id;
-        returnedPermitObject.user_id = saveDataHelper.getCurrentUserRole();
-//        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().permit_id; //todo change temporary
-
-
-
-
-        backgroundTaskHelper.saveToPermitPermissionTable(returnedPermitObject, this);
 
 
     }

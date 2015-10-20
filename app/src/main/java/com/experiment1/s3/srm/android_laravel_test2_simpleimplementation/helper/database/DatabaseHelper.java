@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS "
                 +PROJECT_TABLE_NAME
-                +"(permit_id integer primary key autoincrement," +
+                +"(_id integer primary key autoincrement," +
                 PROJECT_TABLE_COL_PROJECT_ID+" integer ," +
                 PROJECT_TABLE_COL_PROJECT_NAME+" text);");
 
@@ -150,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", start_time datetime"
                 +", end_time datetime"
                 +", created_by integer"
+                +", status varchar(20)"
                 +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(permit_id)"
                 +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
                 +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
@@ -321,7 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put("project_id", "10");
+            contentValues.put("project_id", "4");
             contentValues.put("project_name", "abc project 1");;
             db.insert("Projects", null, contentValues);
 

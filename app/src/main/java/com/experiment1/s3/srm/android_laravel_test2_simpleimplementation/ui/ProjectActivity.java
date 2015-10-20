@@ -369,8 +369,12 @@ public class ProjectActivity extends Activity {
             globalVars.setProject(project);
 
 
+
             Intent intent = new Intent(ProjectActivity.this , PermitToWorkActivity.class);
             startActivity(intent);
+
+
+
         }
     }
 

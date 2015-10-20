@@ -54,8 +54,10 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
                     " from "+PROJECT_TABLE_NAME
                     +" where " +
                     PROJECT_TABLE_COL_PROJECT_ID+"="+project.id+"" +
-                    " and "+
-                    PROJECT_TABLE_COL_PROJECT_NAME+ " = '" + project.name +"';"
+//                    " and "+
+//                    PROJECT_TABLE_COL_PROJECT_NAME+ " = '" + project.name +
+//                    "'" +
+                    ";"
                     , null);
 
 
@@ -76,6 +78,7 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
         }
 
+        if(cr != null)
         cr.close();
 
 

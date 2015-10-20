@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.Services;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.services;
 
 import android.app.IntentService;
 import android.content.Context;

@@ -21,6 +21,7 @@ public class Permit {
     public int created_by;
     public String created_at;
     public String updated_at;
+    public String status;
 
     public Permit(){
         created_by = 0;

@@ -54,23 +54,44 @@ public interface CustomAPI{
 
 
 
-    @GET("/api/v1/permit/template") //get projects
+    @GET("/api/v1/permit/template")
     public void getPermitTemplateList(
             @Query("access_token") String access_token
             ,@Query("token_type")  String token_type
-            , Callback<List<PermitTemplate>> callBack);// login request and get project list
+            , Callback<List<PermitTemplate>> callBack);// login request and get permit template
 
 
 
-    @GET("/api/v1/permit/template/details") //get projects
+    @GET("/api/v1/permit/template/details")
     public void getPermitTemplateDetailsList(
             @Query("access_token") String access_token
             ,@Query("token_type")  String token_type
-            , Callback<List<PermitTemplateDetails>> callBack);// login request and get project list
+            , Callback<List<PermitTemplateDetails>> callBack);// login request and get permit template details list
 
 
-    @GET("/api/v1/permits") //get projects
-    public void storeGeneralTabToPermitTabel2(
+    @GET("/api/v1/permits/upload")
+    public void storeGeneralTabToPermitTable(
+            @Query("access_token") String access_token,
+            @Query("token_type") String token_type,
+            @Query("permit_no") String permit_no,
+            @Query("project_id") int project_id,
+            @Query("project_name") String project_name,
+            @Query("permit_template_id") int permit_template_id,
+            @Query("permit_name") String permit_name,
+            @Query("contractor") String contractor,
+            @Query("location") String location,
+            @Query("work_activity") String work_activity,
+            @Query("permit_date") String permit_date,
+            @Query("start_time") int start_time,
+            @Query("end_time") int end_time,
+            @Query("created_by") int created_by,
+            @Query("status") String status
+
+            , Callback<List<ServerMessage>> callback);// login request and send permits
+
+
+    @GET("/api/v1/permits/download") //get projects
+    public void retrieveGeneralTabToPermitTable(
             @Query("access_token") String access_token,
             @Query("token_type")  String token_type,
             @Query("permit_no") String permit_no,
@@ -84,53 +105,11 @@ public interface CustomAPI{
             @Query("permit_date") String permit_date,
             @Query("start_time") int start_time,
             @Query("end_time") int end_time,
-            @Query("created_by") int created_by
-
-            ,Callback<List<ServerMessage>> callback);// login request and get project list
-
+            @Query("created_by") int created_by,
+            @Query("status") String status
 
 
-
-
-    @FormUrlEncoded
-    @POST("/api2/v1/permits") // store permit general tab
-    public void storeGeneralTabToPermitTable(
-            @Field("access_token") String access_token,
-            @Field("token_type")  String token_type
-//            ,
-//            @Field("permit_no") String permit_no,
-//            @Field("project_id") int project_id,
-//            @Field("project_name") String project_name,
-//            @Field("permit_template_id") int permit_template_id,
-//            @Field("permit_name") String permit_name,
-//            @Field("contractor") String contractor,
-//            @Field("location") String location,
-//            @Field("work_activity") String work_activity,
-//            @Field("permit_date") String permit_date,
-//            @Field("start_time") String start_time,
-//            @Field("end_time") String end_time,
-//            @Field("created_by") int created_by
-            ,Callback<List<ServerMessage>> callback
-    );
-
-
-
-//    @FormUrlEncoded
-//    @POST("/permit/store") // store permit general tab
-//    public Permit storeGeneralTabToPermitTabelWithPermitRet(
-//            @Field("permit_name") String permit_name,
-//            @Field("permit_template_id") int permit_template_id,
-//            @Field("project_id") int project_id,
-//            @Field("project_name") String project_name,
-//            @Field("permit_no") String permit_no,
-//            @Field("location") String location,
-//            @Field("contractor") String contractor,
-//            @Field("work_activity") String work_activity,
-//            @Field("permit_date") String permit_date,
-//            @Field("start_time") String start_time,
-//            @Field("end_time") String end_time
-//            ,Callback<PermitStoreToServer> callback
-//    );
+            ,Callback<List<ServerMessage>> callback);// login request and get permit list where status ==  validate
 
 
 
@@ -147,5 +126,17 @@ public interface CustomAPI{
             ,@Query("status") String status
             , Callback<List<ServerMessage>> callBack);// login request and get project list
 
+
+    @GET("/api/v1/permit/permission/upload")
+    public void sendPermitPermission(
+            @Query("access_token") String access_token,
+            @Query("token_type")  String token_type,
+            @Query("user_id") int user_id,
+            @Query("permit_id") long permit_server_id,
+            @Query("status") String status //
+
+//            first stauts = submitted, second status = validated/rejected , third status = approved/rejected
+            , Callback<List<ServerMessage>> callBack
+    );
 
 }

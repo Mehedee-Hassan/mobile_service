@@ -90,7 +90,7 @@
         </activity>
 
         <service
-            android:name=".Services.BackgroundDataLoadingIntentService"
+            android:name=".services.BackgroundDataLoadingIntentService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.BACKGROUND_DATA_LOADING_INTENT_SERVICE" />

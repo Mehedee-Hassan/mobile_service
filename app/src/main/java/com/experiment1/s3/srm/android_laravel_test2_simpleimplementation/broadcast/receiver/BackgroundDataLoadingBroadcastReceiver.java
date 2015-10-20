@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.Services.BackgroundDataLoadingIntentService;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.services.BackgroundDataLoadingIntentService;
 
 /**
  * Created by Mhr on 9/28/2015.
