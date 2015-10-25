@@ -72,6 +72,8 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
         globalVars.setIfLoggedIn(saveDataHelper.getIfLoggedIn());
 
 
+
+
         boolean loginCon = saveDataHelper.getIfLoggedIn();
         if(loginCon == false){
             checkIfLoggedIn(saveDataHelper);
@@ -145,15 +147,15 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
 //            saveDataHelper.deleteCredential();
 //        }
 
-        if(saveCredentialCheckBox.isChecked() == true){
-            saveDataHelper.savePrefUsername(usernameEditText.getText().toString());
-            saveDataHelper.savePrefPassword(passwordEditText.getText().toString());
-
-        }
-        else {
-            saveDataHelper.deleteCredential();
-
-        }
+//        if(saveCredentialCheckBox.isChecked() == true){
+//            saveDataHelper.savePrefUsername(usernameEditText.getText().toString());
+//            saveDataHelper.savePrefPassword(passwordEditText.getText().toString());
+//
+//        }
+//        else {
+//            saveDataHelper.deleteCredential();
+//
+//        }
 
     }
 
@@ -219,6 +221,12 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
                 Constants.access_token = "";
                 //get token
 //                int tokenAccessFlag = backgroundTaskHelper.tokenHelper();
+
+
+
+//                globalVars.setUserName( usernameEditText.getText().toString());
+
+
 
                 backgroundTaskHelper.tokenHelper3(
                         usernameEditText.getText().toString(),

@@ -50,7 +50,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
     Dialog dialog ;
-    Button newPermitButton;
+
     PermitDBHelper permitDBHelper;
     List<String> listOfPtwTypes;
 //    ProjectActivityListViewAdapter ptwTypeListDialogAdapter;
@@ -70,7 +70,7 @@ implements View.OnClickListener, OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_permit_to_work);
+        setContentView(R.layout.activity_permit_to_work_validate);
 
 
         ActionBar bar = getActionBar();
@@ -89,6 +89,7 @@ implements View.OnClickListener, OnItemClickListener {
 
         CurretnProject =globalVars.getProject();
 
+
         Log.d(" == global var" ,""+CurretnProject.name);
 
 
@@ -99,9 +100,7 @@ implements View.OnClickListener, OnItemClickListener {
 
 
 
-        newPermitButton = (Button) findViewById(R.id.new_permit_button);
         permitDBHelper = new PermitDBHelper(this);
-        newPermitButton.setOnClickListener(this);
 
         //dialogListView = (ListView) findViewById(R.permit_id.permitToWorkDialoglistView);
 
@@ -161,107 +160,9 @@ implements View.OnClickListener, OnItemClickListener {
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
-
-            case R.id.new_permit_button:
-
-
-                final Dialog dialog = new Dialog(this);
-                dialog.setTitle("Choose PTW Type");
-
-                Log.d("== PermitToWorkActivity", "getlist click");
-
-                List<String> temp;
-
-
-
-                temp= permitDBHelper.getPtwTypeList();
-
-                Log.d("== PermitToWorkActivity", "temp size" + temp.size());
-
-                CharSequence[] ptwTypeList = temp.toArray(new CharSequence[temp.size()]);
-             //   CharSequence[] ptwTypeList = new CharSequence[]{ "sfd" ,"sdf","sfd" ,"sdf","sfd" ,"sdf","sfd" ,"sdf","sfd" ,"sdf"};
-
-                Log.d("== PermitToWorkActivity", "ptwTypeList size" + ptwTypeList.length);
-
-
-                AlertDialog.Builder builder  = new AlertDialog.Builder(this);
-                builder.setTitle("Choose PTW Type");
-
-
-
-
-                builder.setItems(ptwTypeList, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-
-
-                        //todo change CurrentVar to GlobalVars
-                        PermitTemplate permitTemplate = permitDBHelper.getPTWTypeAt(item);
-
-
-                        String permitNumber = generatePermitNumber();
-                        //
-                        //set permit_template permit_id for question
-                        //find permit details
-
-                        Permit permit = globalVars.getNotNullPermit();
-
-                        permit.permit_name = permitTemplate.name;
-                        permit.permit_template_id = permitTemplate.id;
-                        permit.auto_gen_permit_no = permitNumber;
-                        permit.project_name = globalVars.getProject().name;
-                        permit.project_id = globalVars.getProject().id;
-
-//                        globalVars.currentPermitTemplateId = permitTemplate.permit_id;
-
-
-                        //save to permit database and get the saved
-                        //record id
-
-                        long savedPermitId = permitDBHelper.saveNewHalfDonePermit(permit);
-
-
-                        if (savedPermitId != -1) {
-                            permit.id = savedPermitId;
-                        }
-
-                        globalVars.setPermit(permit);
-                        Log.d(TAG + " == ", "permit name" + permit.permit_name);
-                        Log.d(TAG + " == ", "permit id" + permit.id);
-                        globalVars.setPermitTemplate(permitTemplate);
-//                        globalVars.setProject(CurretnProject);
-
-
-                        Intent intent = new Intent(PTWorkActivityValidate.this, SubmitActivity.class);
-
-
-//old logic
-//                        intent.putExtra("CURRENT_PROJECT_OBJECT", CurretnProject);
-//                        intent.putExtra("list_position",item);
-
-
-                        intent.putExtra("permit_number", permitNumber);
-
-
-                        Toast.makeText(PTWorkActivityValidate.this, "permit number generated:\n" + permitNumber + "", Toast.LENGTH_LONG).show();
-                        Log.d("==", permitNumber);
-                        startActivity(intent);
-
-
-                        //todo uncomment testing purpose close
-                        savePermitDraftHandler(permitTemplate, permitNumber);
-
-
-                    }
-                });
-                AlertDialog alert = builder.create();
-
-                alert.show();
-
-
-                break;
-
-        }
+//        switch (view.getId()){
+//
+//        }
 
     }
 
@@ -281,59 +182,7 @@ implements View.OnClickListener, OnItemClickListener {
     }
 
 
-    public String generatePermitNumber(){
 
-        String permitNUmber = "";
-
-
-        Date d = new Date();
-        SimpleDateFormat dateFormatHour = new SimpleDateFormat("HH");
-        SimpleDateFormat dateFormatMin = new SimpleDateFormat("mm");
-        SimpleDateFormat dateFormatSec = new SimpleDateFormat("ss");
-
-        int sum = 0 ;
-        sum += Integer.parseInt(dateFormatHour.format(d).toString())*3600;
-        sum += Integer.parseInt(dateFormatMin.format(d).toString())*60;
-        sum += Integer.parseInt(dateFormatSec.format(d).toString());
-
-
-
-
-        SimpleDateFormat dateFormatY = new SimpleDateFormat("yyyy");
-        SimpleDateFormat dateFormatM = new SimpleDateFormat("MM");
-        SimpleDateFormat dateFormatd = new SimpleDateFormat("dd");
-
-
-        int yyyy =  Integer.parseInt(dateFormatY.format(d).toString());
-        int mm =  Integer.parseInt(dateFormatM.format(d).toString());
-        int dd =  Integer.parseInt(dateFormatd.format(d).toString());
-
-        String username = Constants.username.substring(0, 2);
-
-
-
-
-
-
-
-        permitNUmber += yyyy
-                    + "" + mm
-                    + "" + dd
-                    + "" + username.toUpperCase()
-                    + sum;
-
-
-
-
-        globalVars.setPermitNumber(permitNUmber);
-
-
-        //globalVars.getPermit().auto_gen_permit_no = permitNUmber;
-
-
-        return permitNUmber;
-
-    }
 
 
 
@@ -403,7 +252,7 @@ implements View.OnClickListener, OnItemClickListener {
         Permit permit = permitDBHelper.getPermitDraftAt(position);
 
 
-        Intent intent = new Intent(PTWorkActivityValidate.this ,SubmitActivity.class);
+        Intent intent = new Intent(PTWorkActivityValidate.this ,SubmitActValidate.class);
         intent.putExtra("permit_number", permit.auto_gen_permit_no);
 
         globalVars.setPermit(permit);

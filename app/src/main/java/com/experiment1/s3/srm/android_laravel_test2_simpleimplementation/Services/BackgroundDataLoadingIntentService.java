@@ -11,11 +11,15 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.Cus
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data.PermitForDataRet;
 
 import java.util.List;
 
@@ -32,6 +36,8 @@ public class BackgroundDataLoadingIntentService extends IntentService {
     SaveDataHelper saveDataHelper;
     final PermitTemplateDBHelper permitTemplateDBHelper;
 
+    PermitDBHelper permitDBHelper;
+
     public BackgroundDataLoadingIntentService() {
         super("BackgroundDataLoadingIntentService");
 
@@ -47,10 +53,25 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 
         if(isNetworkAvailable(this)){
-            getProjectListFromServer();
-            getPermitTemplateListFromServer();
-            getPermitTemplateDetailsListFromServer();
-            //stop after data loading finished
+            saveDataHelper = new SaveDataHelper(this);
+
+            getProjectListFromServer(saveDataHelper);
+
+            if(saveDataHelper.getCurrentUserRole() == 3) {
+                getPermitTemplateListFromServer(saveDataHelper);
+                getPermitTemplateDetailsListFromServer(saveDataHelper);
+                getPermitPermissionFromServer(saveDataHelper);
+                //stop after data loading finished
+            }
+            else if(saveDataHelper.getCurrentUserRole() == 2 || saveDataHelper.getCurrentUserRole() == 1 ){
+
+                permitDBHelper = new PermitDBHelper(this);
+
+                getPermitListFromServer(saveDataHelper);
+                getPermitDetailsListFromServer(saveDataHelper);
+            }
+
+
             stopSelf();
         }
         else {
@@ -61,7 +82,7 @@ public class BackgroundDataLoadingIntentService extends IntentService {
     }
 
 
-    public void getProjectListFromServer() {
+    public void getProjectListFromServer(SaveDataHelper saveDataHelper) {
 
         RestAdapter restAdapter;
         CustomAPI loginApi;
@@ -71,7 +92,6 @@ public class BackgroundDataLoadingIntentService extends IntentService {
                 .setEndpoint(Constants.BASE_URL)  //call your base url
                 .build();
 
-        saveDataHelper = new SaveDataHelper(this);
 
         loginApi = restAdapter.create(CustomAPI.class);
 
@@ -109,7 +129,93 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
     }
 
-    public void getPermitTemplateListFromServer() {
+
+    private void getPermitDetailsListFromServer(SaveDataHelper saveDataHelper) {
+
+
+        RestAdapter restAdapter;
+        CustomAPI loginApi;
+
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        String[] token = saveDataHelper.getAccessTokenDetails();
+
+        Log.d("===service login  ==", " permit token = " + token[0]);
+
+        loginApi.getPermitDetails(token[0],
+                token[1]
+                , new Callback<List<PermitDetails>>() {
+
+                    public void failure(RetrofitError arg0) {
+                        Log.d("===service login  ==", " permit details= " + arg0.getMessage());
+
+                    }
+
+                    public void success(List<PermitDetails> permitDetailsList, Response arg1) {
+                        Log.d("login string service= ", " permit details,success = " + permitDetailsList.get(0).question+" --- +++ size = "+permitDetailsList.size());
+
+
+                        permitDBHelper.saveToPermitDetailsTable(permitDetailsList);
+
+                    }
+
+
+                });
+
+
+    }
+
+
+    private void getPermitListFromServer(SaveDataHelper saveDataHelper) {
+        RestAdapter restAdapter;
+        CustomAPI loginApi;
+
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        String[] token = saveDataHelper.getAccessTokenDetails();
+
+        Log.d("===service login  ==", " permit token = " + token[0]);
+
+        loginApi.getPermit(token[0],
+                token[1]
+                , new Callback<List<PermitForDataRet>>() {
+
+                    public void failure(RetrofitError arg0) {
+                        Log.d("===service login  ==", " permit = " + arg0.getMessage());
+
+                    }
+
+                    public void success(List<PermitForDataRet> permitForDataRetList, Response arg1) {
+                        Log.d("login string service= ", " permit ,success = " + permitForDataRetList.get(0).permit_no);
+
+
+                        permitDBHelper.saveToPermitTable(permitForDataRetList);
+
+
+                    }
+
+
+                });
+
+
+
+    }
+
+    public void getPermitTemplateListFromServer(SaveDataHelper saveDataHelper) {
 
         RestAdapter restAdapter;
         CustomAPI loginApi;
@@ -120,7 +226,6 @@ public class BackgroundDataLoadingIntentService extends IntentService {
                 .setEndpoint(Constants.BASE_URL)  //call your base url
                 .build();
 
-        saveDataHelper = new SaveDataHelper(this);
 
         loginApi = restAdapter.create(CustomAPI.class);
 
@@ -150,7 +255,7 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
     }
 
-    public void getPermitTemplateDetailsListFromServer() {
+    public void getPermitTemplateDetailsListFromServer(SaveDataHelper saveDataHelper) {
 
         RestAdapter restAdapter;
         CustomAPI loginApi;
@@ -161,7 +266,6 @@ public class BackgroundDataLoadingIntentService extends IntentService {
                 .setEndpoint(Constants.BASE_URL)  //call your base url
                 .build();
 
-        saveDataHelper = new SaveDataHelper(this);
 
         loginApi = restAdapter.create(CustomAPI.class);
 
@@ -181,6 +285,50 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 //                        databaseHelper.saveProjects(projects);
                         permitTemplateDBHelper.insertPermitTemplateDetails(permitTemplateDetails);
+
+
+                    }
+
+
+                });
+
+
+
+    }
+
+
+    public void getPermitPermissionFromServer(SaveDataHelper saveDataHelper) {
+
+        RestAdapter restAdapter;
+        CustomAPI loginApi;
+
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(Constants.BASE_URL)  //call your base url
+                .build();
+
+
+        loginApi = restAdapter.create(CustomAPI.class);
+
+
+        String[] token = saveDataHelper.getAccessTokenDetails();
+
+        Log.d("===service login  ==", " permit permission error token = " + token[0]);
+
+        loginApi.getPermitPermission(token[0],
+                token[1]
+                , new Callback<List<PermitPermission>>() {
+
+                    public void failure(RetrofitError arg0) {
+                        Log.d("===service login  ==", " permit permission error = " + arg0.getMessage());
+
+                    }
+
+                    public void success(List<PermitPermission> permitPermissionList, Response arg1) {
+                        Log.d("login string service= ", " permit permission ,success = " + permitPermissionList.get(0).status);
+
+
+                        permitTemplateDBHelper.insertPermitPermission(permitPermissionList);
 
 
                     }

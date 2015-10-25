@@ -80,15 +80,16 @@ implements Tab2CheckListFragmentEventConnector {
 
 //        GlobalVars globalVars = (GlobalVars) getActivity().getApplication();
 //todo change
-        long nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).getPermit().id;
+        long permitId = ((GlobalVars) getActivity().getApplication()).getPermit().id;
 
 
-        Log.d("save == ","2 permit id = " + nowPermitTemplateDetailsId );
+        Log.d(" tab2Checklist )))))","2 permit id = " + permitId );
 
 
 
         ptdetailsList =
-                permitTemplateDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
+//                permitTemplateDBHelper.getPermitTemplateDetailsListWherePTId(nowPermitTemplateDetailsId);
+                permitTemplateDBHelper.getPermitTemplateDetailsListLocalWherePTId(permitId);
 
 
 
@@ -96,7 +97,8 @@ implements Tab2CheckListFragmentEventConnector {
 
 
         for(PermitDetails permitDetails : ptdetailsList){
-            checkLists.add(new CheckList(permitDetails.id , permitDetails.question , permitDetails.status));
+            checkLists.add(new CheckList(permitDetails.id ,permitDetails.permit_id , permitDetails.question
+                    , permitDetails.status ,permitDetails.sno));
         }
 
         CheckListAdapter adapter = new CheckListAdapter(getActivity() , checkLists);
@@ -181,14 +183,21 @@ implements Tab2CheckListFragmentEventConnector {
 
 
         for (CheckList checkList : checkLists){
-            permitDetails = new PermitDetails();
 
+
+            permitDetails = new PermitDetails();
+            permitDetails.id = checkList._id;
             permitDetails.permit_id = checkList.permit_id;
             permitDetails.question = checkList.question;
             permitDetails.extra_text = "empty"; // temporary
 
+
+
+            permitDetails.server_id = databaseHelper.getPermitDetailsServerId(permitDetails.id);
+
+
             if(checkList.yesOptions == 0)
-                permitDetails.status = "null";
+                permitDetails.status = "NULL";
 
         if(checkList.yesOptions == 1)
                 permitDetails.status = "OK";

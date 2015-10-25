@@ -2,10 +2,13 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.LoginMessage;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Token;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data.PermitForDataRet;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.PermitStoreToServer;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.ServerMessage;
 
@@ -44,6 +47,21 @@ public interface CustomAPI{
             , Callback<LoginMessage> callBack);// login request
 
 
+    @GET("/api/v1/permits/details_download") //get projects
+    public void getPermitDetails(
+            @Query("access_token") String access_token,
+            @Query("token_type")  String token_type
+
+            ,Callback<List<PermitDetails>> callback);// login request and get permit list where status ==  validate
+    @GET("/api/v1/permits_download") //get projects
+    public void getPermit(
+            @Query("access_token") String access_token,
+            @Query("token_type")  String token_type
+
+
+            ,Callback<List<PermitForDataRet>> callback);// login request and get permit list where status ==  validate
+
+
 
 
     @GET("/api/v1/projects") //get projects
@@ -69,6 +87,7 @@ public interface CustomAPI{
             , Callback<List<PermitTemplateDetails>> callBack);// login request and get permit template details list
 
 
+
     @GET("/api/v1/permits/upload")
     public void storeGeneralTabToPermitTable(
             @Query("access_token") String access_token,
@@ -85,7 +104,8 @@ public interface CustomAPI{
             @Query("start_time") int start_time,
             @Query("end_time") int end_time,
             @Query("created_by") int created_by,
-            @Query("status") String status
+            @Query("status") String status,
+            @Query("permit_server_id") long permit_server_id
 
             , Callback<List<ServerMessage>> callback);// login request and send permits
 
@@ -118,12 +138,13 @@ public interface CustomAPI{
     public void sendPermitDetails(
             @Query("access_token") String access_token
             ,@Query("token_type")  String token_type
-            ,@Query("permit_id") int permit_id
+            ,@Query("permit_id") long permit_id
             ,@Query("sno") int sno
             ,@Query("question") String question
             ,@Query("allowed_text") int allowed_text
             ,@Query("extra_text") String extra_text
             ,@Query("status") String status
+            ,@Query("id") long id
             , Callback<List<ServerMessage>> callBack);// login request and get project list
 
 
@@ -132,11 +153,19 @@ public interface CustomAPI{
             @Query("access_token") String access_token,
             @Query("token_type")  String token_type,
             @Query("user_id") int user_id,
-            @Query("permit_id") long permit_server_id,
+            @Query("permit_id") long permit_id,
             @Query("status") String status //
 
 //            first stauts = submitted, second status = validated/rejected , third status = approved/rejected
             , Callback<List<ServerMessage>> callBack
     );
+
+
+    @GET("/api/v1/permit/permission_download")
+    public void getPermitPermission(
+            @Query("access_token") String access_token
+            ,@Query("token_type")  String token_type
+            , Callback<List<PermitPermission>> callBack);
+
 
 }

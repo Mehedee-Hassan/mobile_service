@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -37,17 +37,17 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.SettingActivity;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab1generalApr;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab2ChecklistApr;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab3TeamApr;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab4EndrosApr;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.dialog.full.login.LoginDialogActivity;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab1generalVal;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab2ChecklistVal;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab3TeamVal;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab4EndrosVal;
 
 import java.util.List;
 import java.util.Vector;
 
 
-public class SubmitActValidate extends FragmentActivity
+public class SubmitActApproval extends FragmentActivity
         implements OnClickListener {
 
 
@@ -58,7 +58,7 @@ public class SubmitActValidate extends FragmentActivity
 
     PermitDBHelper ptwTypeTemplateDBHelper;
     private FragmentTabHost mTabHost;
-    Button validateButton, rejectButton;
+    Button approveButton, rejectButton;
     GlobalVars globalVars;
     private ViewPager pager;
     private CustomPagerAdapter pagerAdapter;
@@ -146,11 +146,14 @@ public class SubmitActValidate extends FragmentActivity
         tabHostInit();
 
 
-        validateButton = (Button) findViewById(R.id.validate_button);
+        approveButton = (Button) findViewById(R.id.validate_button);
         rejectButton = (Button) findViewById(R.id.reject_button);
 
 
-        validateButton.setOnClickListener(this);
+        approveButton.setText("APPROVE");
+
+
+        approveButton.setOnClickListener(this);
         rejectButton.setOnClickListener(this);
 
 
@@ -171,10 +174,10 @@ public class SubmitActValidate extends FragmentActivity
         fragments = new Vector<Fragment>();
 
 
-        fragments.add(Fragment.instantiate(this, Tab1generalVal.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab2ChecklistVal.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab3TeamVal.class.getName()));
-        fragments.add(Fragment.instantiate(this, Tab4EndrosVal.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab1generalApr.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab2ChecklistApr.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab3TeamApr.class.getName()));
+        fragments.add(Fragment.instantiate(this, Tab4EndrosApr.class.getName()));
 
         pagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), fragments);
 
@@ -236,13 +239,13 @@ public class SubmitActValidate extends FragmentActivity
     public void onClick(View view) {
 
 
-        int state_reject = Constants.state_reject_login_validate;
+        int state_reject = Constants.state_reject_login_approve;
 
         switch (view.getId()) {
 
 
             case R.id.reject_button:
-                state_reject = Constants.state_reject_login_nvalidate;
+                state_reject = Constants.state_reject_login_napprove;
 
             case R.id.validate_button:
 
@@ -259,11 +262,9 @@ public class SubmitActValidate extends FragmentActivity
 
 
                 TextView confTv = (TextView)view2.findViewById(R.id.confirmation_question_textView);
-                confTv.setText("We have inspected the above work location and its surrounding " +
-                        "\n and necessary safety measures are satisfactory " +
-                        "\n for the work to proceed. We undertake to report \n " +
-                        "IMMEDIATELY to the Project Manager any incompatible " +
-                        "\n works which may pose a risk to the above works");
+                confTv.setText("I am fully satisfied that a thorough inspection and proper assessment of " +
+                        "\n the work area and its surrounding have been " +
+                        "\n conducted and the piling operation can be carried out safely.");
 
 
 
@@ -324,13 +325,14 @@ public class SubmitActValidate extends FragmentActivity
 
 
                 //adding validate status
-                returnedPermitObject.status = Constants.PERMIT_STATUS_VALIDATE_SUBMITED;
+                returnedPermitObject.status = Constants.PERMIT_STATUS_TO_APPROVE;
+
                 returnedPermitObject.server_permit_id = globalVars.getPermit().server_permit_id;
                 returnedPermitObject.auto_gen_permit_no = globalVars.getPermit().auto_gen_permit_no;
 
 
                 //go to login page
-                Intent intent = new Intent(SubmitActValidate.this, LoginDialogActivity.class);
+                Intent intent = new Intent(SubmitActApproval.this, LoginDialogActivity.class);
                 startActivityForResult(intent, 2);
 
 
@@ -357,7 +359,8 @@ public class SubmitActValidate extends FragmentActivity
 
 
 
-    private void saveToPermitTable(Permit returnedPermitObject , List<PermitDetails> returnedPermitDetailsList,PermitPermission permitPermission ,int state_reject) {
+    private void saveToPermitTable(Permit returnedPermitObject , List<PermitDetails> returnedPermitDetailsList
+            ,PermitPermission permitPermission ,int state_reject) {
 
 
 
@@ -483,7 +486,7 @@ public class SubmitActValidate extends FragmentActivity
 
         PermitPermission permitPermission = new PermitPermission();
 
-        permitPermission.status = Constants.PERMIT_STATUS_APPROVE;
+        permitPermission.status = Constants.PERMIT_STATUS_APPROVED;
         permitPermission.permit_id = globalVars.getPermit().id;
         permitPermission.user_id = saveDataHelper.getCurrentUserId();
 

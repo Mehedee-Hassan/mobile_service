@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
  */
 public class PermitDetails {
 
+    @Expose
     public int id;
     @Expose
     public String question;
@@ -15,12 +16,17 @@ public class PermitDetails {
     @Expose
     public String status;
     @Expose
-    public int permit_id;
+    public long permit_id;
     @Expose
     public int allowed_text;
     @Expose
     public int sno;
 
+    public int server_id;
 
+    public PermitDetails(){
+
+        server_id = 0;
+    }
 
 }

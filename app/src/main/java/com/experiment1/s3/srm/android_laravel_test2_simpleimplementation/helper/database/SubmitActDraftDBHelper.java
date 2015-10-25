@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
@@ -20,8 +20,11 @@ import java.util.List;
  * Created by User-8.1 on 10/15/2015.
  */
 public class SubmitActDraftDBHelper extends DatabaseHelper {
+    Context context;
+
     public SubmitActDraftDBHelper(Context context) {
         super(context);
+        this.context = context;
     }
 
 
@@ -136,7 +139,7 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
     }
 
 
-    public List<CheckList> getCheckListTabData( long permit_id){
+    public List<CheckList> getCheckListTabDataForServer( long permit_server_id){
 
 
         CheckList checkList;
@@ -147,7 +150,15 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         Cursor cr = db.rawQuery("SELECT status FROM " +
                 "permit_details " +
                 " WHERE " +
-                "permit_id = "+permit_id
+                "permit_id = "
+
+                +
+                permit_server_id
+                //permit_id
+                +" " +
+                "ORDER BY " +
+                "sno " +
+                Constants.PERMIT_DETAILS_QUESTION_ORDER
                 , null);
 
 
@@ -161,24 +172,100 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
 
 
 
-            if(status.contentEquals("null")){
+            Log.d(" =======* ",""+status);
+
+            if(status.contentEquals("NULL") || status.contentEquals("null")){
                 checkList.yesOptions = 0;
             }
 
-            if(status.contentEquals("ok")){
+            if(status.contentEquals("OK") || status.contentEquals("ok")){
                 checkList.yesOptions = 1;
 
             }
 
-            if(status.contentEquals("nok")){
+            if(status.contentEquals("NOK") || status.contentEquals("nok") ){
                 checkList.yesOptions = 2;
 
             }
 
-            if(status.contentEquals("na")){
+            if(status.contentEquals("NA") || status.contentEquals("na")){
                 checkList.yesOptions = 3;
 
             }
+
+
+
+            returnList.add(checkList);
+            cr.moveToNext();
+        }
+
+
+
+        cr.close();
+
+        return returnList;
+    }
+
+
+
+
+    public List<CheckList> getCheckListTabData( long permit_id){
+
+
+        CheckList checkList;
+        List<CheckList> returnList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        //for user role 3 permit will be offline so the permit id will not support the server id
+
+        Cursor cr = db.rawQuery("SELECT status FROM " +
+                "permit_details " +
+                " WHERE " +
+                "permit_id_local = "
+
+                +
+                permit_id
+                //permit_id
+                + " " +
+                "ORDER BY " +
+                "sno " +
+                Constants.PERMIT_DETAILS_QUESTION_ORDER
+                , null);
+
+
+        cr.moveToFirst();
+
+        while (!cr.isAfterLast()){
+
+            checkList = new CheckList();
+            String status ="";
+                   status = cr.getString(cr.getColumnIndexOrThrow("status"));
+
+
+
+            Log.d(" =======* ",""+status);
+
+            if(status.contentEquals("NULL") || status.contentEquals("null")){
+                checkList.yesOptions = 0;
+            }
+
+            if(status.contentEquals("OK") || status.contentEquals("ok")){
+                checkList.yesOptions = 1;
+
+            }
+
+            if(status.contentEquals("NOK") || status.contentEquals("nok") ){
+                checkList.yesOptions = 2;
+
+            }
+
+            if(status.contentEquals("NA") || status.contentEquals("na")){
+                checkList.yesOptions = 3;
+
+            }
+
 
 
             returnList.add(checkList);
@@ -281,13 +368,13 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
 
 
 
-    public Permit getPermitDraftWith(String auto_gen_permit_no) {
+    public Permit getPermitDraftWith(long id ,String auto_gen_permit_no) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cr = db.rawQuery("SELECT * FROM " +
                 " permit " +
                 "WHERE " +
-                "permit_no = '" + auto_gen_permit_no
-                +"' ;"
+                "_id = " + id
+                +" ;"
                 , null);
 
 
@@ -298,10 +385,53 @@ public class SubmitActDraftDBHelper extends DatabaseHelper {
         while (!cr.isAfterLast()){
 
             permit.project_id = cr.getInt(cr.getColumnIndexOrThrow("project_id"));
+            permit.server_permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
             permit.project_name =cr.getString(cr.getColumnIndexOrThrow("project_name"));
             permit.permit_template_id = cr.getInt(cr.getColumnIndexOrThrow("permit_template_id"));
             permit.permit_name = cr.getString(cr.getColumnIndexOrThrow("permit_name"));
             permit.auto_gen_permit_no = auto_gen_permit_no;
+            permit.work_activity = cr.getString(cr.getColumnIndexOrThrow("work_activity"));
+            permit.contractor = cr.getString(cr.getColumnIndexOrThrow("contractor"));
+            permit.location = cr.getString(cr.getColumnIndexOrThrow("location"));
+            permit.permit_date = cr.getString(cr.getColumnIndexOrThrow("permit_date"));
+            permit.start_time = cr.getString(cr.getColumnIndexOrThrow("start_time"));
+            permit.end_time = cr.getString(cr.getColumnIndexOrThrow("end_time"));
+            permit.created_by = cr.getInt(cr.getColumnIndexOrThrow("created_by"));
+
+
+
+
+            cr.moveToNext();
+
+
+        }
+
+
+        return permit;
+    }
+
+    public Permit getPermitDraftServerSavedWith(long permit_server_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cr = db.rawQuery("SELECT * FROM " +
+                " permit " +
+                "WHERE " +
+                " permit_id = " + permit_server_id
+                +" ;"
+                , null);
+
+
+        cr.moveToFirst();
+
+
+        Permit permit = new Permit();
+        while (!cr.isAfterLast()){
+
+            permit.project_id = cr.getInt(cr.getColumnIndexOrThrow("project_id"));
+            permit.server_permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
+            permit.project_name =cr.getString(cr.getColumnIndexOrThrow("project_name"));
+            permit.permit_template_id = cr.getInt(cr.getColumnIndexOrThrow("permit_template_id"));
+            permit.permit_name = cr.getString(cr.getColumnIndexOrThrow("permit_name"));
+            permit.auto_gen_permit_no = cr.getString(cr.getColumnIndexOrThrow("permit_no"));
             permit.work_activity = cr.getString(cr.getColumnIndexOrThrow("work_activity"));
             permit.contractor = cr.getString(cr.getColumnIndexOrThrow("contractor"));
             permit.location = cr.getString(cr.getColumnIndexOrThrow("location"));
@@ -370,8 +500,9 @@ cr.close();
             contentValues = new ContentValues();
 
             contentValues.put("question" ,cr.getString(cr.getColumnIndexOrThrow("question")));
-            contentValues.put("permit_id" , permitId);
-            contentValues.put("status" , "null");
+            contentValues.put("permit_id_local" , permitId);
+            contentValues.put("status" , "NULL");
+            contentValues.put("sno" , cr.getInt(cr.getColumnIndexOrThrow("sno")));
 
             db.insert("permit_details" ,null ,contentValues);
 
@@ -413,40 +544,74 @@ cr.close();
         String status = "";
 
         if(checkList.yesOptions == 0){
-            contentValues.put("status" , "null");
-            status = "null";
+            contentValues.put("status" , "NULL");
+            status = "NULL";
 
         }
         else
         if(checkList.yesOptions == 1){
-            contentValues.put("status" , "ok");
-            status = "ok";
+            contentValues.put("status" , "OK");
+            status = "OK";
 
         }
         else
         if(checkList.yesOptions == 2){
-            contentValues.put("status" , "nok");
-            status = "nok";
+            contentValues.put("status" , "NOK");
+            status = "NOK";
 
         }
         else
         if(checkList.yesOptions == 3){
-            contentValues.put("status" , "na");
-            status = "na";
+            contentValues.put("status" , "NA");
+            status = "NA";
 
         }
 
 
 
-        Log.d("save" ,"update ==" +checkList.yesOptions +" at  ="+checkList.permit_id);
+        Log.d("save", "update ==" + checkList.yesOptions + " at  =" + checkList.permit_id);
 //        db.update("permit_details", contentValues, " permit_id = ? " ,args );
 
         db.execSQL("UPDATE permit_details " +
-                "SET status='"+status+"'"
-                + " WHERE _id="+checkList.permit_id);
+                "SET status='" + status + "'"
+                + " WHERE _id=" + checkList._id);
 
 
 
     }
+
+    public int getPermitDetailsServerId(int id) {
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int idToRet = 0;
+        Cursor cr = db.rawQuery("SELECT server_id FROM " +
+                " permit_details " +
+                " WHERE " +
+                " _id = "
+                + id
+                , null);
+
+        if(cr.getCount() >0){
+            cr.moveToFirst();
+
+            try{
+
+               idToRet = cr.getInt(cr.getColumnIndexOrThrow("server_id"));
+
+            }catch (Exception e){
+                e.getMessage();
+            }
+
+
+        }
+
+        if(cr!= null)
+            cr.close();
+
+    return  idToRet;
+    }
+
 
 }

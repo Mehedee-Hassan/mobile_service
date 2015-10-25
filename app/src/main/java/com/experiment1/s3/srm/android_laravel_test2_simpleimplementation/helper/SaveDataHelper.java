@@ -18,7 +18,7 @@ public class SaveDataHelper {
     SharedPreferences.Editor editor;
     private String[] accessToken;
     private Permit generalTabData;
-
+    private String userCurrentUserName;
 
 
     public SaveDataHelper(){
@@ -44,7 +44,7 @@ public class SaveDataHelper {
 
 
     public boolean getIfLoggedIn(){
-        boolean returnvalue = preferences.getBoolean(Constants.PREF_KEY_IF_LOGGED_IN ,false);
+        boolean returnvalue = preferences.getBoolean(Constants.PREF_KEY_IF_LOGGED_IN, false);
 
 
     return returnvalue;
@@ -188,7 +188,7 @@ public class SaveDataHelper {
     }
     public String getPrefUsername() {
 
-        return preferences.getString(Constants.PREF_KEY_USERNAME, "");
+        return preferences.getString(Constants.PREF_KEY_USERNAME, Constants.username);
     }
 
     public void deleteCredential() {
@@ -210,8 +210,8 @@ public class SaveDataHelper {
     }
 
     public void saveToken(String access_token, String token_type) {
-        editor.putString(Constants.PREF_KEY_ACCESS_TOKEN    , access_token);
-        editor.putString(Constants.PREF_KEY_ACCESS_TOKEN_TYPE    , token_type);
+        editor.putString(Constants.PREF_KEY_ACCESS_TOKEN, access_token);
+        editor.putString(Constants.PREF_KEY_ACCESS_TOKEN_TYPE, token_type);
 
         editor.commit();
     }
@@ -260,4 +260,6 @@ public class SaveDataHelper {
         editor.commit();
 
     }
+
+
 }

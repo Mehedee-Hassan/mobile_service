@@ -6,39 +6,44 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.
 public class CheckList {
 
     public int yesOptions;
-    public int permit_id;
+    public int _id;
+    public long permit_id;
     public String question;
     public int checkListTemplateDetailsId;
-
+    public int extra_added_sno;
 
     public CheckList(){
         yesOptions = 0;
     }
 
 
-    public CheckList(int permit_id, String q ,String status){
+    public CheckList(int id ,long permit_id, String q ,String status ,int extra_added_sno){
         yesOptions = 0;
+
+        this._id = id;
         this.permit_id = permit_id;
         this.question = q;
+        this.extra_added_sno = extra_added_sno;
 
-
-        if(status.contentEquals("null")){
+        if(status.contentEquals("NULL") || status.contentEquals("null")){
             yesOptions = 0;
         }
-        else if(status.contentEquals("ok")){
+
+        if(status.contentEquals("OK") || status.contentEquals("ok")){
             yesOptions = 1;
 
         }
 
-        else if(status.contentEquals("nok")){
+        if(status.contentEquals("NOK") || status.contentEquals("nok") ){
             yesOptions = 2;
 
         }
 
-        else if(status.contentEquals("na")){
+        if(status.contentEquals("NA") || status.contentEquals("na")){
             yesOptions = 3;
 
         }
+
 
     }
 

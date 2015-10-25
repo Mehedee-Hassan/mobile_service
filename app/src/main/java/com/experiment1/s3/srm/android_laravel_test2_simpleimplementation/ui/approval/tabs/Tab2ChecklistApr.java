@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs;
 
 
 import android.annotation.TargetApi;
@@ -16,7 +16,6 @@ import android.widget.ListView;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab2CheckListFragmentEventConnector;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapterValidate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.PermitTemplateDBHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.SubmitActDraftDBHelper;
@@ -30,7 +29,7 @@ import java.util.List;
  * Created by Mhr on 10/3/2015.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Tab2ChecklistVal extends Fragment
+public class Tab2ChecklistApr extends Fragment
 implements Tab2CheckListFragmentEventConnector {
 
     View view;

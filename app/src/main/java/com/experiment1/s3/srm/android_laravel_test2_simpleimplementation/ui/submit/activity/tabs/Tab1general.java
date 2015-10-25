@@ -169,7 +169,7 @@ public class Tab1general extends Fragment implements Tab1GeneralFragmentEventCon
 
     public void getSavedDraftFromDb() {
 
-       Permit permit = databaseHelper.getPermitDraftWith(globalVars.getPermit().auto_gen_permit_no);
+       Permit permit = databaseHelper.getPermitDraftWith(globalVars.getPermit().id ,globalVars.getPermit().auto_gen_permit_no);
 
         populateGeneralTabEditTexts(permit.project_name
                 , permit.contractor, permit.location, permit.work_activity, permit.permit_date

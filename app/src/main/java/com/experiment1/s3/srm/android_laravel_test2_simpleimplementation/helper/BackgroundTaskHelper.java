@@ -102,7 +102,7 @@ public class BackgroundTaskHelper  {
     }
 
 
-    public int tokenHelper3(String username ,String password ,final Activity loginActivity
+    public int tokenHelper3(final String username ,final String password ,final Activity loginActivity
             , final SaveDataHelper saveDataHelper, final Activity activity
             , final boolean isReqFromLoginDialog){
 
@@ -141,6 +141,8 @@ public class BackgroundTaskHelper  {
 
 
                 saveDataHelper.saveToken(token.access_token, token.token_type);
+                saveDataHelper.savePrefUsername(username);
+                saveDataHelper.savePrefPassword(password);
 
 
                 Flags.tokenReceiveSuccessFlag = 1;
@@ -531,7 +533,7 @@ public class BackgroundTaskHelper  {
                                 , "Please Login", Toast.LENGTH_SHORT).show();
 
 
-                        Intent intent = new Intent(activity,LoginActivity.class);
+                        Intent intent = new Intent(activity, LoginActivity.class);
                         // intent.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.LOGIN_ACTIVITY");
                         activity.startActivity(intent);
 
@@ -547,7 +549,7 @@ public class BackgroundTaskHelper  {
                         Log.d("login string = ", loginMessage.message);
 
 
-                        Intent intent1 = new Intent(activity,ProjectActivity.class);
+                        Intent intent1 = new Intent(activity, ProjectActivity.class);
 
                         //set constatns
                         Constants.access_token = token[0];
@@ -726,7 +728,8 @@ public class BackgroundTaskHelper  {
 
 
 
-    public void saveToPermitTable(Permit permit, final Activity submitActivity) {
+    public void saveToPermitTable(Permit permit, final Activity submitActivity , final List<PermitDetails> permitDetailsesList
+            , final PermitPermission permitPermission ,int state_reject) {
 
         //todo delete temporary
         restAdapter = new RestAdapter.Builder()
@@ -737,8 +740,31 @@ public class BackgroundTaskHelper  {
         //
 
 
+        if(state_reject == Constants.state_reject_login_nvalidate){
+            permitPermission.status = Constants.PERMIT_STATUS_VALIDATE_REJECT;
+            saveToPermitPermissionToServer(permitPermission ,globalVars.getPermit().server_permit_id ,submitActivity);
+
+            return;
+
+        }
+        else
+        if(state_reject == Constants.state_reject_login_napprove){
+            permitPermission.status = Constants.PERMIT_STATUS_VALIDATE_REJECT;
+
+            saveToPermitPermissionToServer(permitPermission ,globalVars.getPermit().server_permit_id ,submitActivity);
+
+            return;
+
+        }
+        else if(state_reject == Constants.state_reject_login_approve){
+
+            permitPermission.status = Constants.PERMIT_STATUS_APPROVED;
+
+        }
+
 
         Log.d("== submit button" ,"clicked" + "project_id = "+permit.project_id);
+        Log.d("== submit button" ,"clicked" + " permit_server_id = "+permit.server_permit_id);
 
         int startTime = Integer.parseInt(permit.start_time);
         int endTime = Integer.parseInt(permit.end_time);
@@ -759,13 +785,27 @@ public class BackgroundTaskHelper  {
                 , endTime
                 , permit.created_by
                 , permit.status
+                , permit.server_permit_id
                 , new Callback<List<ServerMessage>>() {
                     @Override
                     public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
 
                         Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(0).message);
+                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(1).message);
+
+
+                        // getting server permit id to submit checklist
+                        globalVars.getPermit().server_permit_id = Integer.parseInt(serverReturnMessage.get(1).message);
+                        long permitId = Integer.parseInt(serverReturnMessage.get(1).message);
+
+                        //get the server permit id
+                        //then send the checklist permit details to keep server id on permit derails
+
+                        saveToPermitDetailsToserver(permitDetailsesList, permitId,submitActivity);
+
+
+                        saveToPermitPermissionToServer(permitPermission ,permitId ,submitActivity);
 
                     }
 
@@ -780,6 +820,33 @@ public class BackgroundTaskHelper  {
 
 
     }
+
+
+
+    private void saveToPermitDetailsToserver(List<PermitDetails> returnedPermitDetailsObjectList ,long server_id, Activity activity) {
+
+
+
+
+        Log.d(TAG+" == ", " submit act ,save to permit");
+
+//
+//        Calendar calendar = Calendar.getInstance();
+
+
+        for(PermitDetails permitDetails : returnedPermitDetailsObjectList){
+
+            permitDetails.permit_id = server_id;
+            saveToPermitDetailsTable(permitDetails, activity);
+
+
+        }
+
+    }
+
+
+
+
     public void saveToPermitPermissionTable(PermitPermission permitPermission, final Activity submitActivity) {
 
         //todo delete temporary
@@ -797,7 +864,7 @@ public class BackgroundTaskHelper  {
                 Constants.access_token,
                 Constants.token_type
                 ,permitPermission.user_id
-                ,3 //permitPermission.permit_id
+                ,permitPermission.permit_id
                 ,permitPermission.status
                 ,new Callback<List<ServerMessage>>(){
                     @Override
@@ -845,17 +912,19 @@ public class BackgroundTaskHelper  {
 
 
 
+//        permitDetails.server_id = 0;
 
 
         loginApi.sendPermitDetails(
                 Constants.access_token,
                 Constants.token_type
-                , 3//permitDetails.permit_id
+                , permitDetails.permit_id
                 , permitDetails.sno
                 , permitDetails.question
                 , permitDetails.allowed_text
                 , permitDetails.extra_text
                 , permitDetails.status
+                , permitDetails.server_id
                 , new Callback<List<ServerMessage>>() {
                     @Override
                     public void success(List<ServerMessage> serverReturnMessage, Response response) {
@@ -875,4 +944,30 @@ public class BackgroundTaskHelper  {
                 }
         );
     }
+
+
+
+    private void saveToPermitPermissionToServer(PermitPermission returnedPermitObject,long id , Activity activity) {
+
+
+
+
+        Log.d(TAG+" == ", " submit act ,save to permit");
+
+//
+//        Calendar calendar = Calendar.getInstance();
+
+
+        returnedPermitObject.permit_id = id;
+        returnedPermitObject.user_id = saveDataHelper.getCurrentUserId();
+//        returnedPermitObject.created_by = globalVars.getCurrentLoggedInUser().permit_id; //todo change temporary
+
+
+
+
+        saveToPermitPermissionTable(returnedPermitObject, activity);
+
+
+    }
+
 }

@@ -6,7 +6,7 @@
         android:paddingLeft="2dip"
         android:paddingRight="2dip"
         android:paddingTop="5dip"
-        android:paddingBottom="5dip"
+        android:paddingBottom="20dip"
         android:label="Permit To Work"
         android:orientation="vertical"
     android:background="@color/white"
@@ -25,23 +25,23 @@
             android:layout_marginTop="10dip"
             />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <!--<Button-->
+        <!--style="?android:attr/buttonStyleSmall"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
 
-        android:id="@+id/new_permit_button"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingLeft="3dip"
-        android:paddingRight="2dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dip"
-        android:text="ADD PERMIT"
+        <!--android:id="@+id/new_permit_button"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingLeft="3dip"-->
+        <!--android:paddingRight="2dip"-->
+        <!--android:layout_marginLeft="10dip"-->
+        <!--android:layout_marginRight="10dip"-->
+        <!--android:layout_marginBottom="5dip"-->
+        <!--android:layout_marginTop="5dip"-->
+        <!--android:text="ADD PERMIT"-->
 
-        android:background="@drawable/add_permit_select_button"
-        android:textColor="#FFFFFF"
-        />
+        <!--android:background="@drawable/add_permit_select_button"-->
+        <!--android:textColor="#FFFFFF"-->
+        <!--/>-->
 </LinearLayout>

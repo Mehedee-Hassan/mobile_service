@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Mhr on 10/6/2015.
  */
-public class CheckListAdapter extends ArrayAdapter<CheckList> {
+public class CheckListAdapterValidate extends ArrayAdapter<CheckList> {
 
     private final List<CheckList> checkListValues;
     private List<CheckList> savedCheckListDraft;
@@ -30,7 +30,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
     int indexNumber ;
 
     GlobalVars globalVars ;
-    public CheckListAdapter(Activity context, List<CheckList> values) {
+    public CheckListAdapterValidate(Activity context, List<CheckList> values) {
         super(context, R.layout.check_list_row_layout ,values);
 
 
@@ -38,17 +38,13 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
         this.context = context;
         this.checklistSize = this.checkListValues.size();
 
-       draftDBHelper = new SubmitActDraftDBHelper(context);
+        draftDBHelper = new SubmitActDraftDBHelper(context);
 
         globalVars = (GlobalVars) context.getApplication();
 
         Log.d(" =========== ", globalVars.getPermit().server_permit_id+"");
 
-
-        savedCheckListDraft = draftDBHelper.getCheckListTabData(  globalVars.getPermit().id);
-
-
-//        savedCheckListDraft = draftDBHelper.getCheckListTabData(  globalVars.getPermit().server_permit_id);
+        savedCheckListDraft = draftDBHelper.getCheckListTabDataForServer(  globalVars.getPermit().server_permit_id);
 
 //        Log.d(" =========== ", savedCheckListDraft.size()+"");
 //        Log.d(" =========== ", savedCheckListDraft.get(0).question+"");
@@ -212,7 +208,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckList> {
 //                checkListValues.get(position).extra_added_sno
 
                 (position+1)
-                +".");
+                        +".");
 
         Log.d("index ==" , " index = " + indexNumber);
 

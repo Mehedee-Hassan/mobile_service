@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
+
+import java.util.List;
 
 /**
  * Created by Mhr on 9/28/2015.
@@ -170,7 +173,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", extra_text varchar(50)"
                 +", status varchar(5)"
                 +", allowed_text integer "
+                +", sno integer "
                 +", permit_id integer "
+                +", permit_id_local integer "
+                +", server_id integer DEFAULT 0"
                 +", FOREIGN KEY(permit_id) REFERENCES permits(permit_id)"
                 +");");
 
@@ -193,6 +199,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", server_id integer" //temporary use
                 +", name varchar(50)"
                 +", company_id integer"
+                +");");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS"
+                +" permit_permission" +
+                "(_id integer primary key autoincrement" +
+                ", server_id integer" //temporary use
+                +", status varchar(50)"
+                +", user_id integer"
+                +", permit_id integer"
                 +");");
 
 
@@ -252,15 +267,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         try{
-
-            insertDummyProject(db);
-            insertDummyWorker(db);
-            insertDummyPermitType(db);
-//            insertDummyCheckList(db);
-            insertDummyAnswer(db);
-//            insertDummyPTW(db);
-//            insertDummyUser(db);
-            insertDummyPermitTemplateDetails(db);
+//
+//            insertDummyProject(db);
+//            insertDummyWorker(db);
+//            insertDummyPermitType(db);
+////            insertDummyCheckList(db);
+//            insertDummyAnswer(db);
+////            insertDummyPTW(db);
+////            insertDummyUser(db);
+//            insertDummyPermitTemplateDetails(db);
 
         }catch(Exception e){
             Log.d("dbinsert ==", e.getMessage());
@@ -285,14 +300,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("question", "abc1 question");
         contentValues.put("extra_text", "abc1 extra text");
-        contentValues.put("sno", 1);
+        contentValues.put("sno", 3);
         contentValues.put("permit_template_id", 1);
         db.insert("permit_template_details", null, contentValues);
 
          contentValues = new ContentValues();
         contentValues.put("question", "abc2 question");
         contentValues.put("extra_text", "abc2 extra text");
-        contentValues.put("sno", 1);
+        contentValues.put("sno", 2);
         contentValues.put("permit_template_id", 1);
         db.insert("permit_template_details", null, contentValues);
 
@@ -559,5 +574,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert("CHECK_LIST_QUESTION_TABLE", null, contentValues);
 
     }
+
 
 }

@@ -322,9 +322,12 @@ public class SubmitActivity extends FragmentActivity
 
 
                 Log.d(TAG + " == ", "returned permit object = " + returnedPermitObject.project_name);
-                saveToPermitTable(returnedPermitObject);
-                saveToPermitDetailsTable(returnedPermitDetailsOvjList);
-                saveToPermitPermissionTable(getPermitPermission());
+
+                saveToPermitTable(returnedPermitObject, returnedPermitDetailsOvjList, getPermitPermission());
+
+
+//                saveToPermitDetailsTable(returnedPermitDetailsOvjList);
+//                saveToPermitPermissionTable(getPermitPermission());
 
 
             }
@@ -358,7 +361,7 @@ public class SubmitActivity extends FragmentActivity
 
 
 
-    private void saveToPermitTable(Permit returnedPermitObject) {
+    private void saveToPermitTable(Permit returnedPermitObject , List<PermitDetails> returnedPermitDetailsList,PermitPermission permitPermission) {
 
 
 
@@ -380,8 +383,8 @@ public class SubmitActivity extends FragmentActivity
 
 
 
-
-        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this);
+        // 0 = means no effect to rejection of permitpermission tabel to server
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList,permitPermission,0);
 
 
     }
@@ -426,11 +429,6 @@ public class SubmitActivity extends FragmentActivity
 
 
         }
-
-
-
-
-
 
     }
 
@@ -507,4 +505,7 @@ public class SubmitActivity extends FragmentActivity
         }
 
     }
+
+
+
 }

@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs;
 
 
 import android.annotation.TargetApi;
@@ -24,7 +24,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
  * Created by Mhr on 10/3/2015.
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Tab1generalVal extends Fragment implements Tab1GeneralFragmentEventConnector {
+public class Tab1generalApr extends Fragment implements Tab1GeneralFragmentEventConnector {
 
 
     public String TAG = this.getClass().getSimpleName();

@@ -29,9 +29,11 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.Cus
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.PTWorkActivityValidate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ProjectActivity extends Activity {
+public class ProjectActivity extends Activity implements OnItemClickListener{
 
     ListView listview;
     ArrayList<String> list;
@@ -91,7 +93,7 @@ public class ProjectActivity extends Activity {
 
         customAdapter = new ProjectActivityListViewAdapter(this , list);
         listview.setAdapter(customAdapter);
-        listview.setOnItemClickListener(new ListViewItemClickListner());
+        listview.setOnItemClickListener(this);
 
 
 
@@ -357,26 +359,34 @@ public class ProjectActivity extends Activity {
 
 
 
-    class ListViewItemClickListner implements OnItemClickListener{
 
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-            Project project = new Project(databaseHelper.getProjectAt(pos));
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+        Project project = new Project(databaseHelper.getProjectAt(pos));
 
-            //todo change curretn vars
+        //todo change curretn vars
 //            CurrentVars.PROJECT =project;
 
-            globalVars.setProject(project);
+        globalVars.setProject(project);
+
+        SaveDataHelper saveDataHelper = new SaveDataHelper(projectActivity);
 
 
+        if(saveDataHelper.getCurrentUserRole() == 3) {
 
-            Intent intent = new Intent(ProjectActivity.this , PermitToWorkActivity.class);
+            Intent intent = new Intent(ProjectActivity.this, PermitToWorkActivity.class);
             startActivity(intent);
 
-
-
         }
+        else
+        if(saveDataHelper.getCurrentUserRole() == 2) {
+
+            Intent intent = new Intent(ProjectActivity.this, PTWorkActivityValidate.class);
+            startActivity(intent);
+        }
+
     }
+
 
 
     @Override

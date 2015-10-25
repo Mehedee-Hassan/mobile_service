@@ -43,9 +43,25 @@
 
 
 
+        <!--<activity-->
+
+            <!--android:name=".dumb_and_delete.NewSubmitActivity"-->
+            <!--android:noHistory="true"-->
+            <!-->-->
+
+        <!--</activity>-->
+
+
         <activity
 
-            android:name=".dumb_and_delete.NewSubmitActivity"
+            android:name=".ui.validate.PTWorkActivityValidate"
+            android:noHistory="true"
+            >
+
+        </activity>
+        <activity
+
+            android:name=".ui.validate.SubmitActValidate"
             android:noHistory="true"
             >
 
