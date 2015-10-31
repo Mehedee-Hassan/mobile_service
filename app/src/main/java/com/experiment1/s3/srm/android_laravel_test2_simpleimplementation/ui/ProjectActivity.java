@@ -33,6 +33,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.PTWorkActivityApproval;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.PTWorkActivityValidate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
@@ -384,6 +385,19 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
             Intent intent = new Intent(ProjectActivity.this, PTWorkActivityValidate.class);
             startActivity(intent);
         }
+
+        else
+            if(saveDataHelper.getCurrentUserRole() == 1){
+
+                Intent intent = new Intent(ProjectActivity.this, PTWorkActivityApproval.class);
+                startActivity(intent);
+
+
+            }
+
+
+
+
 
     }
 
