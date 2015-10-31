@@ -54,7 +54,7 @@ public class Tab1generalApr extends Fragment implements Tab1GeneralFragmentEvent
 
 
         globalVars = (GlobalVars) getActivity().getApplication();
-        globalVars.setSubmitActTab1GenInterfaceVal(this);
+        globalVars.setSubmitActTab1GenInterfaceApr(this);
 
         databaseHelper  = new SubmitActDraftDBHelper(context);
 

@@ -8,6 +8,8 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.User;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab1generalApr;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.tabs.Tab2ChecklistApr;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab1general;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.submit.activity.tabs.Tab2Checklist;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.tabs.Tab1generalVal;
@@ -34,6 +36,7 @@ public class GlobalVars extends Application {
     private boolean isLoginActStdFromSubmit = false;
         private Tab2CheckListFragmentEventConnector submitActTab2CheckInterface;
         private Tab2CheckListFragmentEventConnector submitActTab2CheckInterface2;
+        private Tab2CheckListFragmentEventConnector submitActTab2CheckInterface3;
         private boolean ifLoggedIn;
         private String permitNumber;
         private PermitTemplate permitTemplate;
@@ -76,17 +79,26 @@ public class GlobalVars extends Application {
         this.submitActTab1GenInterface = submitActTab1GenInterface;
     }
 
+
     public void setSubmitActTab1GenInterfaceVal(Tab1generalVal submitActTab1GenInterface) {
         this.submitActTab1GenInterface2 = submitActTab1GenInterface;
     }
+
+    public void setSubmitActTab1GenInterfaceApr(Tab1generalApr submitActTab1GenInterface) {
+        this.submitActTab1GenInterface2 = submitActTab1GenInterface;
+    }
+
+
+
+
+
+
 
     public void setSubmitActTab2CheckInterface(Tab2Checklist submitActTab2CheckInterface) {
         this.submitActTab2CheckInterface = submitActTab2CheckInterface;
     }
 
-    public void setSubmitActTab2CheckInterfaceVal(Tab2ChecklistVal submitActTab2CheckInterface) {
-        this.submitActTab2CheckInterface2 = submitActTab2CheckInterface;
-    }
+
 
     public Tab1GeneralFragmentEventConnector getSubmitActTab1GenInterface() {
         return this.submitActTab1GenInterface;
@@ -101,9 +113,25 @@ public class GlobalVars extends Application {
         return this.submitActTab2CheckInterface;
     }
 
+
+    public void setSubmitActTab2CheckInterfaceVal(Tab2ChecklistVal submitActTab2CheckInterface) {
+        this.submitActTab2CheckInterface2 = submitActTab2CheckInterface;
+    }
     public Tab2CheckListFragmentEventConnector getSubmitActTab2ChecklistInterfaceVal() {
         return this.submitActTab2CheckInterface2;
     }
+
+
+    public void setSubmitActTab2CheckInterfaceApr(Tab2ChecklistApr submitActTab2CheckInterface) {
+        this.submitActTab2CheckInterface3 = submitActTab2CheckInterface;
+    }
+    public Tab2CheckListFragmentEventConnector getSubmitActTab2ChecklistInterfaceApr() {
+        return this.submitActTab2CheckInterface3;
+    }
+
+
+
+
 
     public void setIfLoggedIn(boolean ifLoggedIn) {
         this.ifLoggedIn = ifLoggedIn;

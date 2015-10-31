@@ -57,7 +57,7 @@ implements Tab2CheckListFragmentEventConnector {
         databaseHelper = new SubmitActDraftDBHelper(getActivity());
         globalVars = (GlobalVars) getActivity().getApplication();
 
-        globalVars.setSubmitActTab2CheckInterfaceVal(this);
+        globalVars.setSubmitActTab2CheckInterfaceApr(this);
     }
 
     @Nullable
