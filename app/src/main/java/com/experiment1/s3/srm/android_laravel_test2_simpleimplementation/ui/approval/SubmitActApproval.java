@@ -313,7 +313,7 @@ public class SubmitActApproval extends FragmentActivity
 
 
                 tab1GeneralFragmentEventConnector = globalVars.getSubmitActTab1GenInterfaceVal();
-                tab2CheckFragmentEventConnector = globalVars.getSubmitActTab2ChecklistInterfaceVal();
+                tab2CheckFragmentEventConnector = globalVars.getSubmitActTab2ChecklistInterfaceApr();
 
 
                 Log.d(TAG + " == ", "Submit activity ,onclicklistnersetup ,interface ");

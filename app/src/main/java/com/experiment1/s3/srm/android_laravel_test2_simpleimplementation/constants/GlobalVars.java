@@ -31,6 +31,7 @@ public class GlobalVars extends Application {
 
         private Tab1GeneralFragmentEventConnector tab1GeneralFragmentEventConnector2;
         private Tab1GeneralFragmentEventConnector submitActTab1GenInterface2;
+        private Tab1GeneralFragmentEventConnector submitActTab1GenInterface3;
 
 
     private boolean isLoginActStdFromSubmit = false;
@@ -104,6 +105,10 @@ public class GlobalVars extends Application {
         return this.submitActTab1GenInterface;
     }
 
+
+    public Tab1GeneralFragmentEventConnector getSubmitActTab1GenInterfaceApr() {
+        return this.submitActTab1GenInterface3;
+    }
 
     public Tab1GeneralFragmentEventConnector getSubmitActTab1GenInterfaceVal() {
         return this.submitActTab1GenInterface2;
