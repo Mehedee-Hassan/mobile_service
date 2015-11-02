@@ -215,7 +215,7 @@ public class SubmitActivity extends FragmentActivity
 
 
               case R.id.action_settings:
-            Intent intent = new Intent(this, SettingActivity.class);
+                  Intent intent = new Intent(this, SettingActivity.class);
                   startActivityForResult(intent ,103);
                   break;
         }
@@ -305,8 +305,8 @@ public class SubmitActivity extends FragmentActivity
 
                 Permit returnedPermitObject = tab1GeneralFragmentEventConnector.onSubmitButtonClick();
 
-                //adding validate status
-                returnedPermitObject.status = Constants.PERMIT_STATUS_VALIDATE;
+
+                returnedPermitObject.status = Constants.PERMIT_STATUS_APPROVED;
 
 
 
@@ -322,6 +322,11 @@ public class SubmitActivity extends FragmentActivity
 
 
                 Log.d(TAG + " == ", "returned permit object = " + returnedPermitObject.project_name);
+
+
+                // saving without login notification
+                // so login doesn't matters
+                // todo correct issue
 
                 saveToPermitTable(returnedPermitObject, returnedPermitDetailsOvjList, getPermitPermission());
 
@@ -348,7 +353,7 @@ public class SubmitActivity extends FragmentActivity
 
         PermitPermission permitPermission = new PermitPermission();
 
-        permitPermission.status = Constants.PERMIT_STATUS_VALIDATE;
+        permitPermission.status = Constants.PERMIT_STATUS_SUBMITTED;
         permitPermission.permit_id = globalVars.getPermit().id;
         permitPermission.user_id = saveDataHelper.getCurrentUserId();
 
@@ -365,6 +370,7 @@ public class SubmitActivity extends FragmentActivity
 
 
 
+        Log.d(TAG + " == ", "status = " + permitPermission.status);
 
         Log.d(TAG+" == ", " submit act ,save to permit");
 
@@ -383,8 +389,10 @@ public class SubmitActivity extends FragmentActivity
 
 
 
+        int permitTableOPFlag = Constants.PERMIT_TABLE_OPERATION_FLAG_INSERT;
+
         // 0 = means no effect to rejection of permitpermission tabel to server
-        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList,permitPermission,0);
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList,permitPermission,0 ,permitTableOPFlag);
 
 
     }

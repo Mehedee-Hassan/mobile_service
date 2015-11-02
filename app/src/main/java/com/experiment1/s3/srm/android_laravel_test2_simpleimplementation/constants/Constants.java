@@ -7,10 +7,20 @@ public class Constants {
 
 
     public static final String PERMIT_DETAILS_QUESTION_ORDER = " "+"ASC"+" ";
-    public static final String PERMIT_STATUS_APPROVED = "APPROVED";
-    public static final String PERMIT_STATUS_VALIDATE_SUBMITED = "APPROVE";
-    public static final String PERMIT_STATUS_TO_APPROVE = "APPROVE";
 
+
+
+   //correct
+    public static final String PERMIT_STATUS_SUBMITTED = "SUBMITTED";
+    public static final String PERMIT_STATUS_VALIDATE_SUBMITTED = "VALIDATED";
+    public static final String PERMIT_STATUS_VALIDATE_REJECT = "REJECTED_VALIDATED";
+    public static final String PERMIT_STATUS_APPROVED = "APPROVED";
+    public static final String PERMIT_STATUS_APPROVED_REJECT = "REJECTED_APPROVED";
+    public static final int PERMIT_TABLE_OPERATION_FLAG_INSERT = 1;
+    public static final int PERMIT_TABLE_OPERATION_FLAG_UPDATE = 2;
+    public static final String EXTRA_TEXT = "empty";
+
+    //==
 
     public static String PREF_FILE_NAME = "com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.SHARED_PREF_FILE";
 
@@ -22,11 +32,6 @@ public class Constants {
 
     public static boolean APPLICATION_TEST_MODE = true;
 
-
-
-    public static String PERMIT_STATUS_VALIDATE = "VALIDATE";
-    public static String PERMIT_STATUS_VALIDATE_REJECT = "REJECT";
-    public static String PERMIT_STATUS_ACCEPT = "ACCEPTANCE";
 
 
 

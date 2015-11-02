@@ -20,6 +20,9 @@ import java.util.List;
  * Created by User-8.1 on 10/15/2015.
  */
 public class SubmitActDraftDBHelper extends DatabaseHelper {
+
+    String TAG = this.getClass().getSimpleName();
+
     Context context;
 
     public SubmitActDraftDBHelper(Context context) {
@@ -586,7 +589,10 @@ cr.close();
         SQLiteDatabase db = this.getWritableDatabase();
 
         int idToRet = 0;
-        Cursor cr = db.rawQuery("SELECT server_id FROM " +
+
+        Cursor cr = null;
+
+        cr = db.rawQuery("SELECT server_id FROM " +
                 " permit_details " +
                 " WHERE " +
                 " _id = "
@@ -610,7 +616,10 @@ cr.close();
         if(cr!= null)
             cr.close();
 
-    return  idToRet;
+        Log.d(TAG +" == server id =  ", ""+idToRet);
+
+
+        return  idToRet;
     }
 
 

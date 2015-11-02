@@ -82,7 +82,7 @@ public class SubmitActApproval extends FragmentActivity
 
 
 
-        setContentView(R.layout.activity_submit_validate);
+        setContentView(R.layout.activity_submit_approval);
 
 
         ActionBar bar = getActionBar();
@@ -132,13 +132,6 @@ public class SubmitActApproval extends FragmentActivity
 
         ptwTypeNameTextView = (TextView) findViewById(R.id.ptw_type_name_textView);
 
-//        projectNameEt = (EditText) findViewById();
-//        subContractorNameTe3 = (EditText) findViewById();
-//        locationEt4 = (EditText) findViewById();
-//        descriptionWorkEt5 = (EditText) findViewById();
-//        dateEt6 = (EditText) findViewById();
-//        startEt7 = (EditText) findViewById();
-//        endEt8 = (EditText) findViewById();
 
 
 
@@ -324,8 +317,8 @@ public class SubmitActApproval extends FragmentActivity
                         tab2CheckFragmentEventConnector.onSubmitButtonClick();
 
 
-                //adding validate status
-                returnedPermitObject.status = Constants.PERMIT_STATUS_TO_APPROVE;
+
+                returnedPermitObject.status = Constants.PERMIT_STATUS_APPROVED;
 
                 returnedPermitObject.server_permit_id = globalVars.getPermit().server_permit_id;
                 returnedPermitObject.auto_gen_permit_no = globalVars.getPermit().auto_gen_permit_no;

@@ -144,7 +144,7 @@ public interface CustomAPI{
             ,@Query("allowed_text") int allowed_text
             ,@Query("extra_text") String extra_text
             ,@Query("status") String status
-            ,@Query("id") long id
+            ,@Query("server_id") long server_id
             , Callback<List<ServerMessage>> callBack);// login request and get project list
 
 

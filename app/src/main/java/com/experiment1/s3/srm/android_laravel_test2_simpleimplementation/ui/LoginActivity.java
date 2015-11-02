@@ -344,13 +344,13 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
                             Flags.LOGIN_SUCCESS_FLAG = true;
 
                         if (Flags.LOGIN_SUCCESS_FLAG) {
-                            Intent intent1 = new Intent(LoginActivity.this, ProjectListActivity.class);
+//                            Intent intent1 = new Intent(LoginActivity.this, ProjectListActivity.class);
 
 
 
                             //intent1.putExtra("access_token",Constants.access_token);
 
-                            startActivity(intent1);
+//                            startActivity(intent1);
                             Log.d("==now here ==", "login helper flag true");
                         } else
                             Log.d("==now here ==", "false");

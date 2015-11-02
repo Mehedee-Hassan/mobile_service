@@ -1,0 +1,116 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.SubmitActivity"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:layout_marginLeft="0dp"
+            android:id="@+id/ptw_type_name_textView"
+            android:layout_weight="25"
+            android:background="@drawable/submit_activity_permit_title_back"
+            android:padding="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginBottom="3dip"
+            android:textColor="@color/black"
+            android:gravity="center"
+
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="75"
+            >
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="APPROVE"
+                    android:id="@+id/validate_button"
+                    android:layout_weight="50"
+                    android:background="@color/green_custom"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="5dip"
+
+
+                    />
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="REJECT"
+                    android:id="@+id/reject_button"
+                    android:layout_weight="50"
+                    android:background="@color/custom_red"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="5dip"
+
+
+            />
+
+
+         </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#FFC80D"
+        android:id="@+id/border"
+        />
+
+
+
+
+    <com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout
+        android:id="@+id/sliding_tabs"
+        android:background="@color/white"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+
+    </com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.lib.ext.SlidingTabLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/orange_custom"
+        android:id="@+id/viewStub"
+        />
+
+
+
+    <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+
+                    >
+
+    </android.support.v4.view.ViewPager>
+
+
+
+</LinearLayout>

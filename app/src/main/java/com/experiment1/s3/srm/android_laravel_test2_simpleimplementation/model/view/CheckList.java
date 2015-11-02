@@ -11,6 +11,7 @@ public class CheckList {
     public String question;
     public int checkListTemplateDetailsId;
     public int extra_added_sno;
+    public int server_pt_details_id;
 
     public CheckList(){
         yesOptions = 0;
@@ -24,6 +25,43 @@ public class CheckList {
         this.permit_id = permit_id;
         this.question = q;
         this.extra_added_sno = extra_added_sno;
+
+        this.server_pt_details_id = id;
+
+
+        if(status.contentEquals("NULL") || status.contentEquals("null")){
+            yesOptions = 0;
+        }
+
+        if(status.contentEquals("OK") || status.contentEquals("ok")){
+            yesOptions = 1;
+
+        }
+
+        if(status.contentEquals("NOK") || status.contentEquals("nok") ){
+            yesOptions = 2;
+
+        }
+
+        if(status.contentEquals("NA") || status.contentEquals("na")){
+            yesOptions = 3;
+
+        }
+
+
+    }
+
+public CheckList(int id ,long permit_id, String q
+        ,String status ,int extra_added_sno ,int server_pt_details_id){
+        yesOptions = 0;
+
+        this._id = id;
+        this.permit_id = permit_id;
+        this.question = q;
+        this.extra_added_sno = extra_added_sno;
+
+        this.server_pt_details_id = server_pt_details_id;
+
 
         if(status.contentEquals("NULL") || status.contentEquals("null")){
             yesOptions = 0;

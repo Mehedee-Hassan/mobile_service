@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.GlobalVars;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.interf.submit.actt1.Tab2CheckListFragmentEventConnector;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.CheckListAdapterValidate;
@@ -77,15 +78,15 @@ implements Tab2CheckListFragmentEventConnector {
 
 //        GlobalVars globalVars = (GlobalVars) getActivity().getApplication();
 //todo change
-        long nowPermitTemplateDetailsId = ((GlobalVars) getActivity().getApplication()).getPermit().server_permit_id;
+        long nowPermitServerId = ((GlobalVars) getActivity().getApplication()).getPermit().server_permit_id;
 
 
-        Log.d("save == ","2 permit id = " + nowPermitTemplateDetailsId );
+        Log.d("save == ","2 permit id = " + nowPermitServerId );
 
 
 
         ptdetailsList =
-                permitTemplateDBHelper.getPtDetailsListWhereForValChkListPTId(nowPermitTemplateDetailsId);
+                permitTemplateDBHelper.getPtDetailsListWhereForValChkListPTId(nowPermitServerId);
 
 
 
@@ -94,7 +95,13 @@ implements Tab2CheckListFragmentEventConnector {
 
         for(PermitDetails permitDetails : ptdetailsList){
             checkLists.add(new CheckList(permitDetails.id ,permitDetails.permit_id,
-                    permitDetails.question , permitDetails.status,permitDetails.sno));
+                    permitDetails.question
+                    , permitDetails.status
+                    ,permitDetails.sno,
+                    permitDetails.server_id));
+
+            Log.d("pt details checklist==", ""+permitDetails.server_id);
+
         }
 
         CheckListAdapterValidate adapter = new CheckListAdapterValidate(getActivity() , checkLists);
@@ -115,12 +122,12 @@ implements Tab2CheckListFragmentEventConnector {
         Log.d("save == ","permit id = " + permitId +" permit template id = "+ permitTemplateId);
 
 
-        checkIfPermiQuestionIsEmpetyFor(permitId ,permitTemplateId);
+        checkIfPermitQuestionIsEmpetyFor(permitId, permitTemplateId);
 
 
     }
 
-    private void checkIfPermiQuestionIsEmpetyFor(long permitId ,int permitTemplateId) {
+    private void checkIfPermitQuestionIsEmpetyFor(long permitId, int permitTemplateId) {
         if(databaseHelper.checkIfPermiQuestionIsEmpetyFor(permitId)){
             databaseHelper.transferPermitTempQToPermitDet(permitId ,permitTemplateId);
         }
@@ -185,10 +192,15 @@ implements Tab2CheckListFragmentEventConnector {
 
             permitDetails.permit_id = checkList.permit_id;
             permitDetails.question = checkList.question;
-            permitDetails.extra_text = "empty"; // temporary
+            permitDetails.extra_text = Constants.EXTRA_TEXT; // temporary
 
 
-            permitDetails.server_id = databaseHelper.getPermitDetailsServerId(permitDetails.id);
+            permitDetails.server_id = checkList.server_pt_details_id;
+
+            //databaseHelper.getPermitDetailsServerId(permitDetails.id);
+
+
+
 
             if(checkList.yesOptions == 0)
                 permitDetails.status = "NULL";

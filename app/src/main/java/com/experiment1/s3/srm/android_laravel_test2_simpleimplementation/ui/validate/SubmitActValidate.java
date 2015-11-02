@@ -324,7 +324,7 @@ public class SubmitActValidate extends FragmentActivity
 
 
                 //adding validate status
-                returnedPermitObject.status = Constants.PERMIT_STATUS_VALIDATE_SUBMITED;
+                returnedPermitObject.status = Constants.PERMIT_STATUS_VALIDATE_SUBMITTED;
                 returnedPermitObject.server_permit_id = globalVars.getPermit().server_permit_id;
                 returnedPermitObject.auto_gen_permit_no = globalVars.getPermit().auto_gen_permit_no;
 
@@ -483,7 +483,7 @@ public class SubmitActValidate extends FragmentActivity
 
         PermitPermission permitPermission = new PermitPermission();
 
-        permitPermission.status = Constants.PERMIT_STATUS_APPROVE;
+        permitPermission.status = Constants.PERMIT_STATUS_VALIDATE_SUBMITTED;
         permitPermission.permit_id = globalVars.getPermit().id;
         permitPermission.user_id = saveDataHelper.getCurrentUserId();
 

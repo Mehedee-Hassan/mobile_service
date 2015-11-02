@@ -60,12 +60,14 @@ public class PermitTemplateDBHelper extends DatabaseHelper {
 
             permitDetails1 = new PermitDetails();
 
+
+            permitDetails1.id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
             permitDetails1.question = cr.getString(cr.getColumnIndexOrThrow("question"));
             permitDetails1.extra_text = cr.getString(cr.getColumnIndexOrThrow("extra_text"));
             permitDetails1.status = cr.getString(cr.getColumnIndexOrThrow("status"));
-            permitDetails1.id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
             permitDetails1.sno = cr.getInt(cr.getColumnIndexOrThrow("sno"));
             permitDetails1.permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
+            permitDetails1.server_id = cr.getInt(cr.getColumnIndexOrThrow("server_id"));
 
             Log.d("in ret from data ==", "" + permitDetails1.status);
 

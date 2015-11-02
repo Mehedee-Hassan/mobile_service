@@ -67,6 +67,18 @@
 
         </activity>
 
+        <activity
+            android:name=".ui.approval.SubmitActApproval"
+            android:noHistory="true"
+            >
+        </activity>
+
+        <activity
+            android:name=".ui.approval.PTWorkActivityApproval"
+            android:noHistory="true"
+            >
+        </activity>
+
 
         <activity android:name=".ui.LoginActivity"
             >
