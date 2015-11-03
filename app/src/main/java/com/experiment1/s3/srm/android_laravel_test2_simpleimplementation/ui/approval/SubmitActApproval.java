@@ -332,7 +332,11 @@ public class SubmitActApproval extends FragmentActivity
                 Log.d(TAG + " ==+++ ", "returned permit server id = " + returnedPermitObject.server_permit_id);
 
 
-                saveToPermitTable(returnedPermitObject, returnedPermitDetailsOvjList, getPermitPermission() ,state_reject);
+                int permitAndPTDetailsTableOPFlag = Constants.PERMIT_TABLE_OPERATION_FLAG_DO_NOTING;
+
+                saveToPermitTable(returnedPermitObject, returnedPermitDetailsOvjList
+                        , getPermitPermission() ,state_reject
+                        ,permitAndPTDetailsTableOPFlag);
 
 //                saveToPermitTable(returnedPermitObject);
 //                saveToPermitDetailsTable(returnedPermitDetailsOvjList);
@@ -353,7 +357,8 @@ public class SubmitActApproval extends FragmentActivity
 
 
     private void saveToPermitTable(Permit returnedPermitObject , List<PermitDetails> returnedPermitDetailsList
-            ,PermitPermission permitPermission ,int state_reject) {
+            ,PermitPermission permitPermission ,int state_reject
+            ,int permitAndPTDetailsTableOPFlag) {
 
 
 
@@ -368,7 +373,9 @@ public class SubmitActApproval extends FragmentActivity
         Log.d(" == " , "Submit activity , permit template id"+returnedPermitObject.permit_template_id);
         returnedPermitObject.permit_name = globalPermit.permit_name;
 
-        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList,permitPermission ,state_reject);
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList
+                ,permitPermission ,state_reject,
+                permitAndPTDetailsTableOPFlag);
 
 
     }

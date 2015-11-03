@@ -18,6 +18,10 @@ public class Constants {
     public static final String PERMIT_STATUS_APPROVED_REJECT = "REJECTED_APPROVED";
     public static final int PERMIT_TABLE_OPERATION_FLAG_INSERT = 1;
     public static final int PERMIT_TABLE_OPERATION_FLAG_UPDATE = 2;
+    public static final int PERMIT_TABLE_OPERATION_FLAG_DO_NOTING = (-1);
+
+
+
     public static final String EXTRA_TEXT = "empty";
 
     //==

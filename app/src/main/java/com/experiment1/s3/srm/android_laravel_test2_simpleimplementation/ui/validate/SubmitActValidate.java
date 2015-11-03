@@ -372,7 +372,13 @@ public class SubmitActValidate extends FragmentActivity
         Log.d(" == " , "Submit activity , permit template id"+returnedPermitObject.permit_template_id);
         returnedPermitObject.permit_name = globalPermit.permit_name;
 
-        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this ,returnedPermitDetailsList,permitPermission ,state_reject);
+
+        int permitTableOperationFlag = Constants.PERMIT_TABLE_OPERATION_FLAG_DO_NOTING;
+
+
+        backgroundTaskHelper.saveToPermitTable(returnedPermitObject, this
+                ,returnedPermitDetailsList,permitPermission ,state_reject
+                ,permitTableOperationFlag);
 
 
     }

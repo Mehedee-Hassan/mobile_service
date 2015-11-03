@@ -830,7 +830,7 @@ public class BackgroundTaskHelper  {
     public void saveToPermitTable(Permit permit, final Activity submitActivity
             , final List<PermitDetails> permitDetailsesList
             , final PermitPermission permitPermission ,int state_reject
-            , int permitTableOperationFlag) {
+            , int permitAndPTDetailsTableOperationFlag) {
 
         //todo delete temporary
         restAdapter = new RestAdapter.Builder()
@@ -867,59 +867,75 @@ public class BackgroundTaskHelper  {
         Log.d("== submit button" ,"clicked" + "project_id = "+permit.project_id);
         Log.d("== submit button" ,"clicked" + " permit_server_id = "+permit.server_permit_id);
 
-        int startTime = Integer.parseInt(permit.start_time);
-        int endTime = Integer.parseInt(permit.end_time);
-
-        loginApi.storeGeneralTabToPermitTable(
-                Constants.access_token,
-                Constants.token_type
-                , permit.auto_gen_permit_no
-                , permit.project_id
-                , permit.project_name
-                , permit.permit_template_id
-                , permit.permit_name
-                , permit.contractor
-                , permit.location
-                , permit.work_activity
-                , permit.permit_date
-                , startTime
-                , endTime
-                , permit.created_by
-                , permit.status
-                , permit.server_permit_id
-                , new Callback<List<ServerMessage>>() {
-                    @Override
-                    public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
 
-                        Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(1).message);
+        if(permitAndPTDetailsTableOperationFlag != Constants.PERMIT_TABLE_OPERATION_FLAG_DO_NOTING) {
 
 
-                        // getting server permit id to submit checklist
-                        globalVars.getPermit().server_permit_id = Integer.parseInt(serverReturnMessage.get(1).message);
-                        long permitId = Integer.parseInt(serverReturnMessage.get(1).message);
+            int startTime = Integer.parseInt(permit.start_time);
+            int endTime = Integer.parseInt(permit.end_time);
 
-                        //get the server permit id
-                        //then send the checklist permit details to keep server id on permit derails
+            loginApi.storeGeneralTabToPermitTable(
+                    Constants.access_token,
+                    Constants.token_type
+                    , permit.auto_gen_permit_no
+                    , permit.project_id
+                    , permit.project_name
+                    , permit.permit_template_id
+                    , permit.permit_name
+                    , permit.contractor
+                    , permit.location
+                    , permit.work_activity
+                    , permit.permit_date
+                    , startTime
+                    , endTime
+                    , permit.created_by
+                    , permit.status
+                    , permit.server_permit_id
+                    , new Callback<List<ServerMessage>>() {
+                        @Override
+                        public void success(List<ServerMessage> serverReturnMessage, Response response) {
 
-                        saveToPermitDetailsToserver(permitDetailsesList, permitId,submitActivity);
+
+                            Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
+                            Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(1).message);
 
 
-                        saveToPermitPermissionToServer(permitPermission ,permitId ,submitActivity);
+                            // getting server permit id to submit checklist
+                            globalVars.getPermit().server_permit_id = Integer.parseInt(serverReturnMessage.get(1).message);
+                            long permitId = Integer.parseInt(serverReturnMessage.get(1).message);
 
+                            //get the server permit id
+                            //then send the checklist permit details to keep server id on permit derails
+
+                            saveToPermitDetailsToserver(permitDetailsesList, permitId, submitActivity);
+
+
+                            saveToPermitPermissionToServer(permitPermission, permitId, submitActivity);
+
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                            Log.d(TAG + " == back task ", " fail saveToPermitTable =" + error.getMessage());
+
+                        }
                     }
+            );
 
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                        Log.d(TAG + " == back task ", " fail saveToPermitTable =" + error.getMessage());
-
-                    }
-                }
-        );
+        }
+        else {
+            //means we have permit server id
+            //saved permit
 
 
+            long permitId = globalVars.getPermit().server_permit_id;
+
+            Log.d(TAG+"do noting flag " ," permit id = " + permitId);
+
+            saveToPermitPermissionToServer(permitPermission, permitId, submitActivity);
+        }
     }
 
 

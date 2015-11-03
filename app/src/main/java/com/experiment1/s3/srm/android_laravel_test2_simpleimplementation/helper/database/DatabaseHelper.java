@@ -87,7 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", check_list_que_id integer"
                 +", project_id integer"
                 +", FOREIGN KEY(check_list_que_id) REFERENCES Check_list_QUESTION_TABLE(permit_id)"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(_id)"
                 +");");
 
 
@@ -120,6 +120,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+
+
+
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS"
+                +" PROJECT_PERMISSION" +
+                "(_id integer primary key autoincrement"
+                +", server_id integer"
+                +", project_id integer"
+                +", user_id integer"
+                +", role integer"
+                +", role_type integer"
+                +", created_by integer"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(_id)"
+                +");");
+
+
+
+
         db.execSQL("CREATE TABLE IF NOT EXISTS"
                 +" USER_TABLE" +
                 "(permit_id integer primary key autoincrement"
@@ -131,7 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", company_id integer"
                 +", role integer"
                 +", project_id integer"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(_id)"
                 +");");
 
 
@@ -156,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", status varchar(20)"
                 +", FOREIGN KEY(created_by) REFERENCES USER_TABLE(permit_id)"
                 +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
-                +", FOREIGN KEY(project_id) REFERENCES Projects(permit_id)"
+                +", FOREIGN KEY(project_id) REFERENCES Projects(_id)"
                 +");");
 
 
@@ -189,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", server_id integer "
                 +", sno integer "
                 +", permit_template_id integer "
-                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(permit_id)"
+                +", FOREIGN KEY(permit_template_id) REFERENCES permit_templates(_id)"
                 +");");
 
 
