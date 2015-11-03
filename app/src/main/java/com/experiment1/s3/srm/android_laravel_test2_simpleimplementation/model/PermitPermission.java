@@ -8,4 +8,7 @@ public class PermitPermission {
     public int user_id;
     public long permit_id;
     public String status;
+
+
+
 }

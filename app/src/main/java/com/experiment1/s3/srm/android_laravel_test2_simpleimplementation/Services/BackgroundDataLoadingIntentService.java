@@ -1,12 +1,19 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.services;
 
+import android.annotation.TargetApi;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.CustomAPI;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.BackgroundTaskHelper;
@@ -31,12 +38,15 @@ import retrofit.client.Response;
 public class BackgroundDataLoadingIntentService extends IntentService {
 
 
+    String TAG = this.getClass().getSimpleName();
 
     BackgroundTaskHelper backgroundTaskHelper;
     SaveDataHelper saveDataHelper;
     final PermitTemplateDBHelper permitTemplateDBHelper;
 
     PermitDBHelper permitDBHelper;
+    ProjectDatabaseHelper projectDatabaseHelper;
+
 
     public BackgroundDataLoadingIntentService() {
         super("BackgroundDataLoadingIntentService");
@@ -66,9 +76,16 @@ public class BackgroundDataLoadingIntentService extends IntentService {
             else if(saveDataHelper.getCurrentUserRole() == 2 || saveDataHelper.getCurrentUserRole() == 1 ){
 
                 permitDBHelper = new PermitDBHelper(this);
+                projectDatabaseHelper = new ProjectDatabaseHelper(this);
 
                 getPermitListFromServer(saveDataHelper);
                 getPermitDetailsListFromServer(saveDataHelper);
+                getPermitPermissionFromServer(saveDataHelper);
+                showNotification();
+
+
+
+
             }
 
 
@@ -81,6 +98,73 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
     }
 
+
+
+    public void showNotification(){
+
+
+
+
+        List<PermitPermission> permitPermissions = projectDatabaseHelper.getNewPermitPermissions();
+
+
+        Log.d(TAG+"size ptPermission =",""+permitPermissions.size());
+
+        for (PermitPermission pp : permitPermissions)
+        {
+
+
+
+            if (pp.status == Constants.PERMIT_STATUS_SUBMITTED && saveDataHelper.getCurrentUserRole() == 2) {
+                //todo submitted message
+            } else if (pp.status == Constants.PERMIT_STATUS_VALIDATE_SUBMITTED && saveDataHelper.getCurrentUserRole() == 1) {
+                //todo validated message
+            } else if ((pp.status == Constants.PERMIT_STATUS_VALIDATE_REJECT
+                    || pp.status == Constants.PERMIT_STATUS_APPROVED_REJECT) &&
+                    (saveDataHelper.getCurrentUserRole() == 3
+                            || saveDataHelper.getCurrentUserRole() == 2)) {
+
+                //todo rejected
+            }
+            else if((pp.status == Constants.PERMIT_STATUS_APPROVED) &&
+                    (saveDataHelper.getCurrentUserRole() == 3
+                            || saveDataHelper.getCurrentUserRole() == 2)){
+                // todo approved
+            }
+
+
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification(R.drawable.notif, "message", System.currentTimeMillis());
+
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.defaults |= Notification.DEFAULT_LIGHTS;
+
+            PendingIntent pintent = PendingIntent.getActivity(this, pp.id, new Intent(), 0);
+            notification.setLatestEventInfo(getApplicationContext(), "Title", "text"+pp.id  , pintent);
+            notificationManager.notify(pp.id, notification);
+
+
+
+
+
+//            Notification noti = new Notification.Builder(this)
+//                    .setContentTitle("New mail from ")
+//                    .setContentText("this is text")
+//                    .setSmallIcon(R.drawable.icon)
+//                    .build();
+
+//            NotificationCompat.Builder notify = new NotificationCompat.Builder(this)
+//                    .setContentText("this is message")
+//                    .setContentTitle("TITLE");
+//
+//            notify.build();
+//            synchronized(notify) {
+//                notify.notify();
+//            }
+
+
+        }
+    }
 
     public void getProjectListFromServer(SaveDataHelper saveDataHelper) {
 

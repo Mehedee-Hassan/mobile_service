@@ -1,8 +1,11 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -75,7 +78,7 @@ public class SubmitActApproval extends FragmentActivity
 
     BackgroundTaskHelper backgroundTaskHelper;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -290,8 +293,18 @@ public class SubmitActApproval extends FragmentActivity
     private void onClickListenerSetup(Button ok, Button cancel, final AlertDialog.Builder builder
             , final AlertDialog alert ,final int state_reject) {
         ok.setOnClickListener(new OnClickListener() {
+
+
+
             @Override
             public void onClick(View view) {
+
+
+
+
+
+
+
 
 
                 GlobalVars globalVars = (GlobalVars) getApplication();

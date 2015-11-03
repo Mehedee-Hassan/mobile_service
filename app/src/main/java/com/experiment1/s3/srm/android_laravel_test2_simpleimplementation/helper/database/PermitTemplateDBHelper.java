@@ -334,6 +334,9 @@ public class PermitTemplateDBHelper extends DatabaseHelper {
                 contentValues.put("status", permitPermission.status);
 
 
+                contentValues.put("notification_age", Constants.NOTIFICATION_AGE_NEW);
+
+
                 db.insert("permit_permission", null, contentValues);
             }
         }
@@ -342,6 +345,9 @@ public class PermitTemplateDBHelper extends DatabaseHelper {
             cr.close();
 
     }
+
+
+
 
 
 }

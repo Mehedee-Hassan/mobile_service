@@ -23,6 +23,8 @@ public class Constants {
 
 
     public static final String EXTRA_TEXT = "empty";
+    public static final String NOTIFICATION_AGE_NEW = "NEW";
+    public static final String NOTIFICATION_AGE_OLD = "OLD";
 
     //==
 
@@ -110,4 +112,5 @@ public class Constants {
     public static String CURRENT_USER_ROLE = "CURRENT_USER_ROLE";
 
     public static String CURRENT_USER_ID = "CURRENT_USER_ID";
+
 }

@@ -227,6 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 +", status varchar(50)"
                 +", user_id integer"
                 +", permit_id integer"
+                +", notification_age varchar(5)"
                 +");");
 
 

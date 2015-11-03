@@ -3,6 +3,8 @@ package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +34,7 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.custom.listview.adapter.ProjectActivityListViewAdapter;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.database.ProjectDatabaseHelper;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.PTWorkActivityApproval;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.PTWorkActivityValidate;
@@ -47,14 +50,16 @@ import retrofit.client.Response;
 
 public class ProjectActivity extends Activity implements OnItemClickListener{
 
+    String TAG = this.getClass().getSimpleName();
+
     ListView listview;
     ArrayList<String> list;
     ArrayAdapter adapter;
     BackgroundTaskHelper backgroundTaskHelper;
-
     ProjectDatabaseHelper databaseHelper;
     BroadcastReceiver uiUpdateBReceiver;
 
+    SaveDataHelper saveDataHelper;
     ProjectActivityListViewAdapter customAdapter;
     ProjectActivity projectActivity;
 
@@ -76,8 +81,7 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
         globalVars = (GlobalVars) getApplication();
         //get itselt
         projectActivity = this;
-
-
+        saveDataHelper = new SaveDataHelper(this);
 
         ActionBar bar = getActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FF9900")));
@@ -118,11 +122,10 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
         backgroundTaskHelper.loadProjectListFromDatabase(projectActivity
                 , databaseHelper, list, customAdapter);
 
-        //active service
-
 
         createUIUpdateBroadcastReciever();
         registerUIUpdateBroadcastReceiver();
+       // showNotification();
 
 
         Handler handler = new Handler();
@@ -188,6 +191,62 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
     }
 
 
+
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void showNotification(){
+
+        List<PermitPermission> permitPermissions = databaseHelper.getNewPermitPermissions();
+
+
+        Log.d(TAG+"size ptPermission =",""+permitPermissions.size());
+
+        for (PermitPermission pp : permitPermissions) {
+
+
+
+            if (pp.status == Constants.PERMIT_STATUS_SUBMITTED && saveDataHelper.getCurrentUserRole() == 2) {
+                //todo submitted message
+            } else if (pp.status == Constants.PERMIT_STATUS_VALIDATE_SUBMITTED && saveDataHelper.getCurrentUserRole() == 1) {
+                //todo validated message
+            } else if ((pp.status == Constants.PERMIT_STATUS_VALIDATE_REJECT
+                    || pp.status == Constants.PERMIT_STATUS_APPROVED_REJECT) &&
+                    (saveDataHelper.getCurrentUserRole() == 3
+                            || saveDataHelper.getCurrentUserRole() == 2)) {
+
+                //todo rejected
+            }
+            else if((pp.status == Constants.PERMIT_STATUS_APPROVED) &&
+            (saveDataHelper.getCurrentUserRole() == 3
+                    || saveDataHelper.getCurrentUserRole() == 2)){
+                // todo approved
+            }
+
+
+
+            NotificationManager notificationManager = (NotificationManager) this
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            Notification notification = new Notification(R.drawable.notif,
+                    "message" + pp.status, System.currentTimeMillis());
+
+
+
+
+            // Hide the notification after its selected
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+            //adding LED lights to notification
+            notification.defaults |= Notification.DEFAULT_LIGHTS;
+
+
+            notificationManager.notify(0,notification);
+
+        }
+    }
+
+
+
     //from database
     public  void loadProjectList(Context context,ProjectDatabaseHelper databaseHelper){
 
@@ -217,6 +276,8 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
 
 
     }
+
+
 
 
 

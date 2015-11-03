@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
     public String PROJECT_TABLE_COL_PROJECT_ID = "project_id";
     public String PROJECT_TABLE_COL_PROJECT_NAME = "project_name";
     public List<Project> projects;
+    private List<PermitPermission> newPermitPermissions;
 
     public ProjectDatabaseHelper(Context context) {
         super(context);
@@ -123,5 +126,69 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
     public Project getProjectAt(int pos) {
         return projects.get(pos);
+    }
+
+
+
+
+
+
+    public List<PermitPermission> getNewPermitPermissions() {
+
+
+        SQLiteDatabase  db = this.getWritableDatabase();
+        Cursor cr = null;
+
+        newPermitPermissions = new ArrayList<PermitPermission>();
+
+       cr = db.rawQuery("select * " +
+                    " from "
+                    +" permit_permission "
+                    +" where " +
+                    "notification_age" + " = '" + Constants.NOTIFICATION_AGE_NEW +"'"
+               ,null);
+
+
+        cr.moveToFirst();
+
+        PermitPermission tempPermitPermission;
+        while(!cr.isAfterLast()){
+
+            tempPermitPermission = new PermitPermission();
+
+            tempPermitPermission.id = cr.getInt(cr.getColumnIndexOrThrow("server_id"));
+            tempPermitPermission.status = cr.getString(cr.getColumnIndexOrThrow("status"));
+            tempPermitPermission.user_id = cr.getInt(cr.getColumnIndexOrThrow("user_id"));
+            tempPermitPermission.permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
+            //cr.getInt(cr.getColumnIndexOrThrow("notification_age"));
+
+
+            //updateAgeOfNotification(db, cr);
+
+
+            newPermitPermissions.add(tempPermitPermission);
+
+            cr.moveToNext();
+        }
+
+        cr.close();
+
+        return newPermitPermissions;
+    }
+
+    private void updateAgeOfNotification(SQLiteDatabase db, Cursor cr) {
+        ContentValues contentValues;
+        int _id = cr.getInt(cr.getColumnIndexOrThrow("_id"));
+        String queryFor = " _id = ? ";
+        String[] arguments = new String[] {""+_id};
+
+
+        contentValues = new ContentValues();
+        contentValues.put("notification_age" , Constants.NOTIFICATION_AGE_OLD);
+
+
+        db.update("permit_permission",contentValues
+                ,queryFor ,arguments
+        );
     }
 }
