@@ -9,6 +9,7 @@ import android.util.Log;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret.NotificationDataRetModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,21 @@ import java.util.List;
  */
 public class ProjectDatabaseHelper extends DatabaseHelper {
 
+
+    public String TAG = this.getClass().getSimpleName();
+
     public String PROJECT_TABLE_NAME= "Projects";
     public String PROJECT_TABLE_COL_PROJECT_ID = "project_id";
     public String PROJECT_TABLE_COL_PROJECT_NAME = "project_name";
     public List<Project> projects;
-    private List<PermitPermission> newPermitPermissions;
+    private List<NotificationDataRetModel> notificationDataRetModels;
+    private String permitStatusToTake;
+
+
+    final int PERMIT_STATUS_SUBMITTED_APPROVED_REJ_APP = 1;
+    final int  PERMIT_STATUS_APPROVED_REJ_APP_REJ_VAL = 2;
+    final int  PERMIT_STATUS_VALIDATED = 3;
+
 
     public ProjectDatabaseHelper(Context context) {
         super(context);
@@ -133,48 +144,165 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
 
 
-    public List<PermitPermission> getNewPermitPermissions() {
+    public List<NotificationDataRetModel> getNotificationDataRetModels(int currentUserRole) {
+
+
+
+        Log.d(TAG+" arg " ,"here");
 
 
         SQLiteDatabase  db = this.getWritableDatabase();
         Cursor cr = null;
 
-        newPermitPermissions = new ArrayList<PermitPermission>();
+        notificationDataRetModels = new ArrayList<NotificationDataRetModel>();
 
-       cr = db.rawQuery("select * " +
+        String permitStatusArg = getMappedPermitStatus(getPermitStatusToTake(currentUserRole));
+
+        Log.d(TAG+" arg = ", permitStatusArg);
+
+
+       String query = "select * " +
                     " from "
                     +" permit_permission "
                     +" where " +
-                    "notification_age" + " = '" + Constants.NOTIFICATION_AGE_NEW +"'"
-               ,null);
+                    "notification_age" + " = '" + Constants.NOTIFICATION_AGE_NEW +"' " +
+                    " AND  " +
+                    permitStatusArg;
+
+        Log.d(TAG+" arg = ", query);
+
+
+
+        cr = db.rawQuery(query ,null);
 
 
         cr.moveToFirst();
 
-        PermitPermission tempPermitPermission;
+        NotificationDataRetModel notificationDataRetModel;
+
+
         while(!cr.isAfterLast()){
 
-            tempPermitPermission = new PermitPermission();
 
-            tempPermitPermission.id = cr.getInt(cr.getColumnIndexOrThrow("server_id"));
-            tempPermitPermission.status = cr.getString(cr.getColumnIndexOrThrow("status"));
-            tempPermitPermission.user_id = cr.getInt(cr.getColumnIndexOrThrow("user_id"));
-            tempPermitPermission.permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
+
+            int permitPermissionServerId = cr.getInt(cr.getColumnIndexOrThrow("server_id"));
+            String permitPermissionStatus = cr.getString(cr.getColumnIndexOrThrow("status"));
+            int userId = cr.getInt(cr.getColumnIndexOrThrow("user_id"));
+            int permitId = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
             //cr.getInt(cr.getColumnIndexOrThrow("notification_age"));
 
 
-            //updateAgeOfNotification(db, cr);
 
 
-            newPermitPermissions.add(tempPermitPermission);
+
+            String projectName = getProjectNameBy(permitId,db);
+            notificationDataRetModel = new
+                    NotificationDataRetModel(permitPermissionStatus
+                    ,projectName
+                    ,permitPermissionServerId);
+
+
+            notificationDataRetModels.add(notificationDataRetModel);
+
+            updateAgeOfNotification(db, cr);
+
 
             cr.moveToNext();
         }
 
         cr.close();
 
-        return newPermitPermissions;
+        return notificationDataRetModels;
     }
+
+    private String getMappedPermitStatus(int permitStatusToTakeNumber) {
+
+
+
+        String ARG_STRING = "";
+        if(permitStatusToTakeNumber == PERMIT_STATUS_SUBMITTED_APPROVED_REJ_APP){
+
+            ARG_STRING = "( status " + " = " +"'"+ Constants.PERMIT_STATUS_SUBMITTED +"'"
+                    + " OR "
+                    + " status " + " = " + "'" + Constants.PERMIT_STATUS_APPROVED +"'"
+                    + " OR "
+                    + " status " + " = " + "'" + Constants.PERMIT_STATUS_APPROVED_REJECT +"' " +
+                    ")";
+
+        }
+        else if(permitStatusToTakeNumber == PERMIT_STATUS_APPROVED_REJ_APP_REJ_VAL){
+
+            ARG_STRING = "( status " + " = " +"'"+ Constants.PERMIT_STATUS_APPROVED +"'"
+                    + " OR "
+                    + " status " + " = " + "'" + Constants.PERMIT_STATUS_APPROVED_REJECT +"'"
+                    + " OR "
+                    + " status " + " = " + "'" + Constants.PERMIT_STATUS_VALIDATE_REJECT +"' " +
+                    ")";
+
+        }
+
+        else if(permitStatusToTakeNumber == PERMIT_STATUS_VALIDATED){
+            ARG_STRING = " status " + " = " +"'"+ Constants.PERMIT_STATUS_VALIDATE_SUBMITTED +"'";
+        }
+
+
+
+        return ARG_STRING;
+    }
+
+    private String getProjectNameBy(long permit_id,SQLiteDatabase db) {
+
+        String projectName="";
+
+        Cursor cr1 = null;
+        Cursor cr2 = null;
+
+
+
+        cr1 = db.rawQuery("select " +
+                " project_id " +
+                " from "
+                +" permit "
+                +" where " +
+                " permit_id "  + " = " + permit_id +""
+                ,null);
+
+
+        cr1.moveToFirst();
+        int project_id = cr1.getInt(cr1.getColumnIndexOrThrow("project_id"));
+
+        Log.d(TAG+" project id = ",""+project_id);
+
+
+        cr2 = db.rawQuery("select  " +
+                " project_name " +
+                " from " +
+                " Projects "
+                +" where " +
+                " project_id "  + " = " + project_id +""
+                ,null);
+
+
+
+
+        cr2.moveToFirst();
+        projectName += cr2.getString(cr2.getColumnIndexOrThrow("project_name"));
+
+
+        Log.d(TAG + " project name = ", "" + projectName);
+
+
+        if(cr1 != null)
+            cr1.close();
+
+        if(cr2 != null)
+            cr1.close();
+
+
+        return projectName;
+    }
+
+
 
     private void updateAgeOfNotification(SQLiteDatabase db, Cursor cr) {
         ContentValues contentValues;
@@ -190,5 +318,24 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
         db.update("permit_permission",contentValues
                 ,queryFor ,arguments
         );
+    }
+
+    public int getPermitStatusToTake(int currentUserRole) {
+
+        if (currentUserRole == 1) {
+
+            return PERMIT_STATUS_VALIDATED;
+
+        }
+        else if (currentUserRole == 2){
+            return PERMIT_STATUS_SUBMITTED_APPROVED_REJ_APP;
+        }
+        else
+//        if(currentUserRole == 3)
+        {
+            return PERMIT_STATUS_APPROVED_REJ_APP_REJ_VAL;
+        }
+
+
     }
 }

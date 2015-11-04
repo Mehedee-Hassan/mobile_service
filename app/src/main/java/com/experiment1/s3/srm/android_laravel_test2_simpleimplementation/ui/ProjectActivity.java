@@ -38,7 +38,6 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.approval.PTWorkActivityApproval;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.validate.PTWorkActivityValidate;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.variables.CurrentVars;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,56 +193,6 @@ public class ProjectActivity extends Activity implements OnItemClickListener{
 
 
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void showNotification(){
-
-        List<PermitPermission> permitPermissions = databaseHelper.getNewPermitPermissions();
-
-
-        Log.d(TAG+"size ptPermission =",""+permitPermissions.size());
-
-        for (PermitPermission pp : permitPermissions) {
-
-
-
-            if (pp.status == Constants.PERMIT_STATUS_SUBMITTED && saveDataHelper.getCurrentUserRole() == 2) {
-                //todo submitted message
-            } else if (pp.status == Constants.PERMIT_STATUS_VALIDATE_SUBMITTED && saveDataHelper.getCurrentUserRole() == 1) {
-                //todo validated message
-            } else if ((pp.status == Constants.PERMIT_STATUS_VALIDATE_REJECT
-                    || pp.status == Constants.PERMIT_STATUS_APPROVED_REJECT) &&
-                    (saveDataHelper.getCurrentUserRole() == 3
-                            || saveDataHelper.getCurrentUserRole() == 2)) {
-
-                //todo rejected
-            }
-            else if((pp.status == Constants.PERMIT_STATUS_APPROVED) &&
-            (saveDataHelper.getCurrentUserRole() == 3
-                    || saveDataHelper.getCurrentUserRole() == 2)){
-                // todo approved
-            }
-
-
-
-            NotificationManager notificationManager = (NotificationManager) this
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
-            Notification notification = new Notification(R.drawable.notif,
-                    "message" + pp.status, System.currentTimeMillis());
-
-
-
-
-            // Hide the notification after its selected
-            notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-            //adding LED lights to notification
-            notification.defaults |= Notification.DEFAULT_LIGHTS;
-
-
-            notificationManager.notify(0,notification);
-
-        }
-    }
 
 
 

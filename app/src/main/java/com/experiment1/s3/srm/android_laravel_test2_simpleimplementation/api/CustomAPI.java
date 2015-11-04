@@ -1,15 +1,13 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.LoginMessage;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitPermission;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Token;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data.PermitForDataRet;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.PermitStoreToServer;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret.PermitForDataRet;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.message.ServerMessage;
 
 import java.util.List;

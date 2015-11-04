@@ -1,4 +1,4 @@
-package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data;
+package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret;
 
 /**
  * Created by Mhr on 10/3/2015.

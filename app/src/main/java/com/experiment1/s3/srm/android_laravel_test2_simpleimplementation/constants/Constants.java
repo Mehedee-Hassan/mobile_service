@@ -43,7 +43,7 @@ public class Constants {
 
 
     //temp credential
-    public static String username = "user1@gamil.com";
+    public static String username = "user1@gmail.com";
     public static String password = "pass@word1";
     public static String CLIENT_ID = "2";
     public static String CLIENT_SECRET = "tt";
@@ -69,6 +69,7 @@ public class Constants {
     public static int state_reject_login_napprove = 2;
     public static int state_reject_login_nvalidate = 1;
     public static int state_reject_login_validate = 0;
+    public static String NOTIFICATION_MESSAGE_PERMIT_REJECTED = "REJECTED";
 
 
     public int clientId = 2;

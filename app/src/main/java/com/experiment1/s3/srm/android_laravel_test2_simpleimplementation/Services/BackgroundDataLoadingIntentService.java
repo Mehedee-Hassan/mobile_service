@@ -1,6 +1,5 @@
 package com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.services;
 
-import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.R;
@@ -26,7 +23,8 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.P
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplateDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data.PermitForDataRet;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret.NotificationDataRetModel;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret.PermitForDataRet;
 
 import java.util.List;
 
@@ -62,31 +60,33 @@ public class BackgroundDataLoadingIntentService extends IntentService {
         Log.d("net con", "changed");
 
 
-        if(isNetworkAvailable(this)){
-            saveDataHelper = new SaveDataHelper(this);
 
+
+
+        if(isNetworkAvailable(this)){
+
+            saveDataHelper = new SaveDataHelper(this);
+            permitDBHelper = new PermitDBHelper(this);
+            projectDatabaseHelper = new ProjectDatabaseHelper(this);
+            getPermitListFromServer(saveDataHelper);
+            getPermitPermissionFromServer(saveDataHelper);
             getProjectListFromServer(saveDataHelper);
 
-            if(saveDataHelper.getCurrentUserRole() == 3) {
+
+
+            if (saveDataHelper.getCurrentUserRole() == 3) {
                 getPermitTemplateListFromServer(saveDataHelper);
                 getPermitTemplateDetailsListFromServer(saveDataHelper);
-                getPermitPermissionFromServer(saveDataHelper);
+
+
                 //stop after data loading finished
             }
             else if(saveDataHelper.getCurrentUserRole() == 2 || saveDataHelper.getCurrentUserRole() == 1 ){
-
-                permitDBHelper = new PermitDBHelper(this);
-                projectDatabaseHelper = new ProjectDatabaseHelper(this);
-
-                getPermitListFromServer(saveDataHelper);
-                getPermitDetailsListFromServer(saveDataHelper);
-                getPermitPermissionFromServer(saveDataHelper);
-                showNotification();
-
-
-
-
+                 getPermitDetailsListFromServer(saveDataHelper);
             }
+
+            showNotification();
+
 
 
             stopSelf();
@@ -105,32 +105,14 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
 
 
-        List<PermitPermission> permitPermissions = projectDatabaseHelper.getNewPermitPermissions();
+        List<NotificationDataRetModel> permitPermissions =
+                projectDatabaseHelper.getNotificationDataRetModels(saveDataHelper.getCurrentUserRole());
 
 
         Log.d(TAG+"size ptPermission =",""+permitPermissions.size());
 
-        for (PermitPermission pp : permitPermissions)
+        for (NotificationDataRetModel notificationDataRetModel : permitPermissions)
         {
-
-
-
-            if (pp.status == Constants.PERMIT_STATUS_SUBMITTED && saveDataHelper.getCurrentUserRole() == 2) {
-                //todo submitted message
-            } else if (pp.status == Constants.PERMIT_STATUS_VALIDATE_SUBMITTED && saveDataHelper.getCurrentUserRole() == 1) {
-                //todo validated message
-            } else if ((pp.status == Constants.PERMIT_STATUS_VALIDATE_REJECT
-                    || pp.status == Constants.PERMIT_STATUS_APPROVED_REJECT) &&
-                    (saveDataHelper.getCurrentUserRole() == 3
-                            || saveDataHelper.getCurrentUserRole() == 2)) {
-
-                //todo rejected
-            }
-            else if((pp.status == Constants.PERMIT_STATUS_APPROVED) &&
-                    (saveDataHelper.getCurrentUserRole() == 3
-                            || saveDataHelper.getCurrentUserRole() == 2)){
-                // todo approved
-            }
 
 
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -139,31 +121,39 @@ public class BackgroundDataLoadingIntentService extends IntentService {
             notification.flags |= Notification.FLAG_AUTO_CANCEL;
             notification.defaults |= Notification.DEFAULT_LIGHTS;
 
-            PendingIntent pintent = PendingIntent.getActivity(this, pp.id, new Intent(), 0);
-            notification.setLatestEventInfo(getApplicationContext(), "Title", "text"+pp.id  , pintent);
-            notificationManager.notify(pp.id, notification);
+            PendingIntent pintent = PendingIntent.getActivity(this,
+                    notificationDataRetModel.getPermitPermissionServerId(), new Intent(), 0);
 
 
+            String message = getMessageFromStatus(notificationDataRetModel.getPermitPermissionStatus());
 
 
+            notification.setLatestEventInfo(getApplicationContext(),
+                        message
+                    , notificationDataRetModel.getProjectName()
+                    , pintent);
 
-//            Notification noti = new Notification.Builder(this)
-//                    .setContentTitle("New mail from ")
-//                    .setContentText("this is text")
-//                    .setSmallIcon(R.drawable.icon)
-//                    .build();
 
-//            NotificationCompat.Builder notify = new NotificationCompat.Builder(this)
-//                    .setContentText("this is message")
-//                    .setContentTitle("TITLE");
-//
-//            notify.build();
-//            synchronized(notify) {
-//                notify.notify();
-//            }
+            notificationManager.notify(notificationDataRetModel.getPermitPermissionServerId()
+                    , notification);
 
 
         }
+    }
+
+    private String getMessageFromStatus(String permitPermissionStatus) {
+
+        if(permitPermissionStatus.equals(Constants.PERMIT_STATUS_APPROVED_REJECT) ||
+                permitPermissionStatus.equals(Constants.PERMIT_STATUS_VALIDATE_REJECT)
+                )
+                {
+                    return Constants.NOTIFICATION_MESSAGE_PERMIT_REJECTED;
+                }
+                else {
+
+                    return permitPermissionStatus;
+                }
+
     }
 
     public void getProjectListFromServer(SaveDataHelper saveDataHelper) {

@@ -6,23 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.api.CustomAPI;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.constants.Constants;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.helper.SaveDataHelper;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PTW;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitDetails;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.PermitTemplate;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Permit;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.Project;
-import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.data.PermitForDataRet;
+import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.model.ret.PermitForDataRet;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by Mhr on 10/1/2015.
