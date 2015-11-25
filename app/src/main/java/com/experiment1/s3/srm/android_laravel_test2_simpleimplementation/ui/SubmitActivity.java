@@ -307,6 +307,9 @@ public class SubmitActivity extends FragmentActivity
 
 
                 returnedPermitObject.status = Constants.PERMIT_STATUS_APPROVED;
+                returnedPermitObject.server_permit_id = globalVars.getPermit().server_permit_id;
+                returnedPermitObject.id = globalVars.getPermit().id;
+
 
 
 
@@ -376,6 +379,7 @@ public class SubmitActivity extends FragmentActivity
 
 //
 //        Calendar calendar = Calendar.getInstance();
+        Log.d("permit sid s2ptable  = ","*********"+returnedPermitObject.server_permit_id);
 
 
         returnedPermitObject.auto_gen_permit_no = globalPermit.auto_gen_permit_no;

@@ -31,7 +31,7 @@ public class Constants {
     public static String PREF_FILE_NAME = "com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.SHARED_PREF_FILE";
 
 //    public static String BASE_URL = "http://192.168.1.100/php/laravel/test/android_laravel_v1/laravel/public"; //domain name
-    public static String BASE_URL = "http://192.168.1.102/php/laravel/___Office/mobileservice/public"; //domain name
+    public static String BASE_URL = "http://192.168.1.100/php/laravel/___Office/mobileservice/public"; //domain name
 
 
 

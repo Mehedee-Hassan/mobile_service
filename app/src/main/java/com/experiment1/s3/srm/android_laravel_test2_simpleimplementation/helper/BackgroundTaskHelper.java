@@ -27,6 +27,8 @@ import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.Logi
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.ProjectActivity;
 import com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.ui.SplashActivity;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,64 +130,56 @@ public class BackgroundTaskHelper  {
                 {
 
 
+                    @Override
+                    public void success(Token token, Response response) {
+                        //System.out.println(token.access_token + "  response = " + response.toString());
+
+                        Constants.access_token = token.access_token;
+                        Constants.token_type = token.token_type;
 
 
-            @Override
-            public void success(Token token, Response response) {
-                //System.out.println(token.access_token + "  response = " + response.toString());
-
-                Constants.access_token = token.access_token;
-                Constants.token_type = token.token_type;
+                        saveDataHelper.saveToken(token.access_token, token.token_type);
+                        saveDataHelper.savePrefUsername(username);
+                        saveDataHelper.savePrefPassword(password);
 
 
+                        Flags.tokenReceiveSuccessFlag = 1;
+
+                        Toast.makeText(loginActivity.getApplicationContext()
+                                , "Got Access Token\n" + Constants.access_token, Toast.LENGTH_SHORT).show();
+
+                        Flags.LOGIN_SUCCESS_FLAG = true;
 
 
-                saveDataHelper.saveToken(token.access_token, token.token_type);
-                saveDataHelper.savePrefUsername(username);
-                saveDataHelper.savePrefPassword(password);
+                        loginHelper3(token.access_token
+                                , token.token_type
+                                , activity
+                                , isReqFromLoginDialog
+
+                        );
 
 
-                Flags.tokenReceiveSuccessFlag = 1;
+                    }
 
-                Toast.makeText(loginActivity.getApplicationContext()
-                        ,"Got Access Token\n"+Constants.access_token ,Toast.LENGTH_SHORT).show();
+                    public void failure(RetrofitError retrofitError) {
 
-                Flags.LOGIN_SUCCESS_FLAG = true;
+                        Log.d("now==get", "" + retrofitError.getMessage());
+                        Log.d("===error ===", retrofitError.toString());
 
+                        Flags.tokenReceiveSuccessFlag = 2;
 
-
-
-
-                    loginHelper3(token.access_token
-                            , token.token_type
-                            , activity
-                            , isReqFromLoginDialog
-
-                    );
+                        Flags.LOGIN_SUCCESS_FLAG = false;
 
 
-
-            }
-
-            public void failure(RetrofitError retrofitError) {
-
-                Log.d("now==get" ,""+retrofitError.getMessage());
-                Log.d("===error ===", retrofitError.toString());
-
-                Flags.tokenReceiveSuccessFlag = 2;
-
-                Flags.LOGIN_SUCCESS_FLAG = false;
+                        Toast.makeText(loginActivity.getApplicationContext()
+                                , "Error!!!  Please check Internet Connection" +
+                                "\n Please check client permit_id and Secret\n" + retrofitError.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                Toast.makeText(loginActivity.getApplicationContext()
-                        ,"Error!!!  Please check Internet Connection" +
-                        "\n Please check client permit_id and Secret\n"+retrofitError.getMessage() ,Toast.LENGTH_SHORT).show();
+                    }
 
 
-            }
-
-
-        });
+                });
 
         return Flags.tokenReceiveSuccessFlag;
     }
@@ -295,15 +289,14 @@ public class BackgroundTaskHelper  {
 //                token_type, projectCallBack);
 
 
-        loginApi.loginWithAccessToken(access_token,
-                token_type, new Callback<LoginMessage>() {
+
+
+        loginApi.loginWithAccessToken(access_token, token_type,
+                new Callback<LoginMessage>() {
 
                     public void failure(RetrofitError arg0) {
                         returnTokenIsOk = false;
                         globalVars.setIfLoggedIn(false);
-
-
-
 
 
                         Flags.LOGIN_SUCCESS_FLAG = false;
@@ -320,8 +313,6 @@ public class BackgroundTaskHelper  {
                         //set login false
 
                         globalVars.setIfLoggedIn(false);
-
-                        //set user role [logged in for ui]
 
 
 //
@@ -342,10 +333,8 @@ public class BackgroundTaskHelper  {
 
 
                         Log.d("login string == ", loginMessage.message);
-                        Log.d("login string == ", ""+loginMessage.user_role);
+                        Log.d("login string == ", "" + loginMessage.user_role);
                         returnTokenIsOk = true;
-
-
 
 
                         Flags.LOGIN_SUCCESS_FLAG = true;
@@ -435,60 +424,59 @@ public class BackgroundTaskHelper  {
 
 
         if(!ifLoggedin) {
-            loginApi.loginWithAccessToken(access_token,
-                    token_type, new Callback<LoginMessage>() {
-
-                        public void failure(RetrofitError arg0) {
 
 
-                            Flags.LOGIN_SUCCESS_FLAG = false;
+            loginApi.loginWithAccessToken(access_token, token_type, new Callback<LoginMessage>() {
 
-                            Toast.makeText(
-                                    activity.getApplicationContext()
-                                    , "Login Failed.\n" + arg0.getMessage()
-                                    , Toast.LENGTH_LONG).show();
-
-                            activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                public void failure(RetrofitError arg0) {
 
 
-                            Log.d("===login with token==", "error = " + arg0.getMessage());
+                    Flags.LOGIN_SUCCESS_FLAG = false;
 
-                        }
+                    Toast.makeText(
+                            activity.getApplicationContext()
+                            , "Login Failed.\n" + arg0.getMessage()
+                            , Toast.LENGTH_LONG).show();
 
-                        public void success(LoginMessage loginMessage, Response arg1) {
-                            Log.d("login string = ", loginMessage.message);
-
-
-                            Flags.LOGIN_SUCCESS_FLAG = true;
-
-                            if (Flags.LOGIN_SUCCESS_FLAG) {
+                    activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
 
-                                //set constatns
-                                Constants.access_token = access_token;
-                                Constants.token_type = token_type;
+                    Log.d("===login with token==", "error = " + arg0.getMessage());
+
+                }
+
+                public void success(LoginMessage loginMessage, Response arg1) {
+                    Log.d("login string = ", loginMessage.message);
 
 
-                                //start service for the first time
-                                Intent intent2 = new Intent();
-                                intent2.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.BACKGROUND_DATA_LOADING_INTENT_SERVICE");
-                                activity.startService(intent2);
-                                //===
+                    Flags.LOGIN_SUCCESS_FLAG = true;
+
+                    if (Flags.LOGIN_SUCCESS_FLAG) {
 
 
+                        //set constatns
+                        Constants.access_token = access_token;
+                        Constants.token_type = token_type;
 
 
-                                Log.d("==now here ==", "login helper flag true");
-                            } else
-                                Log.d("==now here ==", "false");
+                        //start service for the first time
+                        Intent intent2 = new Intent();
+                        intent2.setAction("com.experiment1.s3.srm.android_laravel_test2_simpleimplementation.BACKGROUND_DATA_LOADING_INTENT_SERVICE");
+                        activity.startService(intent2);
+                        //===
 
 
-                            activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                        Log.d("==now here ==", "login helper flag true");
+                    } else
+                        Log.d("==now here ==", "false");
 
-                        }
+
+                    activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                }
 
 
-                    });
+            });
         }
 
         return true;
@@ -516,12 +504,11 @@ public class BackgroundTaskHelper  {
 
 
 
-        Log.d("==now here ==", "in method"+Constants.access_token);
+        Log.d("==now here ==", "in method" + Constants.access_token);
 
 
 
-        loginApi.loginWithAccessToken(token[0],
-                token[1], new Callback<LoginMessage>() {
+        loginApi.loginWithAccessToken(token[0] ,token[1], new Callback<LoginMessage>() {
 
                     public void failure(RetrofitError arg0) {
 
@@ -608,8 +595,8 @@ public class BackgroundTaskHelper  {
 
 
 
-        loginApi.loginWithAccessToken(access_token,
-                token_type, new Callback<LoginMessage>() {
+        loginApi.loginWithAccessToken(access_token ,token_type,
+                new Callback<LoginMessage>() {
 
                     public void failure(RetrofitError arg0) {
 
@@ -651,9 +638,8 @@ public class BackgroundTaskHelper  {
             return false;
 
 
-
-        loginApi.loginWithAccessToken(access_token,
-                token_type, new Callback<LoginMessage>() {
+        loginApi.loginWithAccessToken(access_token ,token_type,
+                new Callback<LoginMessage>() {
 
                     public void failure(RetrofitError arg0) {
 
@@ -793,7 +779,7 @@ public class BackgroundTaskHelper  {
 
 
                         Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(1).message);
+                        Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(0).message);
 
 
                         // getting server permit id to submit checklist
@@ -898,7 +884,8 @@ public class BackgroundTaskHelper  {
 
 
                             Toast.makeText(submitActivity, "Permit Saved", Toast.LENGTH_LONG);
-                            Log.d(TAG + " == back task ", " success saveToPermitTable =" + serverReturnMessage.get(1).message);
+                            Log.d(TAG + " == back task ", " success saveToPermitTable **** =" + serverReturnMessage.get(0).message);
+                            Log.d(TAG + " == back task ", " success saveToPermitTable **** =" + serverReturnMessage.get(1).message);
 
 
                             // getting server permit id to submit checklist

@@ -205,6 +205,7 @@ implements View.OnClickListener, OnItemClickListener {
 
                         Permit permit = globalVars.getNotNullPermit();
 
+                        permit.server_permit_id = -1; // no  server id
                         permit.permit_name = permitTemplate.name;
                         permit.permit_template_id = permitTemplate.id;
                         permit.auto_gen_permit_no = permitNumber;
@@ -411,6 +412,10 @@ implements View.OnClickListener, OnItemClickListener {
 
         Log.d(TAG + " == ", "permit name" + permit.permit_name);
         Log.d(TAG +" == " ,"permit id" + permit.id);
+
+        Log.d("permit server click = ","*********"+permit.server_permit_id);
+
+
         startActivity(intent);
 
 

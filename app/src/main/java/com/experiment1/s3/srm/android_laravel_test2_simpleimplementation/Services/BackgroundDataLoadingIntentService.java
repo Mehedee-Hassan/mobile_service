@@ -81,7 +81,8 @@ public class BackgroundDataLoadingIntentService extends IntentService {
 
                 //stop after data loading finished
             }
-            else if(saveDataHelper.getCurrentUserRole() == 2 || saveDataHelper.getCurrentUserRole() == 1 ){
+            if(saveDataHelper.getCurrentUserRole() == 2 || saveDataHelper.getCurrentUserRole() == 1
+                    || saveDataHelper.getCurrentUserRole() == 3){
                  getPermitDetailsListFromServer(saveDataHelper);
             }
 
@@ -228,7 +229,7 @@ public class BackgroundDataLoadingIntentService extends IntentService {
                 , new Callback<List<PermitDetails>>() {
 
                     public void failure(RetrofitError arg0) {
-                        Log.d("===service login  ==", " permit details= " + arg0.getMessage());
+                        Log.d("===service login  ==", "***** permit details= " + arg0.getMessage());
 
                     }
 

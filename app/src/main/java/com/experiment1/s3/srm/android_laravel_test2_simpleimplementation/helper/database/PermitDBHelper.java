@@ -212,7 +212,7 @@ public class PermitDBHelper extends DatabaseHelper {
             permit.created_by = cr.getInt(cr.getColumnIndexOrThrow("created_by"));
             permit.server_permit_id = cr.getInt(cr.getColumnIndexOrThrow("permit_id"));
 
-
+            Log.d("permit server id ","*********"+permit.server_permit_id);
 
 
 //            PermitCombineClass permitCombineClass = new PermitCombineClass();
@@ -232,7 +232,7 @@ public class PermitDBHelper extends DatabaseHelper {
 
 
         Permit permit = savedPermtiList.get(position);
-
+        Log.d("permit server id ret = ","*********"+permit.server_permit_id);
         return permit;
 
     }

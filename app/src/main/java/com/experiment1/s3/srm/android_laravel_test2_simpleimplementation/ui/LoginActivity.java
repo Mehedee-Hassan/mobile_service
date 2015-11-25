@@ -219,13 +219,6 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
 
 
                 Constants.access_token = "";
-                //get token
-//                int tokenAccessFlag = backgroundTaskHelper.tokenHelper();
-
-
-
-//                globalVars.setUserName( usernameEditText.getText().toString());
-
 
 
                 backgroundTaskHelper.tokenHelper3(
@@ -233,31 +226,6 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
                         passwordEditText.getText().toString(),
                         this,saveDataHelper,this , false);
 
-
-
-
-
-        //todo handler for late login call and wait for 16 seconds [delete]
-                //if(Flags.LOGIN_SUCCESS_FLAG == true)
-                //{
-                    //delay 5 seconds asycn call for access
-
-//                    Handler handler = new Handler();
-//
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//
-//                            boolean result2 = loginHelper(Constants.access_token
-//                                    , Constants.token_type, projectCallBack);
-//
-//                            Log.d("==now here ==", "result login with token" + Constants.access_token);
-//                        }
-//
-//
-//                    }, Constants.CALL_LOGIN_HELPER_DELAY);
-                //}
 
                     findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
@@ -316,9 +284,7 @@ public class LoginActivity extends Activity implements View.OnClickListener , Co
 //        loginApi.loginWithAccessToken(access_token,
 //                token_type, projectCallBack);
 
-
-        loginApi.loginWithAccessToken(access_token,
-                token_type, new Callback<LoginMessage>() {
+        loginApi.loginWithAccessToken(access_token ,token_type, new Callback<LoginMessage>() {
 
                     public void failure(RetrofitError arg0) {
 

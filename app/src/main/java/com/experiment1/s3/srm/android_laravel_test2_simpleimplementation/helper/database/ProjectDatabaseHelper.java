@@ -59,6 +59,7 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
         Cursor cr = null;
 
+        if(projects != null )
         for(Project project : projects){
 
             Log.d("test==" , project.name);
@@ -269,7 +270,9 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
 
         cr1.moveToFirst();
-        int project_id = cr1.getInt(cr1.getColumnIndexOrThrow("project_id"));
+        int project_id = -2;
+        if(!cr1.isAfterLast())
+        project_id =cr1.getInt(cr1.getColumnIndexOrThrow("project_id"));
 
         Log.d(TAG+" project id = ",""+project_id);
 
@@ -286,6 +289,8 @@ public class ProjectDatabaseHelper extends DatabaseHelper {
 
 
         cr2.moveToFirst();
+
+        if(!cr2.isAfterLast())
         projectName += cr2.getString(cr2.getColumnIndexOrThrow("project_name"));
 
 
